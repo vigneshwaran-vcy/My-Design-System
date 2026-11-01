@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Introduction" />
+
+# My Design System
+
+Calm, minimal, high-contrast. Rounded but not bubbly.
+
+- **Tokens** live in `packages/tokens/tokens.json` and compile to CSS variables (`--ds-*`) and TS exports.
+- **Components** live in `packages/ui` and only ever use tokens.
+- Use the **Theme** toolbar button to switch between light and dark.
+- The **Accessibility** panel runs axe on every story.
+
+```tsx
+import '@my-ds/tokens/tokens.css';
+import '@my-ds/ui/style.css';
+import { Button } from '@my-ds/ui';
+```

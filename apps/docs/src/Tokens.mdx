@@ -1,0 +1,37 @@
+import { Meta, ColorPalette, ColorItem, Typeset } from '@storybook/blocks';
+import { tokens } from '@my-ds/tokens';
+
+<Meta title="Foundations/Tokens" />
+
+# Tokens
+
+## Palette
+
+<ColorPalette>
+  <ColorItem title="Primary" subtitle="palette.primary" colors={tokens.palette.primary} />
+  <ColorItem title="Gray" subtitle="palette.gray" colors={tokens.palette.gray} />
+  <ColorItem title="Success" subtitle="palette.success" colors={tokens.palette.success} />
+  <ColorItem title="Warn" subtitle="palette.warn" colors={tokens.palette.warn} />
+  <ColorItem title="Danger" subtitle="palette.danger" colors={tokens.palette.danger} />
+</ColorPalette>
+
+## Typography
+
+<Typeset
+  fontFamily={tokens.font.family.sans}
+  fontSizes={Object.values(tokens.font.size)}
+  fontWeight={tokens.font.weight.regular}
+  sampleText="Calm, minimal, high-contrast."
+/>
+
+## Spacing
+
+<div style={{ display: 'grid', gap: 'var(--ds-space-2)' }}>
+  {Object.entries(tokens.space).map(([name, value]) => (
+    <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 'var(--ds-space-3)' }}>
+      <code style={{ width: 'var(--ds-space-16)' }}>space-{name}</code>
+      <div style={{ width: value, height: 'var(--ds-space-4)', background: 'var(--ds-color-accent)', borderRadius: 'var(--ds-radius-sm)' }} />
+      <span>{value}</span>
+    </div>
+  ))}
+</div>

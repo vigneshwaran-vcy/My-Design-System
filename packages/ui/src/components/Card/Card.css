@@ -1,0 +1,80 @@
+.ds-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-4);
+  border-radius: var(--ds-radius-lg);
+  border: var(--ds-border-width-thin) solid transparent;
+  background-color: var(--ds-color-surface);
+  color: var(--ds-color-text);
+  font-family: var(--ds-font-family-sans);
+}
+
+.ds-card--elevated {
+  border-color: var(--ds-color-border);
+  box-shadow: var(--ds-shadow-md);
+}
+.ds-card--outlined {
+  border-color: var(--ds-color-border);
+}
+.ds-card--filled {
+  background-color: var(--ds-color-surface-subtle);
+}
+
+.ds-card--padding-none {
+  padding: 0;
+}
+.ds-card--padding-sm {
+  padding: var(--ds-space-3);
+  gap: var(--ds-space-2);
+}
+.ds-card--padding-md {
+  padding: var(--ds-space-6);
+}
+.ds-card--padding-lg {
+  padding: var(--ds-space-8);
+  gap: var(--ds-space-6);
+}
+
+/* Cards are not interactive themselves; this keeps a focus ring visible when a child link/button inside is focused. */
+.ds-card:focus-within:has(:focus-visible) {
+  border-color: var(--ds-color-border-strong);
+}
+
+.ds-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+}
+.ds-card__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+.ds-card__title {
+  margin: 0;
+  font-size: var(--ds-font-size-lg);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-font-line-height-tight);
+}
+.ds-card__description {
+  margin: 0;
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+  color: var(--ds-color-text-muted);
+}
+.ds-card__action {
+  flex-shrink: 0;
+}
+
+.ds-card__body {
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+}
+
+.ds-card__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ds-space-2);
+}
