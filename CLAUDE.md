@@ -24,12 +24,12 @@ React + TypeScript, CSS variables, Vite, Storybook, pnpm workspaces
 packages/tokens/   tokens.json → scripts/build.mjs → dist/tokens.css + dist/index.js (+ .d.ts)
 packages/ui/       React components, one folder each: Component.tsx, .css, .stories.tsx, .test.tsx
 apps/docs/         Storybook (stories are loaded from packages/ui/src)
-apps/playground/   Vite app that imports @my-ds/ui from source
+apps/playground/   Living docs: every token (rendered from tokenList) + component docs; imports @my-ds/ui from source
 .github/workflows/ ci.yml, publish.yml, deploy.yml
 ```
 
 ## How tokens work
-- Primitives live under `palette`, `space`, `radius`, `font`, `size`, `border`, `motion`.
+- Primitives live under `palette`, `space`, `radius`, `font`, `size`, `border`, `motion`, `breakpoint`.
   They become `--ds-<path>` variables (a trailing `default` key is dropped: `palette.primary.default` → `--ds-palette-primary`).
 - Semantic, theme-aware tokens live under `themes.light` / `themes.dark` and become `--ds-color-*` and `--ds-shadow-*`.
   Both themes must define exactly the same keys (the build fails otherwise).

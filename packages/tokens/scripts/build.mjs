@@ -71,6 +71,56 @@ function toVars(entries) {
 }
 const vars = toVars([...primitiveEntries, ...light]);
 
+// Flat, documentation-friendly list: every token with its CSS variable and (for themed tokens)
+// the resolved value and source reference per theme.
+const lookup = (ref) => ref.split('.').reduce((node, key) => node?.[key], primitives);
+const resolveValue = (value) => value.replace(/\{([^}]+)\}/g, (_, ref) => lookup(ref));
+const refOf = (value) => value.match(/^\{([^}]+)\}$/)?.[1];
+const themed = Object.fromEntries(themeNames.map((name) => [name, new Map(flatten(themes[name]).map(([p, v]) => [p.join('.'), v]))]));
+const tokenList = [
+  ...primitiveEntries.map(([path, value]) => ({
+    name: path.join('.'),
+    cssVar: varName(path),
+    category: path[0],
+    group: path.slice(0, -1).join('.'),
+    value,
+  })),
+  ...light.map(([path, value]) => ({
+    name: path.join('.'),
+    cssVar: varName(path),
+    category: path[0],
+    group: path[0],
+    value: resolveValue(value),
+    themes: Object.fromEntries(
+      themeNames.map((name) => {
+        const raw = themed[name].get(path.join('.'));
+        return [name, { value: resolveValue(raw), ref: refOf(raw) }];
+      }),
+    ),
+  })),
+];
+
+const tokenListTypes = `export interface ThemeValue {
+  value: string;
+  /** Primitive this semantic token points at, e.g. "palette.gray.900". */
+  ref?: string;
+}
+
+export interface TokenEntry {
+  /** Dot path in tokens.json, e.g. "space.4" or "color.bg". */
+  name: string;
+  cssVar: string;
+  category: string;
+  group: string;
+  /** Resolved value (light theme for themed tokens). */
+  value: string;
+  themes?: Record<${themeNames.map((n) => `'${n}'`).join(' | ')}, ThemeValue>;
+}
+
+export declare const themeNames: ${JSON.stringify(themeNames)};
+export declare const tokenList: TokenEntry[];
+`;
+
 if (process.argv.includes('--check')) {
   console.log(`tokens.json OK — ${primitiveEntries.length} primitives, ${light.length} semantic tokens × ${themeNames.length} themes`);
   process.exit(0);
@@ -81,10 +131,10 @@ mkdirSync(dist, { recursive: true });
 writeFileSync(new URL('tokens.css', dist), css);
 writeFileSync(
   new URL('index.js', dist),
-  `// Generated from tokens.json — do not edit by hand.\nexport const tokens = ${JSON.stringify(source, null, 2)};\n\nexport const vars = ${JSON.stringify(vars, null, 2)};\n`,
+  `// Generated from tokens.json — do not edit by hand.\nexport const tokens = ${JSON.stringify(source, null, 2)};\n\nexport const vars = ${JSON.stringify(vars, null, 2)};\n\nexport const themeNames = ${JSON.stringify(themeNames)};\n\nexport const tokenList = ${JSON.stringify(tokenList, null, 2)};\n`,
 );
 writeFileSync(
   new URL('index.d.ts', dist),
-  `// Generated from tokens.json — do not edit by hand.\nexport declare const tokens: ${JSON.stringify(source, null, 2)};\n\nexport declare const vars: ${JSON.stringify(vars, null, 2)};\n`,
+  `// Generated from tokens.json — do not edit by hand.\nexport declare const tokens: ${JSON.stringify(source, null, 2)};\n\nexport declare const vars: ${JSON.stringify(vars, null, 2)};\n\n${tokenListTypes}`,
 );
 console.log(`@my-ds/tokens built → dist/ (${primitiveEntries.length} primitives, ${light.length} semantic tokens)`);
