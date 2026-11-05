@@ -15,7 +15,7 @@
   z-index: var(--ds-layer-tooltip);
   box-sizing: border-box;
   width: max-content;
-  max-width: calc(var(--ds-space-16) * 4);
+  max-width: var(--ds-size-panel-sm);
   padding: var(--ds-space-1) var(--ds-space-2);
   /* Solid inverse surface; the transparent border keeps an edge in forced-colors mode. */
   border: var(--ds-border-width-thin) solid transparent;

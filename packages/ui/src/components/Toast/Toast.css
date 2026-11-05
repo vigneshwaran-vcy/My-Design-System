@@ -45,7 +45,7 @@
   align-items: flex-start;
   gap: var(--ds-space-3);
   box-sizing: border-box;
-  width: calc(var(--ds-space-16) * 6);
+  width: var(--ds-size-panel-lg);
   max-width: 100%;
   padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-4);
   overflow: hidden;

@@ -24,7 +24,7 @@
 }
 
 .ds-radio--sm {
-  --radio-size: calc(var(--ds-size-checkbox) * 0.875);
+  --radio-size: var(--ds-size-checkbox-sm);
   --radio-font-size: var(--ds-font-size-xs);
 }
 
@@ -50,11 +50,10 @@
   height: var(--radio-size);
   /* Centre the circle on the first line of text. */
   margin-block-start: calc((var(--radio-font-size) * var(--ds-font-line-height-normal) - var(--radio-size)) / 2);
-  /* The visible edge is the 1px ring in shadow-control; the transparent border shows in forced-colors mode. */
-  border: var(--ds-border-width-thin) solid transparent;
+  /* Small selection controls need a 3:1 edge (WCAG non-text contrast), so the edge is a real border here. */
+  border: var(--ds-border-width-thin) solid var(--ds-color-border-control);
   border-radius: var(--ds-radius-full);
   background-color: var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-control);
   transition:
     background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
     border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
@@ -87,7 +86,7 @@
 
 /* Hover */
 .ds-radio__label:hover .ds-radio__input:not(:disabled, :checked) + .ds-radio__circle {
-  box-shadow: var(--ds-shadow-control-hover);
+  background-color: var(--ds-color-bg-neutral-hover);
 }
 .ds-radio__label:hover .ds-radio__input:checked:not(:disabled) + .ds-radio__circle {
   background-color: var(--ds-color-bg-accent-hover);

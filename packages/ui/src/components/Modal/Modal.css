@@ -22,7 +22,7 @@
 }
 
 .ds-modal__panel {
-  --modal-max-width: calc(var(--ds-space-16) * 8);
+  --modal-max-width: var(--ds-size-panel-xl);
 
   position: relative;
   box-sizing: border-box;
@@ -54,10 +54,10 @@
 
 /* Sizes: sm 384 · md 512 · lg 768 */
 .ds-modal--sm .ds-modal__panel {
-  --modal-max-width: calc(var(--ds-space-16) * 6);
+  --modal-max-width: var(--ds-size-panel-lg);
 }
 .ds-modal--lg .ds-modal__panel {
-  --modal-max-width: calc(var(--ds-space-16) * 12);
+  --modal-max-width: var(--ds-size-panel-2xl);
 }
 
 .ds-modal__header {

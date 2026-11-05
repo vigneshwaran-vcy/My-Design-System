@@ -12,7 +12,7 @@
 
 /* Small: a slightly smaller box with extra-small text. */
 .ds-checkbox--sm {
-  --checkbox-size: calc(var(--ds-size-checkbox) * 0.875);
+  --checkbox-size: var(--ds-size-checkbox-sm);
   --checkbox-font-size: var(--ds-font-size-xs);
 }
 
@@ -39,11 +39,10 @@
   height: var(--checkbox-size);
   /* Centre the box on the first line of text. */
   margin-block-start: calc((var(--checkbox-font-size) * var(--ds-font-line-height-normal) - var(--checkbox-size)) / 2);
-  /* The visible edge is the 1px ring in shadow-control; the transparent border shows in forced-colors mode. */
-  border: var(--ds-border-width-thin) solid transparent;
+  /* Small selection controls need a 3:1 edge (WCAG non-text contrast), so the edge is a real border here. */
+  border: var(--ds-border-width-thin) solid var(--ds-color-border-control);
   border-radius: var(--ds-radius-sm);
   background-color: var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-control);
   color: var(--ds-color-text-on-accent);
   transition:
     background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
@@ -85,7 +84,7 @@
 
 /* Hover */
 .ds-checkbox__label:hover .ds-checkbox__input:not(:disabled, :checked, :indeterminate) + .ds-checkbox__box {
-  box-shadow: var(--ds-shadow-control-hover);
+  background-color: var(--ds-color-bg-neutral-hover);
 }
 .ds-checkbox__label:hover .ds-checkbox__input:not(:disabled):is(:checked, :indeterminate) + .ds-checkbox__box {
   background-color: var(--ds-color-bg-accent-hover);

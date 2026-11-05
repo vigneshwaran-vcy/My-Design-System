@@ -1,5 +1,5 @@
 .ds-empty-state {
-  --empty-tile: calc(var(--ds-space-12) + var(--ds-space-2));
+  --empty-tile: var(--ds-size-tile-md);
   --empty-icon: var(--ds-size-icon-lg);
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@
   text-align: center;
 }
 .ds-empty-state--sm {
-  --empty-tile: var(--ds-space-12);
+  --empty-tile: var(--ds-size-tile-sm);
   --empty-icon: var(--ds-size-icon-md);
   gap: var(--ds-space-1);
   padding: var(--ds-space-8) var(--ds-space-4);
@@ -62,7 +62,7 @@
 
 .ds-empty-state__description {
   margin: 0;
-  max-width: calc(var(--ds-space-16) * 6);
+  max-width: var(--ds-size-panel-lg);
   color: var(--ds-color-text-muted);
   font-size: var(--ds-font-size-sm);
   line-height: var(--ds-font-line-height-normal);

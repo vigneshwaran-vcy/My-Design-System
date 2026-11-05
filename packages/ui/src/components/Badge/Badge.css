@@ -12,7 +12,7 @@
   align-items: center;
   gap: var(--ds-space-1);
   box-sizing: border-box;
-  height: calc(var(--ds-space-4) + var(--ds-space-1));
+  height: var(--ds-size-badge-md);
   padding-inline: var(--ds-space-2);
   border: var(--ds-border-width-thin) solid var(--badge-edge);
   border-radius: var(--ds-radius-full);
@@ -28,7 +28,7 @@
 }
 
 .ds-badge--sm {
-  height: var(--ds-space-4);
+  height: var(--ds-size-badge-sm);
   padding-inline: calc(var(--ds-space-2) - var(--ds-border-width-thick));
   font-size: var(--ds-font-size-2xs);
 }

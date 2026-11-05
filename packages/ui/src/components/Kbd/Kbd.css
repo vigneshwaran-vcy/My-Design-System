@@ -4,8 +4,8 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  min-width: var(--ds-size-button-xs);
-  height: var(--ds-size-button-xs);
+  min-width: var(--ds-size-kbd-md);
+  height: var(--ds-size-kbd-md);
   padding-inline: var(--ds-space-2);
   border: var(--ds-border-width-thin) solid transparent;
   border-radius: var(--ds-radius-sm);
@@ -22,8 +22,8 @@
   user-select: none;
 }
 .ds-kbd--sm {
-  min-width: var(--ds-size-icon-md);
-  height: var(--ds-size-icon-md);
+  min-width: var(--ds-size-kbd-sm);
+  height: var(--ds-size-kbd-sm);
   padding-inline: var(--ds-space-1);
   font-size: var(--ds-font-size-2xs);
 }

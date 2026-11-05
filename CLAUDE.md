@@ -12,7 +12,9 @@ soft focus rings, solid popovers. No gloss anywhere (no white top highlights, sh
 - Radius: sm 4px, md 8px, control 12px (default for controls), lg 16px, xl 24px (large surfaces), full
 - Typography: Inter; sizes xs–4xl; weights 400/500/600 (buttons use 500)
 - Sizes: button xs 22 / sm 26 / md 32 / lg 40 (`size.button`); inputs & dropdowns sm 32 / md 40 / lg 48 (`size.control`);
-  icons xs 12 / sm 16 / md 20 / lg 24; avatar xs 24 … xl 64; checkbox 16; switch 36×20
+  icons xs 12 / sm 16 / md 20 / lg 24; avatar xs 24 … xl 64; checkbox 16 (sm 14); switch 36×20 (sm 28×16);
+  badge sm 16 / md 20; kbd sm 20 / md 22; tile sm 48 / md 56 (empty-state icon tile);
+  panel widths xs 192 / sm 256 / md 320 / lg 384 / xl 512 / 2xl 768 (menus, tooltips, popovers, toasts, modals)
 - Layers (z-index, `--ds-layer-*`): dropdown 10, sticky 20, overlay 30, modal 40, toast 50, tooltip 60 — never write a raw z-index
 - Shadows: surface, surfaceHover, overlay (floating panels: menu, popover, modal, toast), control, controlHover, controlPressed, flat, flatHover, raised, raisedHover, pressed, sm, md, lg, soft, softHover, inset, accent, accentHover, accentActive, danger, dangerHover, dangerActive, focus, focusDanger, glow
 - Motion: 150ms / 250ms ease-out, spring easing for pop-in. Blur: md 12px (glass)
@@ -62,7 +64,8 @@ apps/playground/   Living docs: every token (rendered from tokenList) + componen
     neutral.{hover,active}, accent.{default,hover,active,subtle}, danger.{default,hover,subtle}, success.{default,subtle},
     warn.{default,subtle} → `--ds-color-bg-surface`, `--ds-color-bg-accent-hover`
   - `text`: default, muted, disabled, accent, danger, success, warn, inverse, onAccent, onDanger, onSuccess, onWarn → `--ds-color-text-muted`, `--ds-color-text-on-accent`
-  - `border`: default, strong, accent, danger, success, warn, focus → `--ds-color-border`, `--ds-color-border-focus`
+  - `border`: default, strong, control, accent, danger, success, warn, focus → `--ds-color-border`, `--ds-color-border-focus`
+    (`control` = gray 500, the 3:1 edge for small selection controls: checkbox, radio, switch)
   Pick by what you are painting: a fill uses `bg`, text/icons use `text`, edges and rings use `border`.
 - Components use **semantic** tokens (`--ds-color-text`, `--ds-color-bg-accent`), never `--ds-palette-*` directly.
 - Theme switch: `data-theme="light|dark"` on `<html>`; with no attribute the OS preference is followed.

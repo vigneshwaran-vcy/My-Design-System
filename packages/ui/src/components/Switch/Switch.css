@@ -14,8 +14,8 @@
 }
 
 .ds-switch--sm {
-  --switch-width: calc(var(--ds-size-switch-width) - var(--ds-space-2));
-  --switch-height: calc(var(--ds-size-switch-height) - var(--ds-space-1));
+  --switch-width: var(--ds-size-switch-width-sm);
+  --switch-height: var(--ds-size-switch-height-sm);
   --switch-font-size: var(--ds-font-size-xs);
 }
 
@@ -35,10 +35,10 @@
   /* Centre the track on the first line of text. */
   margin-block-start: calc((var(--switch-font-size) * var(--ds-font-line-height-normal) - var(--switch-height)) / 2);
   padding: var(--switch-pad);
-  /* The edge is a flat fill; the transparent border shows in forced-colors mode. */
-  border: var(--ds-border-width-thin) solid transparent;
+  /* Off: a 3:1 border (WCAG non-text contrast) around a light track. On: the accent fill hides it. */
+  border: var(--ds-border-width-thin) solid var(--ds-color-border-control);
   border-radius: var(--ds-radius-full);
-  background-color: var(--ds-color-bg-neutral-active);
+  background-color: var(--ds-color-bg-neutral-hover);
   cursor: pointer;
   transition:
     background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
@@ -57,6 +57,7 @@
 }
 
 .ds-switch__control[aria-checked='true'] {
+  border-color: var(--ds-color-bg-accent);
   background-color: var(--ds-color-bg-accent);
 }
 .ds-switch__control[aria-checked='true'] .ds-switch__thumb {
@@ -65,9 +66,10 @@
 
 /* Hover: slightly darker track, no movement */
 .ds-switch__control:hover:not(:disabled, [aria-checked='true']) {
-  background-color: var(--ds-color-border-strong);
+  background-color: var(--ds-color-bg-neutral-active);
 }
 .ds-switch__control[aria-checked='true']:hover:not(:disabled) {
+  border-color: var(--ds-color-bg-accent-hover);
   background-color: var(--ds-color-bg-accent-hover);
 }
 

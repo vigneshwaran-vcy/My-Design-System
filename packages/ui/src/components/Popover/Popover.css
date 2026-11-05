@@ -8,8 +8,8 @@
   position: absolute;
   z-index: var(--ds-layer-dropdown);
   box-sizing: border-box;
-  min-width: calc(var(--ds-space-16) * 4);
-  max-width: calc(var(--ds-space-16) * 6);
+  min-width: var(--ds-size-panel-sm);
+  max-width: var(--ds-size-panel-lg);
   padding: var(--ds-space-4);
   /* Solid surface with a 1px ring edge in the shadow; the transparent border shows in forced-colors mode. */
   border: var(--ds-border-width-thin) solid transparent;
