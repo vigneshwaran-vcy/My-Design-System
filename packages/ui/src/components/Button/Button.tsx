@@ -2,8 +2,8 @@ import { forwardRef, type ButtonHTMLAttributes, type MouseEvent, type ReactNode 
 import { cx } from '../../utils/cx';
 import './Button.css';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonVariant = 'primary' | 'secondary' | 'soft' | 'ghost' | 'danger';
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -11,6 +11,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Shows a spinner, sets aria-busy and ignores clicks while staying focusable. */
   loading?: boolean;
   fullWidth?: boolean;
+  /**
+   * Makes this a toggle button: `true`/`false` set `aria-pressed` and the selected look.
+   * Leave undefined for a plain action button.
+   */
+  selected?: boolean;
   leadingIcon?: ReactNode;
   trailingIcon?: ReactNode;
 }
@@ -21,6 +26,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     size = 'md',
     loading = false,
     fullWidth = false,
+    selected,
     leadingIcon,
     trailingIcon,
     type = 'button',
@@ -51,6 +57,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         loading && 'ds-button--loading',
         className,
       )}
+      aria-pressed={selected}
       aria-busy={loading || undefined}
       aria-disabled={loading || undefined}
       onClick={handleClick}

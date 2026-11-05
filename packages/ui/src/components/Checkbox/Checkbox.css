@@ -1,0 +1,148 @@
+.ds-checkbox {
+  --checkbox-size: var(--ds-size-checkbox);
+  --checkbox-font-size: var(--ds-font-size-sm);
+  --checkbox-gap: var(--ds-space-2);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  font-family: var(--ds-font-family-sans);
+  color: var(--ds-color-text);
+}
+
+/* Small: a slightly smaller box with extra-small text. */
+.ds-checkbox--sm {
+  --checkbox-size: calc(var(--ds-size-checkbox) * 0.875);
+  --checkbox-font-size: var(--ds-font-size-xs);
+}
+
+/* The label wraps the (visually hidden) input and the drawn box, so clicking either toggles. */
+.ds-checkbox__label {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--checkbox-gap);
+  font-size: var(--checkbox-font-size);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-normal);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ds-checkbox__box {
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  /* Centre the box on the first line of text. */
+  margin-block-start: calc((var(--checkbox-font-size) * var(--ds-font-line-height-normal) - var(--checkbox-size)) / 2);
+  /* The visible edge is the 1px ring in shadow-control; the transparent border shows in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-control);
+  color: var(--ds-color-text-on-accent);
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+.ds-checkbox__check,
+.ds-checkbox__dash {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    transform var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+.ds-checkbox__text {
+  min-width: 0;
+}
+
+.ds-checkbox__description {
+  margin: 0;
+  padding-inline-start: calc(var(--checkbox-size) + var(--checkbox-gap));
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-normal);
+  color: var(--ds-color-text-muted);
+}
+
+.ds-checkbox__error {
+  margin: 0;
+  padding-inline-start: calc(var(--checkbox-size) + var(--checkbox-gap));
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-normal);
+  color: var(--ds-color-text-danger);
+}
+
+/* Hover */
+.ds-checkbox__label:hover .ds-checkbox__input:not(:disabled, :checked, :indeterminate) + .ds-checkbox__box {
+  box-shadow: var(--ds-shadow-control-hover);
+}
+.ds-checkbox__label:hover .ds-checkbox__input:not(:disabled):is(:checked, :indeterminate) + .ds-checkbox__box {
+  background-color: var(--ds-color-bg-accent-hover);
+  border-color: var(--ds-color-bg-accent-hover);
+}
+
+/* Checked / indeterminate: solid accent fill */
+.ds-checkbox__input:is(:checked, :indeterminate) + .ds-checkbox__box {
+  background-color: var(--ds-color-bg-accent);
+  border-color: var(--ds-color-bg-accent);
+  box-shadow: none;
+}
+.ds-checkbox__input:checked:not(:indeterminate) + .ds-checkbox__box .ds-checkbox__check,
+.ds-checkbox__input:indeterminate + .ds-checkbox__box .ds-checkbox__dash {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Focus: soft ring; the transparent outline keeps focus visible in forced-colors mode. */
+.ds-checkbox__input:focus-visible + .ds-checkbox__box {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-color-border-focus);
+  box-shadow: var(--ds-shadow-focus);
+}
+
+/* Invalid */
+.ds-checkbox--invalid .ds-checkbox__input:not(:disabled) + .ds-checkbox__box {
+  border-color: var(--ds-color-border-danger);
+}
+.ds-checkbox--invalid .ds-checkbox__input:not(:disabled):is(:checked, :indeterminate) + .ds-checkbox__box {
+  background-color: var(--ds-color-bg-danger);
+  border-color: var(--ds-color-bg-danger);
+}
+.ds-checkbox--invalid .ds-checkbox__input:focus-visible + .ds-checkbox__box {
+  border-color: var(--ds-color-border-danger);
+  box-shadow: var(--ds-shadow-focus-danger);
+}
+
+/* Disabled */
+.ds-checkbox--disabled .ds-checkbox__label {
+  cursor: not-allowed;
+  color: var(--ds-color-text-disabled);
+}
+.ds-checkbox--disabled .ds-checkbox__description {
+  color: var(--ds-color-text-disabled);
+}
+.ds-checkbox__input:disabled + .ds-checkbox__box {
+  background-color: var(--ds-color-bg-disabled);
+  border-color: var(--ds-color-border);
+  box-shadow: none;
+  color: var(--ds-color-text-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-checkbox__box,
+  .ds-checkbox__check,
+  .ds-checkbox__dash {
+    transition: none;
+  }
+}

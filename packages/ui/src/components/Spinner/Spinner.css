@@ -1,0 +1,61 @@
+.ds-spinner {
+  --spinner-size: var(--ds-size-icon-md);
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+  color: currentColor;
+  vertical-align: middle;
+}
+.ds-spinner--xs {
+  --spinner-size: var(--ds-size-icon-xs);
+}
+.ds-spinner--sm {
+  --spinner-size: var(--ds-size-icon-sm);
+}
+.ds-spinner--lg {
+  --spinner-size: var(--ds-size-icon-lg);
+}
+
+.ds-spinner--accent {
+  color: var(--ds-color-text-accent);
+}
+.ds-spinner--muted {
+  color: var(--ds-color-text-muted);
+}
+
+.ds-spinner__ring {
+  width: 100%;
+  height: 100%;
+  animation: ds-spinner-spin calc(var(--ds-motion-duration-base) * 3) linear infinite;
+}
+.ds-spinner__track {
+  opacity: 0.2;
+}
+
+.ds-spinner__label {
+  position: absolute;
+  width: var(--ds-border-width-thin);
+  height: var(--ds-border-width-thin);
+  margin: calc(var(--ds-border-width-thin) * -1);
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes ds-spinner-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* Reduced motion: keep spinning (it signals progress) but much slower. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-spinner__ring {
+    animation-duration: calc(var(--ds-motion-duration-base) * 12);
+  }
+}

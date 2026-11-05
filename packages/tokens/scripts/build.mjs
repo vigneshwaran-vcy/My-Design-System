@@ -32,6 +32,23 @@ function resolve(value) {
   });
 }
 
+// Alpha primitives (palette.<colour>Alpha.<percent>) are a ramp step's hex plus an alpha byte;
+// check they still match that step. White and black are single colours.
+const ALPHA_BASE = { primary: '600', violet: '500', danger: '600', gray: '900' };
+for (const [group, steps] of Object.entries(primitives.palette)) {
+  const name = group.match(/^(.+)Alpha$/)?.[1];
+  if (!name) continue;
+  const node = primitives.palette[name];
+  const base = typeof node === 'string' ? node : node?.[ALPHA_BASE[name]];
+  if (!base) throw new Error(`palette.${group} has no base colour: add "${name}" to ALPHA_BASE in build.mjs`);
+  for (const [pct, value] of Object.entries(steps)) {
+    const expected = base.toUpperCase() + Math.round((Number(pct) / 100) * 255).toString(16).padStart(2, '0').toUpperCase();
+    if (value.toUpperCase() !== expected) {
+      throw new Error(`palette.${group}.${pct} is ${value}, expected ${expected} (${base} at ${pct}%)`);
+    }
+  }
+}
+
 const themeNames = Object.keys(themes);
 const keysOf = (theme) => flatten(theme).map(([p]) => p.join('.')).sort().join('|');
 for (const name of themeNames.slice(1)) {
@@ -76,6 +93,7 @@ const vars = toVars([...primitiveEntries, ...light]);
 const lookup = (ref) => ref.split('.').reduce((node, key) => node?.[key], primitives);
 const resolveValue = (value) => value.replace(/\{([^}]+)\}/g, (_, ref) => lookup(ref));
 const refOf = (value) => value.match(/^\{([^}]+)\}$/)?.[1];
+const refsOf = (value) => [...new Set([...value.matchAll(/\{([^}]+)\}/g)].map((m) => m[1]))];
 const themed = Object.fromEntries(themeNames.map((name) => [name, new Map(flatten(themes[name]).map(([p, v]) => [p.join('.'), v]))]));
 const tokenList = [
   ...primitiveEntries.map(([path, value]) => ({
@@ -89,12 +107,12 @@ const tokenList = [
     name: path.join('.'),
     cssVar: varName(path),
     category: path[0],
-    group: path[0],
+    group: path.slice(0, -1).join('.'),
     value: resolveValue(value),
     themes: Object.fromEntries(
       themeNames.map((name) => {
         const raw = themed[name].get(path.join('.'));
-        return [name, { value: resolveValue(raw), ref: refOf(raw) }];
+        return [name, { value: resolveValue(raw), ref: refOf(raw), refs: refsOf(raw) }];
       }),
     ),
   })),
@@ -102,12 +120,14 @@ const tokenList = [
 
 const tokenListTypes = `export interface ThemeValue {
   value: string;
-  /** Primitive this semantic token points at, e.g. "palette.gray.900". */
+  /** Primitive this semantic token points at, e.g. "palette.gray.900" (only when it is a single reference). */
   ref?: string;
+  /** Every primitive the value is built from, e.g. a shadow's colours. */
+  refs: string[];
 }
 
 export interface TokenEntry {
-  /** Dot path in tokens.json, e.g. "space.4" or "color.bg". */
+  /** Dot path in tokens.json, e.g. "space.4" or "color.bg.canvas". */
   name: string;
   cssVar: string;
   category: string;

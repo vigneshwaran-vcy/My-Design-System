@@ -1,0 +1,150 @@
+/* ---------------------------------------------------------------- RadioGroup */
+.ds-radio-group__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+}
+.ds-radio-group--horizontal .ds-radio-group__items {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--ds-space-6);
+}
+
+/* --------------------------------------------------------------------- Radio */
+.ds-radio {
+  --radio-size: var(--ds-size-checkbox);
+  --radio-font-size: var(--ds-font-size-sm);
+  --radio-gap: var(--ds-space-2);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  font-family: var(--ds-font-family-sans);
+  color: var(--ds-color-text);
+}
+
+.ds-radio--sm {
+  --radio-size: calc(var(--ds-size-checkbox) * 0.875);
+  --radio-font-size: var(--ds-font-size-xs);
+}
+
+/* The label wraps the (visually hidden) input and the drawn circle, so clicking either selects. */
+.ds-radio__label {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--radio-gap);
+  font-size: var(--radio-font-size);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-normal);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ds-radio__circle {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: var(--radio-size);
+  height: var(--radio-size);
+  /* Centre the circle on the first line of text. */
+  margin-block-start: calc((var(--radio-font-size) * var(--ds-font-line-height-normal) - var(--radio-size)) / 2);
+  /* The visible edge is the 1px ring in shadow-control; the transparent border shows in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-control);
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+.ds-radio__dot {
+  width: calc(var(--radio-size) * 0.375);
+  height: calc(var(--radio-size) * 0.375);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-color-text-on-accent);
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    transform var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+.ds-radio__text {
+  min-width: 0;
+}
+
+.ds-radio__description {
+  margin: 0;
+  padding-inline-start: calc(var(--radio-size) + var(--radio-gap));
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-normal);
+  color: var(--ds-color-text-muted);
+}
+
+/* Hover */
+.ds-radio__label:hover .ds-radio__input:not(:disabled, :checked) + .ds-radio__circle {
+  box-shadow: var(--ds-shadow-control-hover);
+}
+.ds-radio__label:hover .ds-radio__input:checked:not(:disabled) + .ds-radio__circle {
+  background-color: var(--ds-color-bg-accent-hover);
+  border-color: var(--ds-color-bg-accent-hover);
+}
+
+/* Checked: solid accent fill with a light inner dot */
+.ds-radio__input:checked + .ds-radio__circle {
+  background-color: var(--ds-color-bg-accent);
+  border-color: var(--ds-color-bg-accent);
+  box-shadow: none;
+}
+.ds-radio__input:checked + .ds-radio__circle .ds-radio__dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Focus: soft ring; the transparent outline keeps focus visible in forced-colors mode. */
+.ds-radio__input:focus-visible + .ds-radio__circle {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-color-border-focus);
+  box-shadow: var(--ds-shadow-focus);
+}
+
+/* Invalid */
+.ds-radio--invalid .ds-radio__input:not(:disabled) + .ds-radio__circle {
+  border-color: var(--ds-color-border-danger);
+}
+.ds-radio--invalid .ds-radio__input:checked:not(:disabled) + .ds-radio__circle {
+  background-color: var(--ds-color-bg-danger);
+  border-color: var(--ds-color-bg-danger);
+}
+.ds-radio--invalid .ds-radio__input:focus-visible + .ds-radio__circle {
+  border-color: var(--ds-color-border-danger);
+  box-shadow: var(--ds-shadow-focus-danger);
+}
+
+/* Disabled */
+.ds-radio--disabled .ds-radio__label {
+  cursor: not-allowed;
+  color: var(--ds-color-text-disabled);
+}
+.ds-radio--disabled .ds-radio__description {
+  color: var(--ds-color-text-disabled);
+}
+.ds-radio__input:disabled + .ds-radio__circle {
+  background-color: var(--ds-color-bg-disabled);
+  border-color: var(--ds-color-border);
+  box-shadow: none;
+}
+.ds-radio__input:disabled + .ds-radio__circle .ds-radio__dot {
+  background-color: var(--ds-color-text-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-radio__circle,
+  .ds-radio__dot {
+    transition: none;
+  }
+}

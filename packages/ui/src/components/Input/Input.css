@@ -1,7 +1,7 @@
 .ds-field {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-1);
+  gap: var(--ds-space-2);
   font-family: var(--ds-font-family-sans);
 }
 
@@ -12,7 +12,7 @@
   color: var(--ds-color-text);
 }
 .ds-field__required {
-  color: var(--ds-color-danger-text);
+  color: var(--ds-color-text-danger);
 }
 
 .ds-field__hint,
@@ -25,66 +25,74 @@
   color: var(--ds-color-text-muted);
 }
 .ds-field__error {
-  color: var(--ds-color-danger-text);
+  color: var(--ds-color-text-danger);
 }
 
 .ds-input {
   width: 100%;
   box-sizing: border-box;
   height: var(--ds-size-control-md);
-  padding-inline: var(--ds-space-3);
-  border: var(--ds-border-width-thin) solid var(--ds-color-border-strong);
-  border-radius: var(--ds-radius-md);
-  background-color: var(--ds-color-surface);
+  padding-inline: var(--ds-space-4);
+  /* The visible edge is the 1px ring in shadow-control; the transparent border shows in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-control);
   color: var(--ds-color-text);
   font: inherit;
   font-size: var(--ds-font-size-sm);
   transition:
     border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
-    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 .ds-input::placeholder {
   color: var(--ds-color-text-muted);
 }
 
 .ds-input--filled {
-  background-color: var(--ds-color-surface-subtle);
+  background-color: var(--ds-color-bg-subtle);
   border-color: transparent;
+  box-shadow: none;
 }
 
 .ds-input--sm {
   height: var(--ds-size-control-sm);
-  padding-inline: var(--ds-space-2);
+  padding-inline: var(--ds-space-3);
   font-size: var(--ds-font-size-xs);
-  border-radius: var(--ds-radius-sm);
+  border-radius: var(--ds-radius-md);
 }
 .ds-input--lg {
   height: var(--ds-size-control-lg);
   padding-inline: var(--ds-space-4);
   font-size: var(--ds-font-size-md);
+  border-radius: var(--ds-radius-lg);
 }
 
-.ds-input:hover:not(:disabled, :focus-visible) {
-  border-color: var(--ds-color-text-muted);
+.ds-input:hover:not(:disabled, :focus-visible, .ds-input--filled) {
+  box-shadow: var(--ds-shadow-control-hover);
 }
+/* Soft glow ring; the transparent outline keeps focus visible in forced-colors mode. */
 .ds-input:focus-visible {
-  outline: var(--ds-border-width-thick) solid var(--ds-color-focus-ring);
-  outline-offset: calc(var(--ds-border-width-thin) * -1);
-  border-color: var(--ds-color-focus-ring);
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-color-border-focus);
+  background-color: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-focus);
 }
 
 .ds-input--invalid,
 .ds-input--invalid:hover:not(:disabled, :focus-visible) {
-  border-color: var(--ds-color-danger);
+  border-color: var(--ds-color-border-danger);
 }
 .ds-input--invalid:focus-visible {
-  outline-color: var(--ds-color-danger);
-  border-color: var(--ds-color-danger);
+  border-color: var(--ds-color-border-danger);
+  box-shadow: var(--ds-shadow-focus-danger);
 }
 
 .ds-input:disabled {
-  background-color: var(--ds-color-surface-disabled);
+  background-color: var(--ds-color-bg-disabled);
   border-color: var(--ds-color-border);
+  box-shadow: none;
   color: var(--ds-color-text-disabled);
   cursor: not-allowed;
 }

@@ -8,7 +8,7 @@ const meta = {
   tags: ['autodocs'],
   args: { variant: 'elevated', padding: 'md' },
   argTypes: {
-    variant: { control: 'inline-radio', options: ['elevated', 'outlined', 'filled'] },
+    variant: { control: 'inline-radio', options: ['elevated', 'outlined', 'filled', 'glow'] },
     padding: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] },
   },
   render: (args) => (
@@ -33,5 +33,7 @@ type Story = StoryObj<typeof meta>;
 export const Elevated: Story = {};
 export const Outlined: Story = { args: { variant: 'outlined' } };
 export const Filled: Story = { args: { variant: 'filled' } };
+export const Glow: Story = { args: { variant: 'glow' } };
+export const Interactive: Story = { args: { interactive: true } };
 export const Compact: Story = { args: { padding: 'sm' } };
 export const Spacious: Story = { args: { padding: 'lg' } };

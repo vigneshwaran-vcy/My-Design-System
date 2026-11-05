@@ -1,0 +1,171 @@
+/*
+ * Each variant sets its colours through --badge-* custom properties; the base rules apply them.
+ * subtle = tinted fill + coloured text, solid = full fill + on-colour text.
+ */
+.ds-badge {
+  --badge-bg: var(--ds-color-bg-subtle);
+  --badge-color: var(--ds-color-text);
+  --badge-dot: var(--ds-color-text-muted);
+  --badge-edge: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  box-sizing: border-box;
+  height: calc(var(--ds-space-4) + var(--ds-space-1));
+  padding-inline: var(--ds-space-2);
+  border: var(--ds-border-width-thin) solid var(--badge-edge);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--badge-bg);
+  color: var(--badge-color);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+  letter-spacing: var(--ds-font-tracking-normal);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ds-badge--sm {
+  height: var(--ds-space-4);
+  padding-inline: calc(var(--ds-space-2) - var(--ds-border-width-thick));
+  font-size: var(--ds-font-size-2xs);
+}
+
+/* Subtle: tinted fill + coloured text */
+.ds-badge--subtle.ds-badge--neutral {
+  --badge-bg: var(--ds-color-bg-subtle);
+  --badge-color: var(--ds-color-text);
+  --badge-dot: var(--ds-color-text-muted);
+}
+.ds-badge--subtle.ds-badge--accent {
+  --badge-bg: var(--ds-color-bg-accent-subtle);
+  --badge-color: var(--ds-color-text-accent);
+  --badge-dot: var(--ds-color-bg-accent);
+}
+.ds-badge--subtle.ds-badge--success {
+  --badge-bg: var(--ds-color-bg-success-subtle);
+  --badge-color: var(--ds-color-text-success);
+  --badge-dot: var(--ds-color-bg-success);
+}
+.ds-badge--subtle.ds-badge--warn {
+  --badge-bg: var(--ds-color-bg-warn-subtle);
+  --badge-color: var(--ds-color-text-warn);
+  --badge-dot: var(--ds-color-bg-warn);
+}
+.ds-badge--subtle.ds-badge--danger {
+  --badge-bg: var(--ds-color-bg-danger-subtle);
+  --badge-color: var(--ds-color-text-danger);
+  --badge-dot: var(--ds-color-bg-danger);
+}
+
+/* Solid: full colour fill + on-colour text */
+.ds-badge--solid.ds-badge--neutral {
+  --badge-bg: var(--ds-color-bg-inverse);
+  --badge-color: var(--ds-color-text-inverse);
+  --badge-dot: currentColor;
+}
+.ds-badge--solid.ds-badge--accent {
+  --badge-bg: var(--ds-color-bg-accent);
+  --badge-color: var(--ds-color-text-on-accent);
+  --badge-dot: currentColor;
+}
+.ds-badge--solid.ds-badge--success {
+  --badge-bg: var(--ds-color-bg-success);
+  --badge-color: var(--ds-color-text-on-success);
+  --badge-dot: currentColor;
+}
+.ds-badge--solid.ds-badge--warn {
+  --badge-bg: var(--ds-color-bg-warn);
+  --badge-color: var(--ds-color-text-on-warn);
+  --badge-dot: currentColor;
+}
+.ds-badge--solid.ds-badge--danger {
+  --badge-bg: var(--ds-color-bg-danger);
+  --badge-color: var(--ds-color-text-on-danger);
+  --badge-dot: currentColor;
+}
+
+/* Outline: neutral ring, no fill (same in both appearances) */
+.ds-badge--outline {
+  --badge-bg: transparent;
+  --badge-color: var(--ds-color-text);
+  --badge-dot: var(--ds-color-text-muted);
+  --badge-edge: var(--ds-color-border);
+}
+
+.ds-badge__dot {
+  flex-shrink: 0;
+  width: calc(var(--ds-space-2) - var(--ds-border-width-thick));
+  height: calc(var(--ds-space-2) - var(--ds-border-width-thick));
+  border-radius: var(--ds-radius-full);
+  background-color: var(--badge-dot);
+}
+
+.ds-badge__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-badge__icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ds-badge__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Removable: tuck the "×" into the trailing padding so the pill stays balanced. */
+.ds-badge--removable {
+  padding-inline-end: var(--ds-space-1);
+}
+.ds-badge__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-radius-full);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+  transition:
+    opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-badge__remove > svg {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-badge__remove:hover {
+  opacity: 1;
+  background-color: var(--ds-color-bg-neutral-hover);
+}
+.ds-badge--solid .ds-badge__remove:hover {
+  background-color: transparent;
+}
+.ds-badge__remove:focus-visible {
+  opacity: 1;
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-color-border-focus);
+}
+.ds-badge--sm .ds-badge__remove {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-badge__remove {
+    transition: none;
+  }
+}

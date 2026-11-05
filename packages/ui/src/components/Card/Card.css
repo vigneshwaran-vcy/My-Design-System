@@ -1,31 +1,52 @@
+/*
+ * The border is painted as a background layer (border-box) under the fill (padding-box),
+ * so the glow variant can use a gradient edge.
+ */
 .ds-card {
+  --card-fill: var(--ds-gradient-surface);
+  --card-edge: linear-gradient(var(--ds-color-border), var(--ds-color-border));
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-4);
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--ds-radius-xl);
   border: var(--ds-border-width-thin) solid transparent;
-  background-color: var(--ds-color-surface);
+  background:
+    var(--card-fill) padding-box,
+    var(--card-edge) border-box;
   color: var(--ds-color-text);
   font-family: var(--ds-font-family-sans);
+  transition:
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out),
+    transform var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 
+/* The stroke is part of the shadow (a 1px ring), so the fill runs under the border. */
 .ds-card--elevated {
-  border-color: var(--ds-color-border);
-  box-shadow: var(--ds-shadow-md);
+  --card-edge: var(--card-fill);
+  box-shadow: var(--ds-shadow-surface);
 }
 .ds-card--outlined {
-  border-color: var(--ds-color-border);
+  --card-fill: linear-gradient(var(--ds-color-bg-surface), var(--ds-color-bg-surface));
 }
 .ds-card--filled {
-  background-color: var(--ds-color-surface-subtle);
+  --card-fill: linear-gradient(var(--ds-color-bg-subtle), var(--ds-color-bg-subtle));
+  --card-edge: linear-gradient(var(--ds-color-bg-subtle), var(--ds-color-bg-subtle));
+  box-shadow: none;
+}
+/* Featured card: AI gradient edge with a soft coloured glow. */
+.ds-card--glow {
+  --card-fill: linear-gradient(var(--ds-color-bg-surface), var(--ds-color-bg-surface));
+  --card-edge: var(--ds-gradient-ai);
+  box-shadow: var(--ds-shadow-glow);
 }
 
 .ds-card--padding-none {
   padding: 0;
 }
 .ds-card--padding-sm {
-  padding: var(--ds-space-3);
-  gap: var(--ds-space-2);
+  padding: var(--ds-space-4);
+  gap: var(--ds-space-3);
+  border-radius: var(--ds-radius-lg);
 }
 .ds-card--padding-md {
   padding: var(--ds-space-6);
@@ -35,9 +56,36 @@
   gap: var(--ds-space-6);
 }
 
-/* Cards are not interactive themselves; this keeps a focus ring visible when a child link/button inside is focused. */
+/* Clickable cards lift on hover. */
+.ds-card--interactive {
+  cursor: pointer;
+}
+.ds-card--interactive:hover {
+  transform: translateY(calc(var(--ds-border-width-thick) * -1));
+}
+.ds-card--interactive.ds-card--elevated:hover {
+  box-shadow: var(--ds-shadow-surface-hover);
+}
+.ds-card--interactive.ds-card--outlined:hover {
+  box-shadow: var(--ds-shadow-soft-hover), var(--ds-shadow-lg);
+}
+.ds-card--interactive.ds-card--outlined:hover {
+  --card-edge: linear-gradient(var(--ds-color-border-strong), var(--ds-color-border-strong));
+}
+.ds-card--interactive.ds-card--filled:hover {
+  --card-fill: linear-gradient(var(--ds-color-bg-neutral-hover), var(--ds-color-bg-neutral-hover));
+}
+.ds-card--interactive.ds-card--glow:hover {
+  box-shadow: var(--ds-shadow-glow), var(--ds-shadow-lg);
+}
+
+/* Cards are not interactive themselves; this keeps focus visible when a child link/button inside is focused. */
 .ds-card:focus-within:has(:focus-visible) {
-  border-color: var(--ds-color-border-strong);
+  --card-edge: linear-gradient(var(--ds-color-border-focus), var(--ds-color-border-focus));
+  box-shadow: var(--ds-shadow-focus);
+}
+.ds-card--glow:focus-within:has(:focus-visible) {
+  --card-edge: var(--ds-gradient-ai);
 }
 
 .ds-card__header {
@@ -71,10 +119,21 @@
 .ds-card__body {
   font-size: var(--ds-font-size-sm);
   line-height: var(--ds-font-line-height-normal);
+  color: var(--ds-color-text-muted);
 }
 
 .ds-card__footer {
   display: flex;
   justify-content: flex-end;
   gap: var(--ds-space-2);
+  padding-top: var(--ds-space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-card {
+    transition: none;
+  }
+  .ds-card--interactive:hover {
+    transform: none;
+  }
 }

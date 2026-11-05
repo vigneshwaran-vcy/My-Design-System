@@ -2,25 +2,33 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { cx } from '../../utils/cx';
 import './Card.css';
 
-export type CardVariant = 'elevated' | 'outlined' | 'filled';
+export type CardVariant = 'elevated' | 'outlined' | 'filled' | 'glow';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
 export interface CardProps extends HTMLAttributes<HTMLElement> {
   variant?: CardVariant;
   padding?: CardPadding;
+  /** Lift on hover. Use for clickable cards; the click target itself (link/button) still needs to be inside. */
+  interactive?: boolean;
   /** Semantic element. Use `section`/`article` with `aria-labelledby` when the card is a landmark. */
   as?: 'div' | 'section' | 'article' | 'form';
 }
 
 export const Card = forwardRef<HTMLElement, CardProps>(function Card(
-  { variant = 'elevated', padding = 'md', as: Element = 'div', className, ...rest },
+  { variant = 'elevated', padding = 'md', interactive = false, as: Element = 'div', className, ...rest },
   ref,
 ) {
   return (
     <Element
       // Union of intrinsic element refs; all are HTMLElement.
       ref={ref as never}
-      className={cx('ds-card', `ds-card--${variant}`, `ds-card--padding-${padding}`, className)}
+      className={cx(
+        'ds-card',
+        `ds-card--${variant}`,
+        `ds-card--padding-${padding}`,
+        interactive && 'ds-card--interactive',
+        className,
+      )}
       {...rest}
     />
   );

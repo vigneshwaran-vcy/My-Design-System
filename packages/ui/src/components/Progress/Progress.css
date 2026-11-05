@@ -1,0 +1,160 @@
+.ds-progress {
+  --progress-fill: var(--ds-color-bg-accent);
+  --progress-track: var(--ds-color-bg-neutral-hover);
+  --progress-thickness: var(--ds-space-2);
+  --progress-ring-size: var(--ds-size-avatar-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-family-sans);
+  color: var(--ds-color-text);
+}
+
+.ds-progress--accent {
+  --progress-fill: var(--ds-color-bg-accent);
+}
+.ds-progress--success {
+  --progress-fill: var(--ds-color-bg-success);
+}
+.ds-progress--warn {
+  --progress-fill: var(--ds-color-bg-warn);
+}
+.ds-progress--danger {
+  --progress-fill: var(--ds-color-bg-danger);
+}
+
+/* Bar heights via space tokens: sm 4 · md 8 · lg 12. Ring diameters via avatar sizes: sm 32 · md 40 · lg 48 */
+.ds-progress--sm {
+  --progress-thickness: var(--ds-space-1);
+  --progress-ring-size: var(--ds-size-avatar-sm);
+}
+.ds-progress--md {
+  --progress-thickness: var(--ds-space-2);
+  --progress-ring-size: var(--ds-size-avatar-md);
+}
+.ds-progress--lg {
+  --progress-thickness: var(--ds-space-3);
+  --progress-ring-size: var(--ds-size-avatar-lg);
+}
+
+.ds-progress__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+}
+.ds-progress__label {
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+}
+.ds-progress__value {
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-color-text-muted);
+  line-height: var(--ds-font-line-height-tight);
+}
+
+/* Bar */
+.ds-progress__track {
+  position: relative;
+  width: 100%;
+  height: var(--progress-thickness);
+  overflow: hidden;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--progress-track);
+}
+.ds-progress__fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background-color: var(--progress-fill);
+  transition: width calc(var(--ds-motion-duration-base) * 2) var(--ds-motion-easing-out);
+}
+.ds-progress--bar.ds-progress--indeterminate .ds-progress__fill {
+  position: absolute;
+  inset-block: 0;
+  width: 40%;
+  animation: ds-progress-slide calc(var(--ds-motion-duration-base) * 6) var(--ds-motion-easing-out) infinite;
+}
+
+@keyframes ds-progress-slide {
+  from {
+    transform: translateX(-250%);
+  }
+  to {
+    transform: translateX(350%);
+  }
+}
+
+/* Circle */
+.ds-progress--circle {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+.ds-progress--circle .ds-progress__ring {
+  position: relative;
+  width: var(--progress-ring-size);
+  height: var(--progress-ring-size);
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+.ds-progress__ring-track,
+.ds-progress__ring-fill {
+  /* Unitless SVG stroke in viewBox units; the box itself is token sized. */
+  stroke-width: 8;
+}
+.ds-progress__ring-track {
+  stroke: var(--progress-track);
+}
+.ds-progress__ring-fill {
+  stroke: var(--progress-fill);
+  transition: stroke-dashoffset calc(var(--ds-motion-duration-base) * 2) var(--ds-motion-easing-out);
+}
+.ds-progress--circle.ds-progress--indeterminate .ds-progress__ring {
+  animation: ds-progress-spin calc(var(--ds-motion-duration-base) * 4) linear infinite;
+}
+@keyframes ds-progress-spin {
+  from {
+    transform: rotate(-90deg);
+  }
+  to {
+    transform: rotate(270deg);
+  }
+}
+/* Centre value: wrap the ring and value in a relative box so the text sits over the ring. */
+.ds-progress--circle {
+  position: relative;
+}
+.ds-progress--circle .ds-progress__value {
+  position: absolute;
+  top: calc(var(--progress-ring-size) / 2);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--ds-font-size-2xs);
+  color: var(--ds-color-text);
+}
+.ds-progress--circle.ds-progress--lg .ds-progress__value {
+  font-size: var(--ds-font-size-xs);
+}
+.ds-progress--circle .ds-progress__label {
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-color-text-muted);
+  font-weight: var(--ds-font-weight-regular);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-progress__fill,
+  .ds-progress__ring-fill {
+    transition: none;
+  }
+  .ds-progress--bar.ds-progress--indeterminate .ds-progress__fill {
+    animation-duration: calc(var(--ds-motion-duration-base) * 16);
+  }
+  .ds-progress--circle.ds-progress--indeterminate .ds-progress__ring {
+    animation-duration: calc(var(--ds-motion-duration-base) * 12);
+  }
+}

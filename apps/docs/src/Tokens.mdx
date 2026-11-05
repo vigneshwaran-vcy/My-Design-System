@@ -30,7 +30,7 @@ import { tokens } from '@my-ds/tokens';
   {Object.entries(tokens.space).map(([name, value]) => (
     <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 'var(--ds-space-3)' }}>
       <code style={{ width: 'var(--ds-space-16)' }}>space-{name}</code>
-      <div style={{ width: value, height: 'var(--ds-space-4)', background: 'var(--ds-color-accent)', borderRadius: 'var(--ds-radius-sm)' }} />
+      <div style={{ width: value, height: 'var(--ds-space-4)', background: 'var(--ds-color-bg-accent)', borderRadius: 'var(--ds-radius-sm)' }} />
       <span>{value}</span>
     </div>
   ))}

@@ -1,0 +1,123 @@
+.ds-breadcrumb {
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-tight);
+  color: var(--ds-color-text-muted);
+}
+
+.ds-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+
+/* Links and the current crumb share one box so the trail stays aligned; only colour differs. */
+.ds-breadcrumb__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  min-width: 0;
+  padding: var(--ds-space-1) var(--ds-space-2);
+  margin-inline: calc(var(--ds-space-1) * -1);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-color-text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+a.ds-breadcrumb__link:hover {
+  color: var(--ds-color-text);
+  background-color: var(--ds-color-bg-neutral-hover);
+}
+a.ds-breadcrumb__link:active {
+  background-color: var(--ds-color-bg-neutral-active);
+}
+.ds-breadcrumb__link--current {
+  color: var(--ds-color-text);
+  font-weight: var(--ds-font-weight-medium);
+}
+.ds-breadcrumb__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ds-breadcrumb__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-breadcrumb__icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ds-breadcrumb__separator {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  color: var(--ds-color-text-disabled);
+  user-select: none;
+}
+.ds-breadcrumb__separator > svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Collapsed middle: a flat "…" button styled like a link. */
+.ds-breadcrumb__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ds-size-button-xs);
+  height: var(--ds-size-button-xs);
+  padding: 0 var(--ds-space-1);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  color: var(--ds-color-text-muted);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-breadcrumb__ellipsis:hover {
+  color: var(--ds-color-text);
+  background-color: var(--ds-color-bg-neutral-hover);
+}
+.ds-breadcrumb__ellipsis:active {
+  background-color: var(--ds-color-bg-neutral-active);
+}
+
+/* Soft focus ring at radius-sm; the transparent outline keeps focus visible in forced-colors mode. */
+.ds-breadcrumb__link:focus-visible,
+.ds-breadcrumb__ellipsis:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-color-border-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-breadcrumb__link,
+  .ds-breadcrumb__ellipsis {
+    transition: none;
+  }
+}

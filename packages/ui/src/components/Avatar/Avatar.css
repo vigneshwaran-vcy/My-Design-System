@@ -1,0 +1,170 @@
+.ds-avatar {
+  --avatar-size: var(--ds-size-avatar-md);
+  --avatar-font-size: var(--ds-font-size-sm);
+  --avatar-bg: var(--ds-color-bg-subtle);
+  --avatar-color: var(--ds-color-text-muted);
+  --avatar-radius: var(--ds-radius-full);
+  --avatar-status-size: calc(var(--ds-space-2) + var(--ds-border-width-thick));
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--avatar-radius);
+  background-color: var(--avatar-bg);
+  color: var(--avatar-color);
+  /* A 1px ring edge keeps light images and tints from bleeding into the surface. */
+  box-shadow: var(--ds-shadow-inset);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--avatar-font-size);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: 1;
+  letter-spacing: var(--ds-font-tracking-tight);
+  user-select: none;
+  vertical-align: middle;
+}
+
+/* Sizes: xs 24 · sm 32 · md 40 · lg 48 · xl 64 */
+.ds-avatar--xs {
+  --avatar-size: var(--ds-size-avatar-xs);
+  --avatar-font-size: var(--ds-font-size-2xs);
+  --avatar-status-size: var(--ds-space-2);
+}
+.ds-avatar--sm {
+  --avatar-size: var(--ds-size-avatar-sm);
+  --avatar-font-size: var(--ds-font-size-xs);
+  --avatar-status-size: calc(var(--ds-space-2) + var(--ds-border-width-thick));
+}
+.ds-avatar--md {
+  --avatar-size: var(--ds-size-avatar-md);
+  --avatar-font-size: var(--ds-font-size-sm);
+  --avatar-status-size: var(--ds-space-3);
+}
+.ds-avatar--lg {
+  --avatar-size: var(--ds-size-avatar-lg);
+  --avatar-font-size: var(--ds-font-size-md);
+  --avatar-status-size: var(--ds-space-3);
+}
+.ds-avatar--xl {
+  --avatar-size: var(--ds-size-avatar-xl);
+  --avatar-font-size: var(--ds-font-size-xl);
+  --avatar-status-size: var(--ds-space-4);
+}
+
+.ds-avatar--circle {
+  --avatar-radius: var(--ds-radius-full);
+}
+.ds-avatar--square {
+  --avatar-radius: var(--ds-radius-md);
+}
+.ds-avatar--square.ds-avatar--xs {
+  --avatar-radius: var(--ds-radius-sm);
+}
+.ds-avatar--square.ds-avatar--lg,
+.ds-avatar--square.ds-avatar--xl {
+  --avatar-radius: var(--ds-radius-control);
+}
+
+/* Deterministic tints for initials fallbacks */
+.ds-avatar--tint-accent {
+  --avatar-bg: var(--ds-color-bg-accent-subtle);
+  --avatar-color: var(--ds-color-text-accent);
+}
+.ds-avatar--tint-success {
+  --avatar-bg: var(--ds-color-bg-success-subtle);
+  --avatar-color: var(--ds-color-text-success);
+}
+.ds-avatar--tint-warn {
+  --avatar-bg: var(--ds-color-bg-warn-subtle);
+  --avatar-color: var(--ds-color-text-warn);
+}
+.ds-avatar--tint-danger {
+  --avatar-bg: var(--ds-color-bg-danger-subtle);
+  --avatar-color: var(--ds-color-text-danger);
+}
+/* The "+N" bubble is neutral so it reads as a count, not a person. */
+.ds-avatar--overflow {
+  --avatar-bg: var(--ds-color-bg-neutral-hover);
+  --avatar-color: var(--ds-color-text-muted);
+}
+
+.ds-avatar__image {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  display: block;
+}
+
+.ds-avatar__initials {
+  display: inline-block;
+}
+
+.ds-avatar__placeholder {
+  width: 60%;
+  height: 60%;
+}
+
+/* Presence dot: bottom-right, ringed by the surface colour so it sits cleanly on the image. */
+.ds-avatar__status {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  width: var(--avatar-status-size);
+  height: var(--avatar-status-size);
+  border: var(--ds-border-width-thick) solid var(--ds-color-bg-surface);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-color-bg-neutral-active);
+  transform: translate(15%, 15%);
+}
+.ds-avatar--square .ds-avatar__status {
+  transform: translate(30%, 30%);
+}
+.ds-avatar__status--online {
+  background-color: var(--ds-color-bg-success);
+}
+.ds-avatar__status--offline {
+  background-color: var(--ds-color-bg-neutral-active);
+}
+.ds-avatar__status--busy {
+  background-color: var(--ds-color-bg-danger);
+}
+.ds-avatar__status--away {
+  background-color: var(--ds-color-bg-warn);
+}
+
+/* Group: overlapping stack with a surface-coloured ring separating each avatar. */
+.ds-avatar-group {
+  --avatar-group-overlap: var(--ds-space-2);
+  display: inline-flex;
+  align-items: center;
+  padding-inline-start: var(--avatar-group-overlap);
+}
+.ds-avatar-group--xs {
+  --avatar-group-overlap: var(--ds-space-1);
+}
+.ds-avatar-group--sm {
+  --avatar-group-overlap: calc(var(--ds-space-1) + var(--ds-border-width-thick));
+}
+.ds-avatar-group--lg {
+  --avatar-group-overlap: var(--ds-space-3);
+}
+.ds-avatar-group--xl {
+  --avatar-group-overlap: var(--ds-space-4);
+}
+.ds-avatar-group__item {
+  display: inline-flex;
+  margin-inline-start: calc(var(--avatar-group-overlap) * -1);
+  border-radius: var(--ds-radius-full);
+}
+.ds-avatar-group__item > .ds-avatar {
+  box-shadow:
+    0 0 0 var(--ds-border-width-thick) var(--ds-color-bg-surface),
+    var(--ds-shadow-inset);
+}

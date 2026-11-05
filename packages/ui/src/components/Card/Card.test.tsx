@@ -35,6 +35,11 @@ describe('Card', () => {
     expect(screen.getByTestId('card')).toHaveClass('ds-card--outlined', 'ds-card--padding-lg');
   });
 
+  it('supports the glow variant and interactive lift', () => {
+    render(<Card data-testid="card" variant="glow" interactive />);
+    expect(screen.getByTestId('card')).toHaveClass('ds-card--glow', 'ds-card--interactive');
+  });
+
   it('renders body and footer slots', () => {
     render(
       <Card>

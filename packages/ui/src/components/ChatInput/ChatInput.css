@@ -1,0 +1,223 @@
+.ds-chat-input {
+  margin: 0;
+}
+
+/*
+ * The border is painted as a background layer (border-box) under the surface (padding-box),
+ * so it can switch from a flat colour to the AI gradient on focus.
+ */
+.ds-chat-input__box {
+  --chat-input-fill: var(--ds-color-bg-surface);
+  /* At rest the edge is the 1px ring in shadow-surface, so the fill runs under the border. */
+  --chat-input-edge: linear-gradient(var(--chat-input-fill), var(--chat-input-fill));
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-4);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-xl);
+  background:
+    linear-gradient(var(--chat-input-fill), var(--chat-input-fill)) padding-box,
+    var(--chat-input-edge) border-box;
+  box-shadow: var(--ds-shadow-surface);
+  cursor: text;
+  transition: box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+
+.ds-chat-input--filled .ds-chat-input__box {
+  --chat-input-fill: var(--ds-color-bg-subtle);
+  --chat-input-edge: linear-gradient(var(--ds-color-bg-subtle), var(--ds-color-bg-subtle));
+  box-shadow: none;
+}
+
+.ds-chat-input:not(.ds-chat-input--filled) .ds-chat-input__box:hover {
+  box-shadow: var(--ds-shadow-surface-hover);
+}
+/* The transparent outline keeps focus visible in forced-colors mode. */
+.ds-chat-input__box:focus-within {
+  --chat-input-fill: var(--ds-color-bg-surface);
+  --chat-input-edge: var(--ds-gradient-ai);
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow: var(--ds-shadow-glow);
+}
+
+.ds-chat-input--invalid .ds-chat-input__box,
+.ds-chat-input--invalid .ds-chat-input__box:hover,
+.ds-chat-input--invalid .ds-chat-input__box:focus-within {
+  --chat-input-edge: linear-gradient(var(--ds-color-border-danger), var(--ds-color-border-danger));
+}
+.ds-chat-input--invalid .ds-chat-input__box:focus-within {
+  box-shadow: var(--ds-shadow-focus-danger);
+}
+
+.ds-chat-input--disabled .ds-chat-input__box,
+.ds-chat-input--disabled .ds-chat-input__box:hover {
+  --chat-input-fill: var(--ds-color-bg-disabled);
+  --chat-input-edge: linear-gradient(var(--ds-color-border), var(--ds-color-border));
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.ds-chat-input__textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 var(--ds-space-1);
+  border: 0;
+  background: transparent;
+  color: var(--ds-color-text);
+  font: inherit;
+  font-size: var(--ds-font-size-md);
+  line-height: var(--ds-font-line-height-normal);
+  resize: none;
+  overflow-y: hidden;
+}
+.ds-chat-input__textarea:focus {
+  outline: none;
+}
+.ds-chat-input__textarea::placeholder {
+  color: var(--ds-color-text-muted);
+}
+.ds-chat-input__textarea:disabled {
+  color: var(--ds-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ds-chat-input__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+}
+.ds-chat-input__actions,
+.ds-chat-input__trailing {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.ds-chat-input__count {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-chat-input__send {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-size-control-md);
+  height: var(--ds-size-control-md);
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-full);
+  background-image: var(--ds-gradient-accent);
+  box-shadow: var(--ds-shadow-raised);
+  color: var(--ds-color-text-on-accent);
+  cursor: pointer;
+  transition:
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out),
+    transform var(--ds-motion-duration-base) var(--ds-motion-easing-spring);
+}
+.ds-chat-input__send svg {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+}
+.ds-chat-input__send:hover:not(:disabled) {
+  background-image: var(--ds-gradient-accent-hover);
+  box-shadow: var(--ds-shadow-raised-hover);
+}
+.ds-chat-input__send:active:not(:disabled) {
+  background-image: var(--ds-gradient-accent-active);
+  box-shadow: var(--ds-shadow-pressed);
+}
+.ds-chat-input__send:focus-visible {
+  outline: var(--ds-border-width-thick) solid var(--ds-color-border-focus);
+  outline-offset: var(--ds-border-width-thick);
+}
+.ds-chat-input__send:disabled {
+  background-image: none;
+  background-color: var(--ds-color-bg-disabled);
+  box-shadow: none;
+  color: var(--ds-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Stop: soft neutral button with a gently pulsing accent halo while the reply streams. */
+.ds-chat-input__send--stop {
+  background-image: var(--ds-gradient-surface);
+  border-color: var(--ds-color-border);
+  box-shadow: var(--ds-shadow-soft);
+  color: var(--ds-color-text);
+}
+.ds-chat-input__send--stop:hover:not(:disabled) {
+  background-image: var(--ds-gradient-surface-hover);
+  box-shadow: var(--ds-shadow-soft-hover);
+}
+.ds-chat-input__send--stop:active:not(:disabled) {
+  background-image: var(--ds-gradient-surface-hover);
+  box-shadow: var(--ds-shadow-inset);
+}
+.ds-chat-input__send--stop::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--ds-border-width-thick) * -1);
+  border-radius: inherit;
+  box-shadow: var(--ds-shadow-focus);
+  animation: ds-chat-input-pulse calc(var(--ds-motion-duration-base) * 6) var(--ds-motion-easing-out) infinite;
+  pointer-events: none;
+}
+
+@keyframes ds-chat-input-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+/* Sizes */
+.ds-chat-input--sm .ds-chat-input__box {
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-3);
+  border-radius: var(--ds-radius-lg);
+}
+.ds-chat-input--sm .ds-chat-input__textarea {
+  font-size: var(--ds-font-size-sm);
+}
+.ds-chat-input--sm .ds-chat-input__send {
+  width: var(--ds-size-control-sm);
+  height: var(--ds-size-control-sm);
+}
+.ds-chat-input--sm .ds-chat-input__send svg {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-chat-input--lg .ds-chat-input__box {
+  padding: var(--ds-space-6);
+}
+.ds-chat-input--lg .ds-chat-input__textarea {
+  font-size: var(--ds-font-size-lg);
+}
+.ds-chat-input--lg .ds-chat-input__send {
+  width: var(--ds-size-control-lg);
+  height: var(--ds-size-control-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-chat-input__box,
+  .ds-chat-input__send {
+    transition: none;
+  }
+  .ds-chat-input__send--stop::after {
+    animation: none;
+    opacity: 1;
+  }
+}

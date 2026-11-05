@@ -1,0 +1,123 @@
+/*
+ * Mirrors .ds-input: same ring edge, radius, focus / invalid / disabled states.
+ * Vertical padding is derived from the matching control height so the first line
+ * sits exactly where single-line input text would.
+ */
+.ds-textarea {
+  --textarea-control: var(--ds-size-control-md);
+  --textarea-font-size: var(--ds-font-size-sm);
+  --textarea-padding-x: var(--ds-space-4);
+
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: var(--textarea-control);
+  margin: 0;
+  padding: calc((var(--textarea-control) - var(--textarea-font-size) * var(--ds-font-line-height-normal)) / 2)
+    var(--textarea-padding-x);
+  /* The visible edge is the 1px ring in shadow-control; the transparent border shows in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-control);
+  color: var(--ds-color-text);
+  font: inherit;
+  font-size: var(--textarea-font-size);
+  line-height: var(--ds-font-line-height-normal);
+  resize: vertical;
+  transition:
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-textarea::placeholder {
+  color: var(--ds-color-text-muted);
+}
+
+.ds-textarea--filled {
+  background-color: var(--ds-color-bg-subtle);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ds-textarea--sm {
+  --textarea-control: var(--ds-size-control-sm);
+  --textarea-font-size: var(--ds-font-size-xs);
+  --textarea-padding-x: var(--ds-space-3);
+  border-radius: var(--ds-radius-md);
+}
+.ds-textarea--lg {
+  --textarea-control: var(--ds-size-control-lg);
+  --textarea-font-size: var(--ds-font-size-md);
+  border-radius: var(--ds-radius-lg);
+}
+
+.ds-textarea--resize-none {
+  resize: none;
+}
+.ds-textarea--auto-resize {
+  overflow-y: hidden;
+}
+
+.ds-textarea:hover:not(:disabled, :focus-visible, .ds-textarea--filled) {
+  box-shadow: var(--ds-shadow-control-hover);
+}
+/* Soft glow ring; the transparent outline keeps focus visible in forced-colors mode. */
+.ds-textarea:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-color-border-focus);
+  background-color: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-focus);
+}
+
+.ds-textarea--invalid,
+.ds-textarea--invalid:hover:not(:disabled, :focus-visible) {
+  border-color: var(--ds-color-border-danger);
+}
+.ds-textarea--invalid:focus-visible {
+  border-color: var(--ds-color-border-danger);
+  box-shadow: var(--ds-shadow-focus-danger);
+}
+
+.ds-textarea:disabled {
+  background-color: var(--ds-color-bg-disabled);
+  border-color: var(--ds-color-border);
+  box-shadow: none;
+  color: var(--ds-color-text-disabled);
+  cursor: not-allowed;
+  resize: none;
+}
+
+/* Hint / error on the left, character count on the right */
+.ds-textarea__meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+}
+.ds-textarea__messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+.ds-textarea__count {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-normal);
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-color-text-muted);
+}
+.ds-textarea__count--over {
+  color: var(--ds-color-text-danger);
+}
+.ds-field--disabled .ds-textarea__count {
+  color: var(--ds-color-text-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-textarea {
+    transition: none;
+  }
+}
