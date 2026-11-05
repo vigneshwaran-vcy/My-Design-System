@@ -102,6 +102,7 @@ export const foundationsNav = [
   ['shadows', 'Shadows'],
   ['gradients', 'Gradients'],
   ['blur', 'Blur'],
+  ['opacity', 'Opacity'],
   ['motion', 'Motion'],
   ['sizes', 'Sizes & borders'],
 ] as const;
@@ -142,6 +143,8 @@ export function Foundations() {
   const blurs = list.filter((t) => t.category === 'blur');
   const durations = pick('motion.duration');
   const easings = pick('motion.easing');
+  const scales = pick('motion.scale');
+  const opacities = list.filter((t) => t.category === 'opacity');
   const easeOut = tokenList.find((t) => t.group === 'motion.easing')!;
   const baseDuration = tokenList.find((t) => t.name === 'motion.duration.base')!;
   const typeGroups = ['font.family', 'font.size', 'font.weight', 'font.lineHeight'] as const;
@@ -352,6 +355,12 @@ export function Foundations() {
         )}
       </DocSection>
 
+      <DocSection id="opacity" title="Opacity" description="Partial see-through for de-emphasised icons, spinner tracks and pulses. Colour tints use alpha colours instead.">
+        {opacities.length === 0 ? none : (
+          <TokenRows tokens={opacities} preview={(t) => <span className="tk-fill-box" style={{ opacity: cssVar(t) }} aria-hidden="true" />} />
+        )}
+      </DocSection>
+
       <DocSection id="motion" title="Motion" description="Short and calm: 150ms for hover/colour changes, 250ms for larger movements, always ease-out. Press Play to compare.">
         {durations.length + easings.length === 0 && none}
         {durations.length > 0 && (
@@ -362,6 +371,12 @@ export function Foundations() {
         {easings.length > 0 && (
           <SubSection title="Easing">
             <TokenRows tokens={easings} preview={(t) => <MotionDemo duration={cssVar(baseDuration)} easing={cssVar(t)} />} />
+          </SubSection>
+        )}
+        {scales.length > 0 && (
+          <SubSection title="Scale">
+            <p className="doc-muted">Start size for pop-in panels (pop) and selection marks (mark), and the peak of a pulse.</p>
+            <TokenRows tokens={scales} preview={(t) => <span className="tk-fill-box" style={{ scale: cssVar(t) }} aria-hidden="true" />} />
           </SubSection>
         )}
       </DocSection>

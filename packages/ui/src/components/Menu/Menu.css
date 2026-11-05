@@ -78,7 +78,7 @@
 }
 .ds-menu__item--danger .ds-menu__shortcut {
   color: inherit;
-  opacity: 0.8;
+  opacity: var(--ds-opacity-80);
 }
 
 .ds-menu__icon {
@@ -129,7 +129,7 @@
 @keyframes ds-menu-in {
   from {
     opacity: 0;
-    scale: 0.97;
+    scale: var(--ds-motion-scale-pop);
   }
 }
 

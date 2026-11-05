@@ -138,7 +138,7 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: var(--ds-opacity-70);
   transition:
     opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
     background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);

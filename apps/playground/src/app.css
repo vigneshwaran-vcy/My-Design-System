@@ -665,6 +665,13 @@ code {
   background: var(--ds-color-bg-accent-subtle);
   font-size: var(--ds-font-size-xs);
 }
+.tk-fill-box {
+  display: block;
+  width: var(--ds-size-control-md);
+  height: var(--ds-size-control-md);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-bg-accent);
+}
 .tk-icon-box {
   display: block;
   border-radius: var(--ds-radius-sm);

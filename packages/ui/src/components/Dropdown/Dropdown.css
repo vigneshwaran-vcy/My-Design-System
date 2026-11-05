@@ -113,7 +113,7 @@
 
 .ds-dropdown__list {
   position: absolute;
-  z-index: 10;
+  z-index: var(--ds-layer-dropdown);
   inset-inline: 0;
   top: calc(100% + var(--ds-space-2));
   box-sizing: border-box;
@@ -139,7 +139,7 @@
 @keyframes ds-dropdown-in {
   from {
     opacity: 0;
-    transform: translateY(calc(var(--ds-space-1) * -1)) scale(0.97);
+    transform: translateY(calc(var(--ds-space-1) * -1)) scale(var(--ds-motion-scale-pop));
   }
 }
 

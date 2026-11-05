@@ -19,6 +19,12 @@ const HARD_CODED = [
   { label: 'hex colour', re: /#[0-9a-f]{3,8}\b/gi },
   { label: 'rgb()/hsl() colour', re: /\b(?:rgba?|hsla?)\(/gi },
   { label: 'length/time literal', re: /(?<![\w-])\d*\.?\d+(?:px|rem|em|ms|s)\b/gi },
+  // Page-level stacking goes through --ds-layer-*; 0/1 only order siblings inside a component.
+  { label: 'z-index layer', re: /z-index:\s*(?:[2-9]|\d{2,})/gi },
+  // Partial opacity and scale go through --ds-opacity-* and --ds-motion-scale-*; 0 and 1 are fine.
+  { label: 'opacity level', re: /opacity:\s*0?\.\d/gi },
+  { label: 'scale factor', re: /scale(?::\s*|\(\s*)\d*\.\d/gi },
+  { label: 'viewport unit', re: /(?<![\w-])\d*\.?\d+(?:d|s|l)?v(?:w|h|min|max)\b/gi },
 ];
 
 describe.each(cssFiles.map((f) => [f.slice(srcDir.length), f]))('%s', (_, file) => {

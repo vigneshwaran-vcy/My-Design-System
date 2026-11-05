@@ -174,12 +174,12 @@
 @keyframes ds-chat-input-pulse {
   0%,
   100% {
-    opacity: 0.2;
+    opacity: var(--ds-opacity-20);
     transform: scale(1);
   }
   50% {
     opacity: 1;
-    transform: scale(1.12);
+    transform: scale(var(--ds-motion-scale-pulse));
   }
 }
 

@@ -17,7 +17,8 @@ soft focus rings, solid popovers. No gloss anywhere (no white top highlights, sh
   panel widths xs 192 / sm 256 / md 320 / lg 384 / xl 512 / 2xl 768 (menus, tooltips, popovers, toasts, modals)
 - Layers (z-index, `--ds-layer-*`): dropdown 10, sticky 20, overlay 30, modal 40, toast 50, tooltip 60 — never write a raw z-index
 - Shadows: surface, surfaceHover, overlay (floating panels: menu, popover, modal, toast), control, controlHover, controlPressed, flat, flatHover, raised, raisedHover, pressed, sm, md, lg, soft, softHover, inset, accent, accentHover, accentActive, danger, dangerHover, dangerActive, focus, focusDanger, glow
-- Motion: 150ms / 250ms ease-out, spring easing for pop-in. Blur: md 12px (glass)
+- Motion: 150ms / 250ms ease-out, spring easing for pop-in; scale `motion.scale` pop 0.97 (panels pop in from), mark 0.5 (checkbox/radio marks), pulse 1.12. Blur: md 12px (glass)
+- Opacity (`--ds-opacity-*`): 20 / 30 / 40 / 70 / 80 for de-emphasised icons, spinner tracks and pulses — never a raw decimal opacity (0 and 1 are fine)
 - Must support light and dark themes
 
 ## Component rules
@@ -73,7 +74,7 @@ apps/playground/   Living docs: every token (rendered from tokenList) + componen
 
 ## Guardrails (enforced by tests)
 `packages/ui/src/test/tokens.test.ts` fails if any component CSS contains a hex/rgb/hsl colour or a
-px/rem/em/ms/s literal, or references a `--ds-*` variable that the tokens build does not define.
+px/rem/em/ms/s literal, a viewport unit, a z-index of 2 or more, a decimal opacity or scale, or references a `--ds-*` variable that the tokens build does not define.
 
 ## Adding a component
 1. `packages/ui/src/components/<Name>/` with `<Name>.tsx`, `<Name>.css`, `<Name>.stories.tsx`, `<Name>.test.tsx`, `index.ts`

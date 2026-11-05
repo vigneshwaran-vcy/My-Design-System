@@ -154,11 +154,11 @@
   width: var(--ds-size-icon-sm);
   height: var(--ds-size-icon-sm);
   color: var(--ds-color-text-muted);
-  opacity: 0.45;
+  opacity: var(--ds-opacity-40);
   transition: opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
 }
 .ds-table__sort:hover .ds-table__sort-icon {
-  opacity: 0.8;
+  opacity: var(--ds-opacity-80);
 }
 .ds-table__sort-icon--asc,
 .ds-table__sort-icon--desc {
@@ -167,7 +167,7 @@
 }
 .ds-table__sort-icon--asc .ds-table__sort-down,
 .ds-table__sort-icon--desc .ds-table__sort-up {
-  opacity: 0.3;
+  opacity: var(--ds-opacity-30);
 }
 
 /* Empty state */

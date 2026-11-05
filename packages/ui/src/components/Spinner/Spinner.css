@@ -32,7 +32,7 @@
   animation: ds-spinner-spin calc(var(--ds-motion-duration-base) * 3) linear infinite;
 }
 .ds-spinner__track {
-  opacity: 0.2;
+  opacity: var(--ds-opacity-20);
 }
 
 .ds-spinner__label {
