@@ -1,0 +1,20 @@
+{
+  "bg": "{color.bg.subtle}",
+  "icon": "{color.text.muted}",
+  "text": "{color.text.default}",
+  "info-bg": "{color.bg.accent.subtle}",
+  "info-icon": "{color.text.accent}",
+  "success-bg": "{color.bg.success.subtle}",
+  "success-icon": "{color.text.success}",
+  "warn-bg": "{color.bg.warn.subtle}",
+  "warn-icon": "{color.text.warn}",
+  "danger-bg": "{color.bg.danger.subtle}",
+  "danger-icon": "{color.text.danger}",
+  "neutral-bg": "{color.bg.subtle}",
+  "neutral-icon": "{color.text.muted}",
+  "dismiss-text": "{color.text.muted}",
+  "dismiss-bg-hover": "{color.bg.neutral.hover}",
+  "dismiss-text-hover": "{color.text.default}",
+  "dismiss-bg-active": "{color.bg.neutral.active}",
+  "dismiss-ring-focus": "{color.border.focus}"
+}

@@ -1,23 +1,6 @@
-import { Button, EmptyState } from '@my-ds/ui';
+import { Button, EmptyState, Icon } from '@my-ds/ui';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
-const FolderIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-  </svg>
-);
-const SearchIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="11" cy="11" r="7" />
-    <path d="m20 20-3.5-3.5" />
-  </svg>
-);
-const InboxIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 12h-6l-2 3h-4l-2-3H2" />
-    <path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.7 4H7.3a2 2 0 0 0-1.8 1.1z" />
-  </svg>
-);
 
 const panel = { width: '100%', border: 'var(--ds-border-width-thin) dashed var(--ds-color-border)', borderRadius: 'var(--ds-radius-lg)' } as const;
 
@@ -30,7 +13,7 @@ export function EmptyStateDocs() {
         <Example
           title="First-run (primary + secondary action)"
           code={`<EmptyState
-  icon={<FolderIcon />}
+  icon={<Icon name="folder" />}
   title="No projects yet"
   description="Projects group your environments, deployments and team members in one place."
   action={<Button>New project</Button>}
@@ -39,7 +22,7 @@ export function EmptyStateDocs() {
         >
           <div style={panel}>
             <EmptyState
-              icon={<FolderIcon />}
+              icon={<Icon name="folder" />}
               title="No projects yet"
               description="Projects group your environments, deployments and team members in one place."
               action={<Button>New project</Button>}
@@ -51,7 +34,7 @@ export function EmptyStateDocs() {
         <Example
           title="No results (filtered table)"
           code={`<EmptyState
-  icon={<SearchIcon />}
+  icon={<Icon name="search" />}
   title='No results for "quarterly"'
   description="Try a different keyword or clear the filters."
   action={<Button variant="secondary">Clear filters</Button>}
@@ -59,7 +42,7 @@ export function EmptyStateDocs() {
         >
           <div style={panel}>
             <EmptyState
-              icon={<SearchIcon />}
+              icon={<Icon name="search" />}
               title='No results for "quarterly"'
               description="Try a different keyword or clear the filters."
               action={<Button variant="secondary">Clear filters</Button>}
@@ -69,16 +52,16 @@ export function EmptyStateDocs() {
 
         <Example
           title="Small, inside a card"
-          code={`<EmptyState size="sm" icon={<InboxIcon />} title="No comments" description="Be the first to leave a comment." action={<Button size="sm" variant="secondary">Add comment</Button>} />`}
+          code={`<EmptyState size="sm" icon={<Icon name="inbox" />} title="No comments" description="Be the first to leave a comment." action={<Button size="sm" variant="secondary">Add comment</Button>} />`}
         >
           <div style={{ ...panel, maxWidth: 'calc(var(--ds-space-16) * 5)' }}>
-            <EmptyState size="sm" icon={<InboxIcon />} title="No comments" description="Be the first to leave a comment." action={<Button size="sm" variant="secondary">Add comment</Button>} />
+            <EmptyState size="sm" icon={<Icon name="inbox" />} title="No comments" description="Be the first to leave a comment." action={<Button size="sm" variant="secondary">Add comment</Button>} />
           </div>
         </Example>
 
-        <Example title="Without the tile" code={`<EmptyState tile={false} icon={<InboxIcon />} title="Inbox zero" description="Nothing needs your attention." />`}>
+        <Example title="Without the tile" code={`<EmptyState tile={false} icon={<Icon name="inbox" />} title="Inbox zero" description="Nothing needs your attention." />`}>
           <div style={panel}>
-            <EmptyState tile={false} icon={<InboxIcon />} title="Inbox zero" description="Nothing needs your attention." />
+            <EmptyState tile={false} icon={<Icon name="inbox" />} title="Inbox zero" description="Nothing needs your attention." />
           </div>
         </Example>
       </SubSection>

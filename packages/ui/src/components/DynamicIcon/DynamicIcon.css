@@ -1,0 +1,238 @@
+/*
+ * Small animated status glyphs. Every part is sized from --dynamic-icon-size (an icon size token),
+ * coloured from semantic text/bg tokens, and animated only when motion is allowed.
+ * Each repeated part gets its index as --i (set inline) to stagger its animation.
+ */
+.ds-dynamic-icon {
+  --dynamic-icon-size: var(--ds-size-icon-md);
+  --dynamic-icon-cycle: calc(var(--ds-motion-duration-base) * 5);
+  --dynamic-icon-stagger: calc(var(--dynamic-icon-cycle) / 6);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--dynamic-icon-size);
+  height: var(--dynamic-icon-size);
+  color: var(--ds-dynamic-icon-text);
+  vertical-align: middle;
+}
+
+.ds-dynamic-icon--sm {
+  --dynamic-icon-size: var(--ds-size-icon-sm);
+}
+.ds-dynamic-icon--lg {
+  --dynamic-icon-size: var(--ds-size-icon-lg);
+}
+
+.ds-dynamic-icon__dot {
+  flex-shrink: 0;
+  width: calc(var(--dynamic-icon-size) / 5);
+  height: calc(var(--dynamic-icon-size) / 5);
+  border-radius: var(--ds-radius-full);
+  background-color: currentColor;
+}
+
+/* Ellipsis: three dots fading in turn. */
+.ds-dynamic-icon--ellipsis {
+  gap: calc(var(--dynamic-icon-size) / 10);
+}
+.ds-dynamic-icon--ellipsis .ds-dynamic-icon__dot {
+  opacity: var(--ds-opacity-30);
+  animation: ds-dynamic-icon-fade var(--dynamic-icon-cycle) var(--ds-motion-easing-out) infinite;
+  animation-delay: calc(var(--dynamic-icon-stagger) * var(--i));
+}
+
+/* Typing: three dots bouncing inside a chat bubble. */
+.ds-dynamic-icon--typing {
+  width: calc(var(--dynamic-icon-size) * 2);
+  gap: calc(var(--dynamic-icon-size) / 10);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-dynamic-icon-typing-bg);
+}
+.ds-dynamic-icon--typing .ds-dynamic-icon__dot {
+  width: calc(var(--dynamic-icon-size) / 6);
+  height: calc(var(--dynamic-icon-size) / 6);
+  animation: ds-dynamic-icon-bounce var(--dynamic-icon-cycle) var(--ds-motion-easing-out) infinite;
+  animation-delay: calc(var(--dynamic-icon-stagger) * var(--i));
+}
+
+/* Bars (eq + strength): bottom-aligned columns. */
+.ds-dynamic-icon--eq,
+.ds-dynamic-icon--strength {
+  align-items: flex-end;
+  gap: calc(var(--dynamic-icon-size) / 8);
+  padding-block: calc(var(--dynamic-icon-size) / 8);
+}
+.ds-dynamic-icon__bar {
+  width: calc(var(--dynamic-icon-size) / 5);
+  border-radius: var(--ds-radius-sm);
+  background-color: currentColor;
+  transform-origin: bottom;
+}
+
+/* Equalizer: accent bars rising and falling out of step. */
+.ds-dynamic-icon--eq {
+  color: var(--ds-dynamic-icon-eq-text);
+}
+.ds-dynamic-icon--eq .ds-dynamic-icon__bar {
+  height: 100%;
+  animation: ds-dynamic-icon-eq var(--dynamic-icon-cycle) var(--ds-motion-easing-out) infinite alternate;
+  animation-delay: calc(var(--dynamic-icon-stagger) * var(--i) * -2);
+}
+
+/* Strength: three steps of increasing height; filled bars take the level's status colour. */
+.ds-dynamic-icon--strength {
+  --dynamic-icon-fill: var(--ds-dynamic-icon-strength-fill);
+}
+.ds-dynamic-icon--strength .ds-dynamic-icon__bar {
+  height: calc((var(--i) + 1) * 100% / 3);
+  background-color: var(--ds-dynamic-icon-strength-bar-bg);
+  transition: background-color var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+  transition-delay: calc(var(--ds-motion-duration-fast) / 2 * var(--i));
+}
+.ds-dynamic-icon--strength[data-value='1'] {
+  --dynamic-icon-fill: var(--ds-dynamic-icon-strength-fill-1);
+}
+.ds-dynamic-icon--strength[data-value='2'] {
+  --dynamic-icon-fill: var(--ds-dynamic-icon-strength-fill-2);
+}
+.ds-dynamic-icon--strength[data-value='3'] {
+  --dynamic-icon-fill: var(--ds-dynamic-icon-strength-fill-3);
+}
+.ds-dynamic-icon--strength[data-value='1'] .ds-dynamic-icon__bar:nth-child(-n + 1),
+.ds-dynamic-icon--strength[data-value='2'] .ds-dynamic-icon__bar:nth-child(-n + 2),
+.ds-dynamic-icon--strength[data-value='3'] .ds-dynamic-icon__bar {
+  background-color: var(--dynamic-icon-fill);
+}
+
+/* Trend: an arrow in the direction's status colour that slides in on mount. */
+.ds-dynamic-icon__arrow {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: ds-dynamic-icon-in var(--ds-motion-duration-base) var(--ds-motion-easing-spring) both;
+}
+.ds-dynamic-icon--up {
+  color: var(--ds-dynamic-icon-up-text);
+}
+.ds-dynamic-icon--down {
+  color: var(--ds-dynamic-icon-down-text);
+}
+.ds-dynamic-icon--down .ds-dynamic-icon__arrow {
+  rotate: 0.25turn;
+}
+.ds-dynamic-icon--neutral {
+  color: var(--ds-dynamic-icon-neutral-text);
+}
+
+/* Score: a solid success dot (positive) or a danger ring (negative) that pops in, then pulses once. */
+.ds-dynamic-icon__score {
+  box-sizing: border-box;
+  width: calc(var(--dynamic-icon-size) / 2);
+  height: calc(var(--dynamic-icon-size) / 2);
+  border-radius: var(--ds-radius-full);
+  animation: ds-dynamic-icon-pop calc(var(--ds-motion-duration-base) * 2) var(--ds-motion-easing-spring) both;
+}
+.ds-dynamic-icon--positive .ds-dynamic-icon__score {
+  background-color: var(--ds-dynamic-icon-positive-score-bg);
+}
+.ds-dynamic-icon--negative .ds-dynamic-icon__score {
+  border: var(--ds-border-width-thick) solid var(--ds-dynamic-icon-negative-score-border);
+}
+
+/* Waffle: 3×3 grid; the dots ripple while the icon or its button is hovered or focused. */
+.ds-dynamic-icon--waffle {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
+  padding: calc(var(--dynamic-icon-size) / 10);
+  color: currentColor;
+}
+.ds-dynamic-icon--waffle .ds-dynamic-icon__dot {
+  width: calc(var(--dynamic-icon-size) / 6);
+  height: calc(var(--dynamic-icon-size) / 6);
+}
+.ds-dynamic-icon--waffle:hover .ds-dynamic-icon__dot,
+:is(:hover, :focus-visible) > .ds-dynamic-icon--waffle .ds-dynamic-icon__dot,
+:is(:hover, :focus-visible) > * > .ds-dynamic-icon--waffle .ds-dynamic-icon__dot {
+  animation: ds-dynamic-icon-ripple calc(var(--ds-motion-duration-base) * 2) var(--ds-motion-easing-out);
+  animation-delay: calc(var(--ds-motion-duration-fast) / 3 * var(--i));
+}
+
+.ds-dynamic-icon--paused,
+.ds-dynamic-icon--paused * {
+  animation-play-state: paused;
+}
+
+@keyframes ds-dynamic-icon-fade {
+  0%,
+  100% {
+    opacity: var(--ds-opacity-30);
+  }
+  40% {
+    opacity: 1;
+  }
+}
+@keyframes ds-dynamic-icon-bounce {
+  0%,
+  60%,
+  100% {
+    translate: 0 0;
+  }
+  30% {
+    translate: 0 calc(var(--dynamic-icon-size) / -6);
+  }
+}
+@keyframes ds-dynamic-icon-eq {
+  from {
+    scale: 1 var(--ds-motion-scale-mark);
+  }
+  to {
+    scale: 1 1;
+  }
+}
+@keyframes ds-dynamic-icon-in {
+  from {
+    opacity: 0;
+    scale: var(--ds-motion-scale-mark);
+  }
+}
+@keyframes ds-dynamic-icon-pop {
+  0% {
+    opacity: 0;
+    scale: var(--ds-motion-scale-mark);
+  }
+  60% {
+    opacity: 1;
+    scale: var(--ds-motion-scale-pulse);
+  }
+  100% {
+    scale: 1;
+  }
+}
+@keyframes ds-dynamic-icon-ripple {
+  50% {
+    scale: var(--ds-motion-scale-mark);
+    opacity: var(--ds-opacity-40);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-dynamic-icon *,
+  .ds-dynamic-icon--waffle:hover .ds-dynamic-icon__dot,
+  :is(:hover, :focus-visible) > .ds-dynamic-icon--waffle .ds-dynamic-icon__dot,
+  :is(:hover, :focus-visible) > * > .ds-dynamic-icon--waffle .ds-dynamic-icon__dot {
+    animation: none;
+    transition: none;
+  }
+  /* Static fallbacks: ellipsis dots at full strength, equalizer bars at uneven heights. */
+  .ds-dynamic-icon--ellipsis .ds-dynamic-icon__dot {
+    opacity: 1;
+  }
+  .ds-dynamic-icon--eq .ds-dynamic-icon__bar:nth-child(2) {
+    scale: 1 var(--ds-motion-scale-mark);
+  }
+}

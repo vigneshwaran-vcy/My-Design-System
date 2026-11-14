@@ -3,7 +3,7 @@
   position: fixed;
   inset: 0;
   z-index: var(--ds-layer-overlay);
-  background-color: var(--ds-color-bg-overlay);
+  background-color: var(--ds-modal-scrim-bg);
   animation: ds-modal-fade-in var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 
@@ -16,7 +16,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: var(--ds-space-6);
+  padding: var(--ds-space-4);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -28,18 +28,18 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-4);
+  gap: var(--ds-space-3);
   width: 100%;
   max-width: var(--modal-max-width);
   max-height: 100%;
   margin: auto;
-  padding: var(--ds-space-6);
+  padding: var(--ds-space-4);
   /* Solid surface with a 1px ring edge in the shadow; the transparent border shows in forced-colors mode. */
   border: var(--ds-border-width-thin) solid transparent;
-  border-radius: var(--ds-radius-xl);
-  background-color: var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-overlay);
-  color: var(--ds-color-text);
+  border-radius: var(--ds-radius-lg);
+  background-color: var(--ds-modal-panel-bg);
+  box-shadow: var(--ds-modal-panel-shadow);
+  color: var(--ds-modal-panel-text);
   font-family: var(--ds-font-family-sans);
   font-size: var(--ds-font-size-sm);
   line-height: var(--ds-font-line-height-normal);
@@ -49,7 +49,7 @@
 }
 .ds-modal__panel:focus-visible {
   outline: var(--ds-border-width-thick) solid transparent;
-  box-shadow: var(--ds-shadow-overlay), var(--ds-shadow-focus);
+  box-shadow: var(--ds-modal-panel-shadow-focus), var(--ds-modal-panel-halo-focus);
 }
 
 /* Sizes: sm 384 · md 512 · lg 768 */
@@ -64,7 +64,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--ds-space-4);
+  gap: var(--ds-space-3);
 }
 .ds-modal__heading {
   display: flex;
@@ -78,12 +78,12 @@
   font-weight: var(--ds-font-weight-semibold);
   line-height: var(--ds-font-line-height-tight);
   letter-spacing: var(--ds-font-tracking-tight);
-  color: var(--ds-color-text);
+  color: var(--ds-modal-title-text);
 }
 .ds-modal__description {
   margin: 0;
   font-size: var(--ds-font-size-sm);
-  color: var(--ds-color-text-muted);
+  color: var(--ds-modal-description-text);
 }
 
 /* Close "×": a ghost xs Button pinned to the top-right corner, nudged so its hit area aligns with the padding. */
@@ -93,7 +93,7 @@
   padding-inline: 0;
   width: var(--ds-size-button-sm);
   height: var(--ds-size-button-sm);
-  color: var(--ds-color-text-muted);
+  color: var(--ds-modal-close-text);
 }
 .ds-modal__close-icon {
   width: var(--ds-size-icon-sm);
@@ -105,7 +105,7 @@
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  color: var(--ds-color-text);
+  color: var(--ds-modal-body-text);
 }
 
 .ds-modal__footer {

@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 import './Breadcrumb.css';
 
 export interface BreadcrumbItem {
@@ -31,12 +32,6 @@ export interface BreadcrumbProps extends HTMLAttributes<HTMLElement> {
    */
   maxItems?: number;
 }
-
-const ChevronIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-    <path d="m9 18 6-6-6-6" />
-  </svg>
-);
 
 type Slot = { kind: 'item'; item: BreadcrumbItem; index: number } | { kind: 'ellipsis'; hidden: number };
 
@@ -76,7 +71,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
     items.forEach((item, index) => slots.push({ kind: 'item', item, index }));
   }
 
-  const sep = <span className="ds-breadcrumb__separator" aria-hidden="true">{separator ?? <ChevronIcon />}</span>;
+  const sep = <span className="ds-breadcrumb__separator" aria-hidden="true">{separator ?? <Icon name="alt-arrow-right" />}</span>;
 
   return (
     <nav ref={ref} aria-label={ariaLabel} className={cx('ds-breadcrumb', className)} {...rest}>
@@ -96,7 +91,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
                     setExpanded(true);
                   }}
                 >
-                  <span aria-hidden="true">…</span>
+                  <Icon name="menu-dots" />
                 </button>
                 {sep}
               </li>

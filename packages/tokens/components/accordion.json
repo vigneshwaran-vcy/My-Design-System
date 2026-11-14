@@ -1,0 +1,17 @@
+{
+  "text": "{color.text.default}",
+  "trigger-text": "{color.text.default}",
+  "trigger-bg-hover": "{color.bg.neutral.hover}",
+  "trigger-bg-active": "{color.bg.neutral.active}",
+  "trigger-ring-focus": "{color.border.focus}",
+  "trigger-halo-focus": "{shadow.focus}",
+  "trigger-text-disabled": "{color.text.disabled}",
+  "icon-text": "{color.text.muted}",
+  "trigger-icon-text-disabled": "{color.text.disabled}",
+  "meta-text": "{color.text.muted}",
+  "content-text": "{color.text.muted}",
+  "default-item-border": "{color.border.default}",
+  "framed-bg": "{color.bg.frame}",
+  "framed-item-bg": "{color.bg.surface}",
+  "framed-item-shadow": "{shadow.surface}"
+}

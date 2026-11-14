@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 import '../Input/Input.css';
 import './Dropdown.css';
 
@@ -241,9 +242,7 @@ export const Dropdown = forwardRef<HTMLButtonElement, DropdownProps>(function Dr
           <span className={cx('ds-dropdown__value', !selected && 'ds-dropdown__value--placeholder')}>
             {selected ? selected.label : placeholder}
           </span>
-          <svg className="ds-dropdown__chevron" viewBox="0 0 20 20" aria-hidden="true">
-            <path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <Icon name="alt-arrow-down" className="ds-dropdown__chevron" />
         </button>
 
         <ul
@@ -276,9 +275,7 @@ export const Dropdown = forwardRef<HTMLButtonElement, DropdownProps>(function Dr
                 <span className="ds-dropdown__option-label">{option.label}</span>
                 {option.description && <span className="ds-dropdown__option-description">{option.description}</span>}
               </span>
-              <svg className="ds-dropdown__check" viewBox="0 0 20 20" aria-hidden="true">
-                <path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <Icon name="check" className="ds-dropdown__check" />
             </li>
           ))}
         </ul>

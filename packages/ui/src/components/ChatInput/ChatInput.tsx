@@ -12,6 +12,7 @@ import {
   type TextareaHTMLAttributes,
 } from 'react';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 import '../Input/Input.css';
 import './ChatInput.css';
 
@@ -182,9 +183,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(functio
                 disabled={disabled || !onStop}
                 onClick={onStop}
               >
-                <svg viewBox="0 0 20 20" aria-hidden="true">
-                  <rect x="5.5" y="5.5" width="9" height="9" rx="1.5" fill="currentColor" />
-                </svg>
+                <Icon name="stop" />
               </button>
             ) : (
               <button
@@ -194,9 +193,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(functio
                 title={sendLabel}
                 disabled={!canSend}
               >
-                <svg viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M10 15.5v-11M5 9.5l5-5 5 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <Icon name="arrow-up" />
               </button>
             )}
           </div>

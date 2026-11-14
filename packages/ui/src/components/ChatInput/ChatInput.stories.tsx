@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Icon } from '../Icon';
 import { useRef, useState } from 'react';
 import { Button } from '../Button';
 import { ChatInput } from './ChatInput';
@@ -28,7 +29,7 @@ export const WithActions: Story = {
   args: {
     actions: (
       <>
-        <Button variant="ghost" size="sm" leadingIcon="+">Attach</Button>
+        <Button variant="ghost" size="sm" leadingIcon={<Icon name="add" />}>Attach</Button>
         <Button variant="ghost" size="sm">Tools</Button>
       </>
     ),

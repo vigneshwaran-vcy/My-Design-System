@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Icon } from '../Icon';
 import { useState } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from './Tabs';
 
@@ -48,9 +49,9 @@ export const WithIcons: Story = {
   render: (args) => (
     <Tabs {...args}>
       <TabList aria-label="Views">
-        <Tab value="overview" icon="▦">Board</Tab>
-        <Tab value="members" icon="☰">List</Tab>
-        <Tab value="billing" icon="▤">Timeline</Tab>
+        <Tab value="overview" icon={<Icon name="widget" />}>Board</Tab>
+        <Tab value="members" icon={<Icon name="list" />}>List</Tab>
+        <Tab value="billing" icon={<Icon name="sort-by-time" />}>Timeline</Tab>
       </TabList>
       <TabPanel value="overview">Board view</TabPanel>
       <TabPanel value="members">List view</TabPanel>

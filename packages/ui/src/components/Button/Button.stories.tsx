@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Icon } from '../Icon';
 import { useState } from 'react';
 import { Button } from './Button';
 
@@ -46,7 +47,7 @@ export const Disabled: Story = { args: { disabled: true } };
 export const Loading: Story = { args: { loading: true, children: 'Saving…' } };
 
 export const WithIcons: Story = {
-  args: { leadingIcon: '+', trailingIcon: '→', children: 'New project' },
+  args: { leadingIcon: <Icon name="add" />, trailingIcon: <Icon name="arrow-right" />, children: 'New project' },
 };
 
 export const FullWidth: Story = { args: { fullWidth: true } };

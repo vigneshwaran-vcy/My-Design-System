@@ -1,0 +1,5 @@
+{
+  "bubble-bg": "{color.bg.inverse}",
+  "bubble-text": "{color.text.inverse}",
+  "bubble-shadow": "{shadow.overlay}"
+}

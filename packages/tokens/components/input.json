@@ -1,0 +1,22 @@
+{
+  "field-label-text": "{color.text.default}",
+  "field-required-text": "{color.text.danger}",
+  "field-hint-text": "{color.text.muted}",
+  "field-error-text": "{color.text.danger}",
+  "bg": "{color.bg.surface}",
+  "shadow": "{shadow.control}",
+  "text": "{color.text.default}",
+  "placeholder-text": "{color.text.muted}",
+  "filled-bg": "{color.bg.subtle}",
+  "shadow-hover": "{shadow.controlHover}",
+  "border-focus": "{color.border.focus}",
+  "bg-focus": "{color.bg.surface}",
+  "shadow-focus": "{shadow.focus}",
+  "invalid-border": "{color.border.danger}",
+  "invalid-border-focus": "{color.border.danger}",
+  "invalid-shadow-focus": "{shadow.focusDanger}",
+  "bg-disabled": "{color.bg.disabled}",
+  "border-disabled": "{color.border.default}",
+  "text-disabled": "{color.text.disabled}",
+  "field-disabled-label-text": "{color.text.disabled}"
+}

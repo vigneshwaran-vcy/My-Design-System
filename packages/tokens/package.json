@@ -1,7 +1,7 @@
 {
   "name": "@my-ds/tokens",
   "version": "0.1.0",
-  "description": "Design tokens: tokens.json compiled to CSS variables and TS exports",
+  "description": "Design tokens in three tiers (primitive, semantic, component) compiled to CSS variables and TS exports",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -10,7 +10,7 @@
     "./tokens.css": "./dist/tokens.css",
     "./tokens.json": "./tokens.json"
   },
-  "files": ["dist", "tokens.json"],
+  "files": ["dist", "tokens.json", "components"],
   "sideEffects": ["*.css"],
   "scripts": {
     "build": "node scripts/build.mjs",

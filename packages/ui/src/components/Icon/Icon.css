@@ -1,0 +1,24 @@
+/* Default size has zero specificity so a component's own icon class can size it. */
+:where(.ds-icon) {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  vertical-align: middle;
+}
+.ds-icon--xs {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-icon--sm {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-icon--md {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+}
+.ds-icon--lg {
+  width: var(--ds-size-icon-lg);
+  height: var(--ds-size-icon-lg);
+}

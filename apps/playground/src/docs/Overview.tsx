@@ -51,7 +51,7 @@ import { Button, Card, Input } from '@my-ds/ui';
       <SubSection title="Token naming">
         <p className="doc-body">
           Tokens live in <code>packages/tokens/tokens.json</code> and compile to <code>--ds-*</code> CSS variables and TS
-          exports. Components only use <strong>semantic</strong> tokens (<code>--ds-color-bg-accent</code>), never palette
+          exports. There are three tiers: primitive, semantic and component. Apps use <strong>semantic</strong> tokens (<code>--ds-color-bg-accent</code>), never palette
           primitives (<code>--ds-palette-primary-600</code>).
         </p>
         <CodeBlock

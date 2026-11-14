@@ -1,0 +1,154 @@
+/*
+ * Segmented control, matching the docs theme toggle: a recessed frame-coloured track (shadow-track)
+ * and a raised thumb (bg-thumb + shadow-thumb) that slides under the selected segment.
+ * Segments share the width equally, so the thumb's offset is just index × its own width.
+ */
+.ds-radio-button-group {
+  --rbg-pad: var(--ds-border-width-thick);
+  --rbg-height: var(--ds-size-control-md);
+  --rbg-radius: var(--ds-radius-md);
+  --rbg-font: var(--ds-font-size-sm);
+  --rbg-icon: var(--ds-size-icon-sm);
+  --rbg-inline: var(--ds-space-4);
+  --rbg-thumb-bg: var(--ds-radio-button-group-thumb-bg);
+  --rbg-thumb-shadow: var(--ds-radio-button-group-thumb-shadow);
+  --rbg-selected-color: var(--ds-radio-button-group-selected-color);
+}
+
+.ds-radio-button-group--sm {
+  --rbg-height: var(--ds-size-control-sm);
+  --rbg-radius: var(--ds-radius-md);
+  --rbg-font: var(--ds-font-size-xs);
+  --rbg-icon: var(--ds-size-icon-xs);
+  --rbg-inline: var(--ds-space-3);
+}
+.ds-radio-button-group--lg {
+  --rbg-height: var(--ds-size-control-lg);
+  --rbg-radius: var(--ds-radius-control);
+  --rbg-font: var(--ds-font-size-md);
+  --rbg-icon: var(--ds-size-icon-md);
+  --rbg-inline: var(--ds-space-6);
+}
+
+.ds-radio-button-group--accent {
+  --rbg-thumb-bg: var(--ds-radio-button-group-accent-thumb-bg);
+  --rbg-thumb-shadow: 0 0 transparent;
+  --rbg-selected-color: var(--ds-radio-button-group-accent-selected-color);
+}
+
+.ds-radio-button-group__track {
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-self: flex-start;
+  box-sizing: border-box;
+  height: var(--rbg-height);
+  padding: var(--rbg-pad);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--rbg-radius);
+  background-color: var(--ds-radio-button-group-track-bg);
+  box-shadow: var(--ds-radio-button-group-track-shadow);
+}
+.ds-radio-button-group--full-width .ds-radio-button-group__track {
+  display: grid;
+  align-self: stretch;
+}
+
+.ds-radio-button-group__thumb {
+  position: absolute;
+  z-index: -1;
+  top: var(--rbg-pad);
+  bottom: var(--rbg-pad);
+  left: var(--rbg-pad);
+  width: calc((100% - var(--rbg-pad) * 2) / var(--rbg-count));
+  border-radius: calc(var(--rbg-radius) - var(--rbg-pad));
+  background-color: var(--rbg-thumb-bg);
+  box-shadow: var(--rbg-thumb-shadow);
+  transform: translateX(calc(var(--rbg-index) * 100%));
+  transition:
+    transform var(--ds-motion-duration-base) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+.ds-radio-button-group__option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0 var(--rbg-inline);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: calc(var(--rbg-radius) - var(--rbg-pad));
+  background: transparent;
+  color: var(--ds-radio-button-group-option-text);
+  font: inherit;
+  font-size: var(--rbg-font);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-radio-button-group__option--icon-only {
+  padding-inline: var(--ds-space-2);
+}
+
+.ds-radio-button-group__icon {
+  flex-shrink: 0;
+  width: var(--rbg-icon);
+  height: var(--rbg-icon);
+}
+
+.ds-radio-button-group__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover: unselected segments darken their text and get a faint wash (no movement). */
+.ds-radio-button-group__option:hover:not(:disabled, [aria-checked='true']) {
+  color: var(--ds-radio-button-group-option-text-hover);
+  background-color: var(--ds-radio-button-group-option-bg-hover);
+}
+.ds-radio-button-group__option[aria-checked='true'] {
+  color: var(--rbg-selected-color);
+}
+
+.ds-radio-button-group__option:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-radio-button-group-option-border-focus);
+  box-shadow: var(--ds-radio-button-group-option-shadow-focus);
+}
+
+/* Invalid: the track picks up a danger edge. */
+.ds-radio-button-group--invalid .ds-radio-button-group__track {
+  border-color: var(--ds-radio-button-group-invalid-track-border);
+}
+.ds-radio-button-group--invalid .ds-radio-button-group__option:focus-visible {
+  border-color: var(--ds-radio-button-group-invalid-option-border-focus);
+  box-shadow: var(--ds-radio-button-group-invalid-option-shadow-focus);
+}
+
+/* Disabled: a single disabled option dims its text; a disabled group fades as a whole, like Switch. */
+.ds-radio-button-group__option:disabled {
+  color: var(--ds-radio-button-group-option-text-disabled);
+  cursor: not-allowed;
+}
+.ds-radio-button-group__track[aria-disabled='true'] {
+  opacity: var(--ds-opacity-40);
+}
+.ds-radio-button-group__track[aria-disabled='true'] .ds-radio-button-group__option[aria-checked='true'] {
+  color: var(--rbg-selected-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-radio-button-group__thumb,
+  .ds-radio-button-group__option {
+    transition: none;
+  }
+}

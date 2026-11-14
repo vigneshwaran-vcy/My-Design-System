@@ -3,8 +3,8 @@
  * Defaults are token-driven: text = one line of body copy (font-size-sm), circle/rect = avatar-md.
  */
 .ds-skeleton {
-  --skeleton-base: var(--ds-color-bg-subtle);
-  --skeleton-highlight: var(--ds-color-bg-neutral-hover);
+  --skeleton-base: var(--ds-skeleton-base);
+  --skeleton-highlight: var(--ds-skeleton-highlight);
   display: block;
   box-sizing: border-box;
   width: 100%;

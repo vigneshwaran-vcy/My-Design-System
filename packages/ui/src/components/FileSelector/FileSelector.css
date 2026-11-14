@@ -1,0 +1,185 @@
+/*
+ * File selector. The drop zone is a recessed frame (bg-frame + shadow-track) with a dashed edge, the one
+ * place a visible border is used: dashes are the conventional "drop here" cue. Drag-over tints it accent.
+ * Selected files sit in inset surface rows (shadow-surface ring) like other framed content.
+ */
+.ds-file-selector {
+  --file-selector-pad: var(--ds-space-4);
+  --file-selector-tile: var(--ds-size-tile-sm);
+}
+.ds-file-selector--sm {
+  --file-selector-pad: var(--ds-space-3);
+  --file-selector-tile: var(--ds-size-control-md);
+}
+.ds-file-selector--lg {
+  --file-selector-pad: var(--ds-space-6);
+  --file-selector-tile: var(--ds-size-tile-md);
+}
+
+.ds-file-selector__zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-3);
+  box-sizing: border-box;
+  padding: var(--file-selector-pad);
+  border: var(--ds-border-width-thin) dashed var(--ds-file-selector-zone-border);
+  border-radius: var(--ds-radius-lg);
+  background-color: var(--ds-file-selector-zone-bg);
+  color: var(--ds-file-selector-zone-text);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+  text-align: center;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-file-selector--sm .ds-file-selector__zone {
+  font-size: var(--ds-font-size-xs);
+}
+
+/* Inline: a compact row (button + text), the height of a control. */
+.ds-file-selector--inline .ds-file-selector__zone {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: var(--ds-space-3);
+  min-height: var(--ds-size-control-md);
+  padding: var(--ds-space-1) var(--ds-space-3) var(--ds-space-1) var(--ds-space-1);
+  border-radius: var(--ds-radius-md);
+  text-align: start;
+}
+.ds-file-selector--inline.ds-file-selector--sm .ds-file-selector__zone {
+  min-height: var(--ds-size-control-sm);
+  border-radius: var(--ds-radius-md);
+}
+.ds-file-selector--inline.ds-file-selector--lg .ds-file-selector__zone {
+  min-height: var(--ds-size-control-lg);
+  border-radius: var(--ds-radius-lg);
+}
+
+.ds-file-selector__zone:hover:not(.ds-file-selector__zone--disabled) {
+  border-color: var(--ds-file-selector-zone-border-hover);
+}
+
+/* Drag-over: accent edge and tint. */
+.ds-file-selector__zone--dragging {
+  border-style: solid;
+  border-color: var(--ds-file-selector-zone-dragging-border);
+  background-color: var(--ds-file-selector-zone-dragging-bg);
+  box-shadow: var(--ds-file-selector-zone-dragging-shadow);
+  color: var(--ds-file-selector-zone-dragging-text);
+}
+
+.ds-file-selector--invalid .ds-file-selector__zone {
+  border-color: var(--ds-file-selector-invalid-zone-border);
+}
+
+.ds-file-selector__zone--disabled {
+  background-color: var(--ds-file-selector-zone-disabled-bg);
+  border-color: var(--ds-file-selector-zone-disabled-border);
+  color: var(--ds-file-selector-zone-disabled-text);
+  cursor: not-allowed;
+}
+
+/* Icon tile: an inset white surface, like the EmptyState tile. */
+.ds-file-selector__tile {
+  display: grid;
+  place-items: center;
+  width: var(--file-selector-tile);
+  height: var(--file-selector-tile);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-file-selector-tile-bg);
+  box-shadow: var(--ds-file-selector-tile-shadow);
+  color: var(--ds-file-selector-tile-text);
+}
+.ds-file-selector__tile > svg {
+  width: var(--ds-size-icon-lg);
+  height: var(--ds-size-icon-lg);
+}
+.ds-file-selector--sm .ds-file-selector__tile > svg {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+}
+.ds-file-selector__zone--dragging .ds-file-selector__tile {
+  color: var(--ds-file-selector-zone-dragging-tile-text);
+}
+
+.ds-file-selector__drop-label {
+  min-width: 0;
+}
+
+/* Selected files */
+.ds-file-selector__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-file-selector__file {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-3);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-file-selector-file-bg);
+  box-shadow: var(--ds-file-selector-file-shadow);
+}
+
+.ds-file-selector__file-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--ds-size-button-md);
+  height: var(--ds-size-button-md);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-file-selector-file-icon-bg);
+  color: var(--ds-file-selector-file-icon-text);
+}
+.ds-file-selector__file-icon > svg {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+
+.ds-file-selector__file-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.ds-file-selector__file-name {
+  overflow: hidden;
+  color: var(--ds-file-selector-file-name-text);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-file-selector__file-size {
+  color: var(--ds-file-selector-file-size-text);
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-normal);
+}
+
+.ds-file-selector__remove {
+  flex-shrink: 0;
+  padding-inline: var(--ds-space-1);
+}
+.ds-file-selector__remove svg {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-file-selector__zone {
+    transition: none;
+  }
+}

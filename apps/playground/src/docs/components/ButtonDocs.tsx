@@ -1,4 +1,4 @@
-import { Button } from '@my-ds/ui';
+import { Button, Icon } from '@my-ds/ui';
 import { useState } from 'react';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
@@ -46,10 +46,10 @@ export function ButtonDocs() {
           <Button loading={loading} onClick={save}>{loading ? 'Saving…' : 'Click to load'}</Button>
         </Example>
 
-        <Example title="With icons" code={`<Button leadingIcon="+">New project</Button>
-<Button variant="secondary" trailingIcon="→">Continue</Button>`}>
-          <Button leadingIcon="+">New project</Button>
-          <Button variant="secondary" trailingIcon="→">Continue</Button>
+        <Example title="With icons" code={`<Button leadingIcon={<Icon name="add" />}>New project</Button>
+<Button variant="secondary" trailingIcon={<Icon name="arrow-right" />}>Continue</Button>`}>
+          <Button leadingIcon={<Icon name="add" />}>New project</Button>
+          <Button variant="secondary" trailingIcon={<Icon name="arrow-right" />}>Continue</Button>
         </Example>
 
         <Example title="Full width" code={`<Button fullWidth>Continue</Button>`}>

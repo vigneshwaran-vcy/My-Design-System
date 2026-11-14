@@ -1,0 +1,14 @@
+{
+  "text": "{color.text.muted}",
+  "link-text": "{color.text.muted}",
+  "link-text-hover": "{color.text.default}",
+  "link-bg-hover": "{color.bg.neutral.hover}",
+  "link-bg-active": "{color.bg.neutral.active}",
+  "link-current-text": "{color.text.default}",
+  "separator-text": "{color.text.disabled}",
+  "ellipsis-text": "{color.text.muted}",
+  "ellipsis-text-hover": "{color.text.default}",
+  "ellipsis-bg-hover": "{color.bg.neutral.hover}",
+  "ellipsis-bg-active": "{color.bg.neutral.active}",
+  "link-ring-focus": "{color.border.focus}"
+}

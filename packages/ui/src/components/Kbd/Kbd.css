@@ -9,9 +9,9 @@
   padding-inline: var(--ds-space-2);
   border: var(--ds-border-width-thin) solid transparent;
   border-radius: var(--ds-radius-sm);
-  background-color: var(--ds-color-bg-subtle);
-  box-shadow: var(--ds-shadow-flat);
-  color: var(--ds-color-text-muted);
+  background-color: var(--ds-kbd-bg);
+  box-shadow: var(--ds-kbd-shadow);
+  color: var(--ds-kbd-text);
   font-family: var(--ds-font-family-mono);
   font-size: var(--ds-font-size-xs);
   font-weight: var(--ds-font-weight-medium);
@@ -36,7 +36,7 @@
   vertical-align: middle;
 }
 .ds-kbd-group__separator {
-  color: var(--ds-color-text-muted);
+  color: var(--ds-kbd-group-separator-text);
   font-family: var(--ds-font-family-sans);
   font-size: var(--ds-font-size-xs);
   line-height: 1;

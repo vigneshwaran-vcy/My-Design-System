@@ -1,17 +1,17 @@
-import { Button, Menu, type MenuItem } from '@my-ds/ui';
+import { Button, Menu, type MenuItem, Icon } from '@my-ds/ui';
 import { useState } from 'react';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
 const pageActions: MenuItem[] = [
-  { id: 'rename', label: 'Rename', icon: '✎', shortcut: '⌘R' },
-  { id: 'duplicate', label: 'Duplicate', icon: '⧉', shortcut: '⌘D' },
-  { id: 'move', label: 'Move to…', icon: '→' },
+  { id: 'rename', label: 'Rename', icon: <Icon name="pen" />, shortcut: '⌘R' },
+  { id: 'duplicate', label: 'Duplicate', icon: <Icon name="copy" />, shortcut: '⌘D' },
+  { id: 'move', label: 'Move to…', icon: <Icon name="arrow-right" /> },
   { id: 'sep-1', type: 'separator' },
   { id: 'share-label', type: 'label', label: 'Sharing' },
-  { id: 'copy-link', label: 'Copy link', icon: '⛓' },
-  { id: 'publish', label: 'Publish to web', icon: '↗', disabled: true },
+  { id: 'copy-link', label: 'Copy link', icon: <Icon name="link" /> },
+  { id: 'publish', label: 'Publish to web', icon: <Icon name="arrow-right-up" />, disabled: true },
   { id: 'sep-2', type: 'separator' },
-  { id: 'delete', label: 'Delete', icon: '🗑', shortcut: '⌫', danger: true },
+  { id: 'delete', label: 'Delete', icon: <Icon name="trash" />, shortcut: '⌫', danger: true },
 ];
 
 const rowActions: MenuItem[] = [
@@ -31,8 +31,8 @@ export function MenuDocs() {
         <Example
           title="Actions — try arrows, Home/End, typing a letter, Enter, Escape"
           code={`const items: MenuItem[] = [
-  { id: 'rename', label: 'Rename', icon: '✎', shortcut: '⌘R' },
-  { id: 'duplicate', label: 'Duplicate', icon: '⧉', shortcut: '⌘D' },
+  { id: 'rename', label: 'Rename', icon: <Icon name="pen" />, shortcut: '⌘R' },
+  { id: 'duplicate', label: 'Duplicate', icon: <Icon name="copy" />, shortcut: '⌘D' },
   { id: 'sep', type: 'separator' },
   { id: 'share', type: 'label', label: 'Sharing' },
   { id: 'publish', label: 'Publish to web', disabled: true },
@@ -48,10 +48,10 @@ export function MenuDocs() {
 
         <Example
           title="Aligned to the end — icon-only trigger"
-          code={`<Menu placement="bottom-end" trigger={<Button variant="ghost" aria-label="More options">⋯</Button>} items={items} />`}
+          code={`<Menu placement="bottom-end" trigger={<Button variant="ghost" aria-label="More options"><Icon name="menu-dots" /></Button>} items={items} />`}
         >
           <div style={{ marginLeft: 'auto' }}>
-            <Menu placement="bottom-end" trigger={<Button variant="ghost" aria-label="More options">⋯</Button>} items={rowActions} />
+            <Menu placement="bottom-end" trigger={<Button variant="ghost" aria-label="More options"><Icon name="menu-dots" /></Button>} items={rowActions} />
           </div>
         </Example>
 

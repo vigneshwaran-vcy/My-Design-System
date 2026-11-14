@@ -2,7 +2,7 @@
   font-family: var(--ds-font-family-sans);
   font-size: var(--ds-font-size-sm);
   line-height: var(--ds-font-line-height-tight);
-  color: var(--ds-color-text-muted);
+  color: var(--ds-breadcrumb-text);
 }
 
 .ds-breadcrumb__list {
@@ -31,7 +31,7 @@
   padding: var(--ds-space-1) var(--ds-space-2);
   margin-inline: calc(var(--ds-space-1) * -1);
   border-radius: var(--ds-radius-sm);
-  color: var(--ds-color-text-muted);
+  color: var(--ds-breadcrumb-link-text);
   text-decoration: none;
   white-space: nowrap;
   transition:
@@ -40,14 +40,14 @@
     box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 a.ds-breadcrumb__link:hover {
-  color: var(--ds-color-text);
-  background-color: var(--ds-color-bg-neutral-hover);
+  color: var(--ds-breadcrumb-link-text-hover);
+  background-color: var(--ds-breadcrumb-link-bg-hover);
 }
 a.ds-breadcrumb__link:active {
-  background-color: var(--ds-color-bg-neutral-active);
+  background-color: var(--ds-breadcrumb-link-bg-active);
 }
 .ds-breadcrumb__link--current {
-  color: var(--ds-color-text);
+  color: var(--ds-breadcrumb-link-current-text);
   font-weight: var(--ds-font-weight-medium);
 }
 .ds-breadcrumb__label {
@@ -73,7 +73,7 @@ a.ds-breadcrumb__link:active {
   justify-content: center;
   width: var(--ds-size-icon-sm);
   height: var(--ds-size-icon-sm);
-  color: var(--ds-color-text-disabled);
+  color: var(--ds-breadcrumb-separator-text);
   user-select: none;
 }
 .ds-breadcrumb__separator > svg {
@@ -92,7 +92,7 @@ a.ds-breadcrumb__link:active {
   border: var(--ds-border-width-thin) solid transparent;
   border-radius: var(--ds-radius-sm);
   background: transparent;
-  color: var(--ds-color-text-muted);
+  color: var(--ds-breadcrumb-ellipsis-text);
   font: inherit;
   cursor: pointer;
   transition:
@@ -101,18 +101,18 @@ a.ds-breadcrumb__link:active {
     box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 .ds-breadcrumb__ellipsis:hover {
-  color: var(--ds-color-text);
-  background-color: var(--ds-color-bg-neutral-hover);
+  color: var(--ds-breadcrumb-ellipsis-text-hover);
+  background-color: var(--ds-breadcrumb-ellipsis-bg-hover);
 }
 .ds-breadcrumb__ellipsis:active {
-  background-color: var(--ds-color-bg-neutral-active);
+  background-color: var(--ds-breadcrumb-ellipsis-bg-active);
 }
 
 /* Soft focus ring at radius-sm; the transparent outline keeps focus visible in forced-colors mode. */
 .ds-breadcrumb__link:focus-visible,
 .ds-breadcrumb__ellipsis:focus-visible {
   outline: var(--ds-border-width-thick) solid transparent;
-  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-color-border-focus);
+  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-breadcrumb-link-ring-focus);
 }
 
 @media (prefers-reduced-motion: reduce) {

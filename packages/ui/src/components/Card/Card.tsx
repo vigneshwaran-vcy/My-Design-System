@@ -2,7 +2,7 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { cx } from '../../utils/cx';
 import './Card.css';
 
-export type CardVariant = 'elevated' | 'outlined' | 'filled' | 'glow';
+export type CardVariant = 'elevated' | 'outlined' | 'filled' | 'ai';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
 export interface CardProps extends HTMLAttributes<HTMLElement> {

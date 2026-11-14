@@ -1,4 +1,4 @@
-import { Badge } from '@my-ds/ui';
+import { Badge, Icon } from '@my-ds/ui';
 import { useState } from 'react';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
@@ -56,9 +56,9 @@ export function BadgeDocs() {
           <Badge dot>Invited</Badge>
         </Example>
 
-        <Example title="With icon" code={`<Badge icon="★" variant="accent">Featured</Badge>`}>
-          <Badge icon="★" variant="accent">Featured</Badge>
-          <Badge icon="⚑" variant="warn" appearance="solid">Flagged</Badge>
+        <Example title="With icon" code={`<Badge icon={<Icon name="star" />} variant="accent">Featured</Badge>`}>
+          <Badge icon={<Icon name="star" />} variant="accent">Featured</Badge>
+          <Badge icon={<Icon name="flag" />} variant="warn" appearance="solid">Flagged</Badge>
         </Example>
 
         <Example

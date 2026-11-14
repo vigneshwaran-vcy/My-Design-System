@@ -20,10 +20,10 @@
 }
 
 .ds-spinner--accent {
-  color: var(--ds-color-text-accent);
+  color: var(--ds-spinner-accent-text);
 }
 .ds-spinner--muted {
-  color: var(--ds-color-text-muted);
+  color: var(--ds-spinner-muted-text);
 }
 
 .ds-spinner__ring {

@@ -1,0 +1,93 @@
+/*
+ * Scoped tabs, built on Tabs (underline variant, restyled). The selected tab is a surface that
+ * joins the panel below it: a strip under the tab covers the panel's 1px ring so the two read as
+ * one shape. The panel is an inset surface (shadow-surface ring) at radius xl - space-3 inside a
+ * tinted frame (bg-frame, padding space-3, radius xl), so the corners stay concentric.
+ * Selectors are doubled (.ds-scoped-tabs.ds-tabs) to win over the Tabs underline rules.
+ */
+.ds-scoped-tabs.ds-tabs {
+  --scoped-tabs-panel-radius: calc(var(--ds-radius-xl) - var(--ds-space-3));
+  --scoped-tabs-panel-padding: var(--ds-space-3);
+  gap: 0;
+}
+.ds-scoped-tabs--sm.ds-tabs {
+  --scoped-tabs-panel-padding: var(--ds-space-2);
+}
+.ds-scoped-tabs--framed.ds-tabs {
+  padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-3);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-xl);
+  background-color: var(--ds-scoped-tabs-framed-tabs-bg);
+}
+
+/* Tab row: tabs start after the panel's corner radius; the bottom padding holds the joining strip. */
+.ds-scoped-tabs.ds-tabs .ds-tabs__list {
+  position: relative;
+  z-index: 1;
+  gap: var(--ds-space-1);
+  padding: 0 var(--scoped-tabs-panel-radius) var(--ds-border-width-thin);
+  border-bottom: 0;
+}
+
+.ds-scoped-tabs.ds-tabs .ds-tabs__tab {
+  margin-bottom: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md) var(--ds-radius-md) 0 0;
+}
+.ds-scoped-tabs.ds-tabs .ds-tabs__tab:hover:not(:disabled, .ds-tabs__tab--selected) {
+  background-color: var(--ds-scoped-tabs-tabs-tab-bg-hover);
+}
+.ds-scoped-tabs--framed.ds-tabs .ds-tabs__tab:hover:not(:disabled, .ds-tabs__tab--selected) {
+  background-color: var(--ds-scoped-tabs-framed-tabs-tab-bg-hover);
+}
+.ds-scoped-tabs.ds-tabs .ds-tabs__tab:active:not(:disabled, .ds-tabs__tab--selected) {
+  background-color: var(--ds-scoped-tabs-tabs-tab-bg-active);
+}
+.ds-scoped-tabs.ds-tabs .ds-tabs__tab--selected {
+  border-color: transparent;
+  background-color: var(--ds-scoped-tabs-tabs-tab-selected-bg);
+  color: var(--ds-scoped-tabs-tabs-tab-selected-text);
+}
+/* Joining strip: covers the tab's bottom border and the panel ring right under the tab. */
+.ds-scoped-tabs.ds-tabs .ds-tabs__tab--selected::after {
+  content: '';
+  position: absolute;
+  inset-inline: calc(var(--ds-border-width-thin) * -1);
+  bottom: calc(var(--ds-border-width-thin) * -2);
+  height: calc(var(--ds-border-width-thin) * 2);
+  background-color: var(--ds-scoped-tabs-tabs-tab-selected-after-bg);
+}
+.ds-scoped-tabs--plain.ds-tabs .ds-tabs__tab--selected {
+  box-shadow: 0 0 0 var(--ds-border-width-thin) var(--ds-scoped-tabs-plain-tabs-tab-selected-ring);
+}
+.ds-scoped-tabs.ds-tabs .ds-tabs__tab--selected:focus-visible {
+  box-shadow: inset 0 0 0 var(--ds-border-width-thick) var(--ds-scoped-tabs-tabs-tab-selected-ring-focus);
+}
+
+/* Panel: the inset surface the selected tab sits on. */
+.ds-scoped-tabs.ds-tabs .ds-tabs__panel {
+  position: relative;
+  padding: var(--scoped-tabs-panel-padding);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--scoped-tabs-panel-radius);
+  background-color: var(--ds-scoped-tabs-tabs-panel-bg);
+  box-shadow: var(--ds-scoped-tabs-tabs-panel-shadow);
+  color: var(--ds-scoped-tabs-tabs-panel-text);
+  transition: box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-scoped-tabs.ds-tabs .ds-tabs__panel:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-radius: var(--scoped-tabs-panel-radius);
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-scoped-tabs-tabs-panel-ring-focus),
+    var(--ds-scoped-tabs-tabs-panel-halo-focus);
+}
+.ds-scoped-tabs--sm.ds-tabs .ds-tabs__panel {
+  font-size: var(--ds-font-size-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-scoped-tabs.ds-tabs .ds-tabs__panel {
+    transition: none;
+  }
+}

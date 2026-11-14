@@ -6,7 +6,7 @@
   --button-bg: none;
   --button-bg-hover: none;
   --button-bg-active: none;
-  --button-color: var(--ds-color-text);
+  --button-color: var(--ds-button-color);
   --button-color-hover: var(--button-color);
   --button-border: transparent;
   --button-border-hover: var(--button-border);
@@ -18,8 +18,8 @@
    * Selected (aria-pressed="true") look; each variant overrides these. They must not reference
    * --button-border/--button-shadow, which the selected rule points back at them (a cycle).
    */
-  --button-bg-selected: var(--ds-gradient-accent-subtle-hover);
-  --button-color-selected: var(--ds-color-text-accent);
+  --button-bg-selected: var(--ds-button-bg-selected);
+  --button-color-selected: var(--ds-button-color-selected);
   --button-border-selected: transparent;
   --button-shadow-selected: 0 0 transparent;
   /* The shadow for the current state; focus adds its ring on top instead of replacing it. */
@@ -99,8 +99,8 @@
   outline: var(--ds-border-width-thick) solid transparent;
   outline-offset: var(--ds-border-width-thick);
   box-shadow:
-    0 0 0 var(--ds-border-width-thick) var(--ds-color-bg-canvas),
-    0 0 0 calc(var(--ds-border-width-thick) * 2) var(--ds-color-border-focus),
+    0 0 0 var(--ds-border-width-thick) var(--ds-button-gap-focus),
+    0 0 0 calc(var(--ds-border-width-thick) * 2) var(--ds-button-ring-focus),
     var(--button-shadow-state);
 }
 
@@ -131,66 +131,66 @@
 
 /* Variants */
 .ds-button--primary {
-  --button-bg: var(--ds-gradient-accent);
-  --button-bg-hover: var(--ds-gradient-accent-hover);
-  --button-bg-active: var(--ds-gradient-accent-active);
-  --button-color: var(--ds-color-text-on-accent);
-  --button-shadow: var(--ds-shadow-raised);
-  --button-shadow-hover: var(--ds-shadow-raised-hover);
-  --button-shadow-active: var(--ds-shadow-pressed);
+  --button-bg: var(--ds-button-primary-bg);
+  --button-bg-hover: var(--ds-button-primary-bg-hover);
+  --button-bg-active: var(--ds-button-primary-bg-active);
+  --button-color: var(--ds-button-primary-color);
+  --button-shadow: var(--ds-button-primary-shadow);
+  --button-shadow-hover: var(--ds-button-primary-shadow-hover);
+  --button-shadow-active: var(--ds-button-primary-shadow-active);
   --button-filter-hover: brightness(1.03);
-  --button-bg-selected: var(--ds-gradient-accent-active);
-  --button-color-selected: var(--ds-color-text-on-accent);
-  --button-shadow-selected: var(--ds-shadow-pressed);
+  --button-bg-selected: var(--ds-button-primary-bg-selected);
+  --button-color-selected: var(--ds-button-primary-color-selected);
+  --button-shadow-selected: var(--ds-button-primary-shadow-selected);
 }
 
 /* Flat: solid fill, a 1px ring edge and a small soft shadow; no gradient or sheen. */
 .ds-button--secondary {
-  --button-bg: linear-gradient(var(--ds-color-bg-surface), var(--ds-color-bg-surface));
-  --button-bg-hover: linear-gradient(var(--ds-color-bg-neutral-hover), var(--ds-color-bg-neutral-hover));
-  --button-bg-active: linear-gradient(var(--ds-color-bg-neutral-active), var(--ds-color-bg-neutral-active));
+  --button-bg: linear-gradient(var(--ds-button-secondary-bg), var(--ds-button-secondary-bg));
+  --button-bg-hover: linear-gradient(var(--ds-button-secondary-bg-hover), var(--ds-button-secondary-bg-hover));
+  --button-bg-active: linear-gradient(var(--ds-button-secondary-bg-active), var(--ds-button-secondary-bg-active));
   /* The edge is the 1px ring in shadow-flat; the transparent border shows in forced-colors mode. */
   --button-border: transparent;
   --button-border-hover: transparent;
-  --button-shadow: var(--ds-shadow-flat);
-  --button-shadow-hover: var(--ds-shadow-flat-hover);
-  --button-shadow-active: var(--ds-shadow-flat);
-  --button-bg-selected: var(--ds-gradient-accent-subtle), linear-gradient(var(--ds-color-bg-surface), var(--ds-color-bg-surface));
-  --button-border-selected: var(--ds-color-border-accent);
+  --button-shadow: var(--ds-button-secondary-shadow);
+  --button-shadow-hover: var(--ds-button-secondary-shadow-hover);
+  --button-shadow-active: var(--ds-button-secondary-shadow-active);
+  --button-bg-selected: var(--ds-button-secondary-bg-selected), linear-gradient(var(--ds-button-secondary-bg-selected-base), var(--ds-button-secondary-bg-selected-base));
+  --button-border-selected: var(--ds-button-secondary-border-selected);
   --button-shadow-selected: 0 0 transparent;
 }
 
 .ds-button--soft {
-  --button-bg: var(--ds-gradient-accent-subtle);
-  --button-bg-hover: var(--ds-gradient-accent-subtle-hover);
-  --button-bg-active: var(--ds-gradient-accent-subtle-active);
-  --button-color: var(--ds-color-text-accent);
+  --button-bg: var(--ds-button-soft-bg);
+  --button-bg-hover: var(--ds-button-soft-bg-hover);
+  --button-bg-active: var(--ds-button-soft-bg-active);
+  --button-color: var(--ds-button-soft-color);
   /* Flat on hover: only the tint deepens, no shadow or sheen. */
-  --button-shadow-active: var(--ds-shadow-inset);
-  --button-bg-selected: var(--ds-gradient-accent-subtle-active);
-  --button-border-selected: var(--ds-color-border-accent);
-  --button-shadow-selected: var(--ds-shadow-inset);
+  --button-shadow-active: var(--ds-button-soft-shadow-active);
+  --button-bg-selected: var(--ds-button-soft-bg-selected);
+  --button-border-selected: var(--ds-button-soft-border-selected);
+  --button-shadow-selected: var(--ds-button-soft-shadow-selected);
 }
 
 .ds-button--ghost {
-  --button-bg-hover: var(--ds-gradient-accent-subtle);
-  --button-bg-active: var(--ds-gradient-accent-subtle-hover);
-  --button-color-hover: var(--ds-color-text-accent);
-  --button-bg-selected: var(--ds-gradient-accent-subtle-hover);
+  --button-bg-hover: var(--ds-button-ghost-bg-hover);
+  --button-bg-active: var(--ds-button-ghost-bg-active);
+  --button-color-hover: var(--ds-button-ghost-color-hover);
+  --button-bg-selected: var(--ds-button-ghost-bg-selected);
 }
 
 .ds-button--danger {
-  --button-bg: var(--ds-gradient-danger);
-  --button-bg-hover: var(--ds-gradient-danger-hover);
-  --button-bg-active: var(--ds-gradient-danger-active);
-  --button-color: var(--ds-color-text-on-danger);
-  --button-shadow: var(--ds-shadow-raised);
-  --button-shadow-hover: var(--ds-shadow-raised-hover);
-  --button-shadow-active: var(--ds-shadow-pressed);
+  --button-bg: var(--ds-button-danger-bg);
+  --button-bg-hover: var(--ds-button-danger-bg-hover);
+  --button-bg-active: var(--ds-button-danger-bg-active);
+  --button-color: var(--ds-button-danger-color);
+  --button-shadow: var(--ds-button-danger-shadow);
+  --button-shadow-hover: var(--ds-button-danger-shadow-hover);
+  --button-shadow-active: var(--ds-button-danger-shadow-active);
   --button-filter-hover: brightness(1.03);
-  --button-bg-selected: var(--ds-gradient-danger-active);
-  --button-color-selected: var(--ds-color-text-on-danger);
-  --button-shadow-selected: var(--ds-shadow-pressed);
+  --button-bg-selected: var(--ds-button-danger-bg-selected);
+  --button-color-selected: var(--ds-button-danger-color-selected);
+  --button-shadow-selected: var(--ds-button-danger-shadow-selected);
 }
 
 /*
@@ -221,9 +221,9 @@
 .ds-button:disabled {
   --button-bg: none;
   --button-border: transparent;
-  --button-color: var(--ds-color-text-disabled);
+  --button-color: var(--ds-button-color-disabled);
   --button-shadow: 0 0 transparent;
-  background-color: var(--ds-color-bg-disabled);
+  background-color: var(--ds-button-bg-disabled);
   cursor: not-allowed;
 }
 /* Loading keeps the variant's colours so the button doesn't flash grey mid-action. */

@@ -1,26 +1,26 @@
 .ds-progress {
-  --progress-fill: var(--ds-color-bg-accent);
-  --progress-track: var(--ds-color-bg-neutral-hover);
+  --progress-fill: var(--ds-progress-fill);
+  --progress-track: var(--ds-progress-track);
   --progress-thickness: var(--ds-space-2);
   --progress-ring-size: var(--ds-size-avatar-md);
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-2);
   font-family: var(--ds-font-family-sans);
-  color: var(--ds-color-text);
+  color: var(--ds-progress-text);
 }
 
 .ds-progress--accent {
-  --progress-fill: var(--ds-color-bg-accent);
+  --progress-fill: var(--ds-progress-accent-fill);
 }
 .ds-progress--success {
-  --progress-fill: var(--ds-color-bg-success);
+  --progress-fill: var(--ds-progress-success-fill);
 }
 .ds-progress--warn {
-  --progress-fill: var(--ds-color-bg-warn);
+  --progress-fill: var(--ds-progress-warn-fill);
 }
 .ds-progress--danger {
-  --progress-fill: var(--ds-color-bg-danger);
+  --progress-fill: var(--ds-progress-danger-fill);
 }
 
 /* Bar heights via space tokens: sm 4 · md 8 · lg 12. Ring diameters via avatar sizes: sm 32 · md 40 · lg 48 */
@@ -52,7 +52,7 @@
   font-size: var(--ds-font-size-xs);
   font-weight: var(--ds-font-weight-medium);
   font-variant-numeric: tabular-nums;
-  color: var(--ds-color-text-muted);
+  color: var(--ds-progress-value-text);
   line-height: var(--ds-font-line-height-tight);
 }
 
@@ -135,14 +135,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: var(--ds-font-size-2xs);
-  color: var(--ds-color-text);
+  color: var(--ds-progress-circle-value-text);
 }
 .ds-progress--circle.ds-progress--lg .ds-progress__value {
   font-size: var(--ds-font-size-xs);
 }
 .ds-progress--circle .ds-progress__label {
   font-size: var(--ds-font-size-xs);
-  color: var(--ds-color-text-muted);
+  color: var(--ds-progress-circle-label-text);
   font-weight: var(--ds-font-weight-regular);
 }
 

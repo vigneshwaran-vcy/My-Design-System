@@ -1,0 +1,16 @@
+{
+  "framed-tabs-bg": "{color.bg.frame}",
+  "tabs-tab-bg-hover": "{color.bg.neutral.hover}",
+  "framed-tabs-tab-bg-hover": "{color.bg.neutral.active}",
+  "tabs-tab-bg-active": "{color.bg.neutral.active}",
+  "tabs-tab-selected-bg": "{color.bg.surface}",
+  "tabs-tab-selected-text": "{color.text.default}",
+  "tabs-tab-selected-after-bg": "{color.bg.surface}",
+  "plain-tabs-tab-selected-ring": "{color.border.default}",
+  "tabs-tab-selected-ring-focus": "{color.border.focus}",
+  "tabs-panel-bg": "{color.bg.surface}",
+  "tabs-panel-shadow": "{shadow.surface}",
+  "tabs-panel-text": "{color.text.default}",
+  "tabs-panel-ring-focus": "{color.border.focus}",
+  "tabs-panel-halo-focus": "{shadow.focus}"
+}

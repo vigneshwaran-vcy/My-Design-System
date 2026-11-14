@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 import { getFocusable } from '../../utils/focus';
 import { Button } from '../Button';
 import './Modal.css';
@@ -160,9 +161,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
             </div>
             {dismissible && (
               <Button ref={closeRef} variant="ghost" size="xs" aria-label="Close" className="ds-modal__close" onClick={onClose}>
-                <svg viewBox="0 0 20 20" aria-hidden="true" className="ds-modal__close-icon">
-                  <path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-                </svg>
+                <Icon name="close" className="ds-modal__close-icon" />
               </Button>
             )}
           </div>

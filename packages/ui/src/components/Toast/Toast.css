@@ -4,11 +4,11 @@
   z-index: var(--ds-layer-toast);
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-3);
+  gap: var(--ds-space-2);
   box-sizing: border-box;
   max-width: 100%;
   max-height: 100%;
-  padding: var(--ds-space-6);
+  padding: var(--ds-space-4);
   overflow: hidden;
   pointer-events: none;
 }
@@ -38,7 +38,7 @@
 }
 
 .ds-toast {
-  --toast-accent: var(--ds-color-bg-accent);
+  --toast-accent: var(--ds-toast-accent);
 
   position: relative;
   display: flex;
@@ -52,9 +52,9 @@
   /* Solid surface with a 1px ring edge in the shadow; the transparent border shows in forced-colors mode. */
   border: var(--ds-border-width-thin) solid transparent;
   border-radius: var(--ds-radius-lg);
-  background-color: var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-overlay);
-  color: var(--ds-color-text);
+  background-color: var(--ds-toast-bg);
+  box-shadow: var(--ds-toast-shadow);
+  color: var(--ds-toast-text);
   font-family: var(--ds-font-family-sans);
   font-size: var(--ds-font-size-sm);
   line-height: var(--ds-font-line-height-normal);
@@ -73,19 +73,19 @@
 }
 
 .ds-toast--neutral {
-  --toast-accent: var(--ds-color-border-strong);
+  --toast-accent: var(--ds-toast-neutral-accent);
 }
 .ds-toast--info {
-  --toast-accent: var(--ds-color-bg-accent);
+  --toast-accent: var(--ds-toast-info-accent);
 }
 .ds-toast--success {
-  --toast-accent: var(--ds-color-bg-success);
+  --toast-accent: var(--ds-toast-success-accent);
 }
 .ds-toast--warn {
-  --toast-accent: var(--ds-color-bg-warn);
+  --toast-accent: var(--ds-toast-warn-accent);
 }
 .ds-toast--danger {
-  --toast-accent: var(--ds-color-bg-danger);
+  --toast-accent: var(--ds-toast-danger-accent);
 }
 
 .ds-toast__icon {
@@ -97,7 +97,7 @@
   height: var(--ds-size-icon-md);
   margin-block-start: calc(var(--ds-border-width-thin) * -1);
   border-radius: var(--ds-radius-full);
-  color: var(--ds-color-text-inverse);
+  color: var(--ds-toast-icon-text);
   background-color: var(--toast-accent);
 }
 .ds-toast__icon svg {
@@ -106,16 +106,16 @@
 }
 /* Icon glyphs sit on their solid status fill, so they use the matching on-colour. */
 .ds-toast--info .ds-toast__icon {
-  color: var(--ds-color-text-on-accent);
+  color: var(--ds-toast-info-icon-text);
 }
 .ds-toast--success .ds-toast__icon {
-  color: var(--ds-color-text-on-success);
+  color: var(--ds-toast-success-icon-text);
 }
 .ds-toast--warn .ds-toast__icon {
-  color: var(--ds-color-text-on-warn);
+  color: var(--ds-toast-warn-icon-text);
 }
 .ds-toast--danger .ds-toast__icon {
-  color: var(--ds-color-text-on-danger);
+  color: var(--ds-toast-danger-icon-text);
 }
 
 .ds-toast__content {
@@ -129,11 +129,11 @@
 .ds-toast__title {
   font-weight: var(--ds-font-weight-semibold);
   line-height: var(--ds-font-line-height-tight);
-  color: var(--ds-color-text);
+  color: var(--ds-toast-title-text);
   overflow-wrap: anywhere;
 }
 .ds-toast__description {
-  color: var(--ds-color-text-muted);
+  color: var(--ds-toast-description-text);
   font-size: var(--ds-font-size-sm);
   overflow-wrap: anywhere;
 }
@@ -149,7 +149,7 @@
   height: var(--ds-size-button-sm);
   margin: calc(var(--ds-space-1) * -1) calc(var(--ds-space-1) * -1) 0 0;
   padding-inline: 0;
-  color: var(--ds-color-text-muted);
+  color: var(--ds-toast-close-text);
 }
 .ds-toast__close-icon {
   display: block;

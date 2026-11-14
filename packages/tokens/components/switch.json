@@ -1,0 +1,13 @@
+{
+  "text": "{color.text.default}",
+  "control-bg": "{color.bg.track.default}",
+  "thumb-bg": "{color.text.onAccent}",
+  "thumb-shadow": "{shadow.knob}",
+  "control-bg-checked": "{color.bg.accent.default}",
+  "control-bg-hover": "{color.bg.track.hover}",
+  "control-bg-checked-hover": "{color.bg.accent.hover}",
+  "control-shadow-focus": "{shadow.focus}",
+  "description-text": "{color.text.muted}",
+  "disabled-label-text": "{color.text.disabled}",
+  "disabled-description-text": "{color.text.disabled}"
+}

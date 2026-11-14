@@ -3,9 +3,9 @@
  * subtle = tinted fill + coloured text, solid = full fill + on-colour text.
  */
 .ds-badge {
-  --badge-bg: var(--ds-color-bg-subtle);
-  --badge-color: var(--ds-color-text);
-  --badge-dot: var(--ds-color-text-muted);
+  --badge-bg: var(--ds-badge-bg);
+  --badge-color: var(--ds-badge-color);
+  --badge-dot: var(--ds-badge-dot);
   --badge-edge: transparent;
 
   display: inline-flex;
@@ -35,64 +35,64 @@
 
 /* Subtle: tinted fill + coloured text */
 .ds-badge--subtle.ds-badge--neutral {
-  --badge-bg: var(--ds-color-bg-subtle);
-  --badge-color: var(--ds-color-text);
-  --badge-dot: var(--ds-color-text-muted);
+  --badge-bg: var(--ds-badge-subtle-neutral-bg);
+  --badge-color: var(--ds-badge-subtle-neutral-color);
+  --badge-dot: var(--ds-badge-subtle-neutral-dot);
 }
 .ds-badge--subtle.ds-badge--accent {
-  --badge-bg: var(--ds-color-bg-accent-subtle);
-  --badge-color: var(--ds-color-text-accent);
-  --badge-dot: var(--ds-color-bg-accent);
+  --badge-bg: var(--ds-badge-subtle-accent-bg);
+  --badge-color: var(--ds-badge-subtle-accent-color);
+  --badge-dot: var(--ds-badge-subtle-accent-dot);
 }
 .ds-badge--subtle.ds-badge--success {
-  --badge-bg: var(--ds-color-bg-success-subtle);
-  --badge-color: var(--ds-color-text-success);
-  --badge-dot: var(--ds-color-bg-success);
+  --badge-bg: var(--ds-badge-subtle-success-bg);
+  --badge-color: var(--ds-badge-subtle-success-color);
+  --badge-dot: var(--ds-badge-subtle-success-dot);
 }
 .ds-badge--subtle.ds-badge--warn {
-  --badge-bg: var(--ds-color-bg-warn-subtle);
-  --badge-color: var(--ds-color-text-warn);
-  --badge-dot: var(--ds-color-bg-warn);
+  --badge-bg: var(--ds-badge-subtle-warn-bg);
+  --badge-color: var(--ds-badge-subtle-warn-color);
+  --badge-dot: var(--ds-badge-subtle-warn-dot);
 }
 .ds-badge--subtle.ds-badge--danger {
-  --badge-bg: var(--ds-color-bg-danger-subtle);
-  --badge-color: var(--ds-color-text-danger);
-  --badge-dot: var(--ds-color-bg-danger);
+  --badge-bg: var(--ds-badge-subtle-danger-bg);
+  --badge-color: var(--ds-badge-subtle-danger-color);
+  --badge-dot: var(--ds-badge-subtle-danger-dot);
 }
 
 /* Solid: full colour fill + on-colour text */
 .ds-badge--solid.ds-badge--neutral {
-  --badge-bg: var(--ds-color-bg-inverse);
-  --badge-color: var(--ds-color-text-inverse);
+  --badge-bg: var(--ds-badge-solid-neutral-bg);
+  --badge-color: var(--ds-badge-solid-neutral-color);
   --badge-dot: currentColor;
 }
 .ds-badge--solid.ds-badge--accent {
-  --badge-bg: var(--ds-color-bg-accent);
-  --badge-color: var(--ds-color-text-on-accent);
+  --badge-bg: var(--ds-badge-solid-accent-bg);
+  --badge-color: var(--ds-badge-solid-accent-color);
   --badge-dot: currentColor;
 }
 .ds-badge--solid.ds-badge--success {
-  --badge-bg: var(--ds-color-bg-success);
-  --badge-color: var(--ds-color-text-on-success);
+  --badge-bg: var(--ds-badge-solid-success-bg);
+  --badge-color: var(--ds-badge-solid-success-color);
   --badge-dot: currentColor;
 }
 .ds-badge--solid.ds-badge--warn {
-  --badge-bg: var(--ds-color-bg-warn);
-  --badge-color: var(--ds-color-text-on-warn);
+  --badge-bg: var(--ds-badge-solid-warn-bg);
+  --badge-color: var(--ds-badge-solid-warn-color);
   --badge-dot: currentColor;
 }
 .ds-badge--solid.ds-badge--danger {
-  --badge-bg: var(--ds-color-bg-danger);
-  --badge-color: var(--ds-color-text-on-danger);
+  --badge-bg: var(--ds-badge-solid-danger-bg);
+  --badge-color: var(--ds-badge-solid-danger-color);
   --badge-dot: currentColor;
 }
 
 /* Outline: neutral ring, no fill (same in both appearances) */
 .ds-badge--outline {
   --badge-bg: transparent;
-  --badge-color: var(--ds-color-text);
-  --badge-dot: var(--ds-color-text-muted);
-  --badge-edge: var(--ds-color-border);
+  --badge-color: var(--ds-badge-outline-color);
+  --badge-dot: var(--ds-badge-outline-dot);
+  --badge-edge: var(--ds-badge-outline-edge);
 }
 
 .ds-badge__dot {
@@ -149,7 +149,7 @@
 }
 .ds-badge__remove:hover {
   opacity: 1;
-  background-color: var(--ds-color-bg-neutral-hover);
+  background-color: var(--ds-badge-remove-bg-hover);
 }
 .ds-badge--solid .ds-badge__remove:hover {
   background-color: transparent;
@@ -157,7 +157,7 @@
 .ds-badge__remove:focus-visible {
   opacity: 1;
   outline: var(--ds-border-width-thick) solid transparent;
-  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-color-border-focus);
+  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-badge-remove-ring-focus);
 }
 .ds-badge--sm .ds-badge__remove {
   width: var(--ds-size-icon-xs);

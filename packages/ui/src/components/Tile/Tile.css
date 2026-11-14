@@ -1,0 +1,142 @@
+/*
+ * Tile: media + title + body + actions for list content.
+ *   plain  no surface (sits in a list or a frame)
+ *   card   solid surface with a 1px ring edge in shadow-surface; deepens to -hover while hovered
+ * The transparent border keeps an edge in forced-colors mode. Tiles never move.
+ */
+.ds-tile {
+  --tile-gap: var(--ds-space-3);
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--tile-gap);
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: calc(var(--ds-radius-xl) - var(--ds-space-3));
+  color: var(--ds-tile-text);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+  transition: box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+
+.ds-tile--sm {
+  --tile-gap: var(--ds-space-2);
+  font-size: var(--ds-font-size-xs);
+}
+
+.ds-tile--card {
+  padding: var(--ds-space-3);
+  background-color: var(--ds-tile-card-bg);
+  box-shadow: var(--ds-tile-card-shadow);
+}
+.ds-tile--card.ds-tile--sm {
+  padding: var(--ds-space-3);
+}
+.ds-tile--card:hover {
+  box-shadow: var(--ds-tile-card-shadow-hover);
+}
+/* Focus inside (title link or an action): 1px focus ring plus the soft halo. */
+.ds-tile--card:has(:focus-visible) {
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-tile-card-ring-focus),
+    var(--ds-tile-card-halo-focus);
+}
+
+.ds-tile__media {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-tile__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+
+.ds-tile__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+  min-width: 0;
+}
+
+.ds-tile__title {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ds-tile-title-text);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-font-line-height-tight);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Lines the title up with the centre of an xs action button. */
+  padding-block: calc((var(--ds-size-button-xs) - var(--ds-font-size-sm)) / 2 - var(--ds-border-width-thin));
+}
+.ds-tile--sm .ds-tile__title {
+  font-size: var(--ds-font-size-xs);
+}
+
+.ds-tile__link {
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-tile-link-text);
+  text-decoration: none;
+  outline: none;
+}
+.ds-tile__link:hover {
+  text-decoration: underline;
+}
+.ds-tile__link:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  text-decoration: underline;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-tile-link-ring-focus),
+    var(--ds-tile-link-halo-focus);
+}
+
+.ds-tile__actions {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--ds-space-1);
+}
+
+.ds-tile__details {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--ds-space-3);
+  row-gap: var(--ds-space-1);
+  margin: 0;
+}
+.ds-tile__detail {
+  display: contents;
+}
+.ds-tile__detail-label {
+  color: var(--ds-tile-detail-label-text);
+}
+.ds-tile__detail-value {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ds-tile-detail-value-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-tile__body {
+  color: var(--ds-tile-body-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-tile {
+    transition: none;
+  }
+}

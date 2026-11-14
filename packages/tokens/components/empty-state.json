@@ -1,0 +1,7 @@
+{
+  "text": "{color.text.default}",
+  "icon-text": "{color.text.muted}",
+  "icon-tile-bg": "{color.bg.subtle}",
+  "icon-tile-outline": "{color.border.strong}",
+  "description-text": "{color.text.muted}"
+}

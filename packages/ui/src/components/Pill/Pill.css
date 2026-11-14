@@ -1,0 +1,194 @@
+/*
+ * Pill: a compact value token. Edges are a 1px ring in the shadow (neutral) or a tint (accent, danger);
+ * the transparent border keeps an edge in forced-colors mode. Flat fills, no movement on hover.
+ */
+.ds-pill {
+  --pill-height: var(--ds-size-button-sm);
+  --pill-bg: var(--ds-pill-bg);
+  --pill-color: var(--ds-pill-color);
+  --pill-media-color: var(--ds-pill-media-color);
+  --pill-shadow: var(--ds-pill-shadow);
+  --pill-remove-hover: var(--ds-pill-remove-hover);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  box-sizing: border-box;
+  max-width: 100%;
+  height: var(--pill-height);
+  padding-inline: var(--ds-space-2);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md);
+  background-color: var(--pill-bg);
+  color: var(--pill-color);
+  box-shadow: var(--pill-shadow);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+  white-space: nowrap;
+  vertical-align: middle;
+  outline: none;
+  transition:
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+.ds-pill--sm {
+  --pill-height: var(--ds-size-button-xs);
+  padding-inline: calc(var(--ds-space-2) - var(--ds-border-width-thick));
+  border-radius: var(--ds-radius-sm);
+  font-size: var(--ds-font-size-2xs);
+}
+.ds-pill--removable {
+  padding-inline-end: var(--ds-space-1);
+}
+.ds-pill:has(.ds-pill__avatar) {
+  padding-inline-start: var(--ds-border-width-thick);
+}
+
+/* Variants */
+.ds-pill--accent {
+  --pill-bg: var(--ds-pill-accent-bg);
+  --pill-color: var(--ds-pill-accent-color);
+  --pill-media-color: var(--ds-pill-accent-media-color);
+  --pill-shadow: 0 0 transparent;
+  --pill-remove-hover: var(--ds-pill-accent-remove-hover);
+}
+.ds-pill--danger {
+  --pill-bg: var(--ds-pill-danger-bg);
+  --pill-color: var(--ds-pill-danger-color);
+  --pill-media-color: var(--ds-pill-danger-media-color);
+  --pill-shadow: 0 0 0 var(--ds-border-width-thin) var(--ds-pill-danger-shadow);
+}
+
+/* Hover: the neutral pill's edge deepens; tinted pills stay flat. */
+.ds-pill--neutral:where(:hover:not(.ds-pill--disabled)) {
+  --pill-shadow: var(--ds-pill-neutral-shadow-hover);
+}
+
+/* Focus (the pill itself inside a PillContainer): 1px focus ring plus the soft halo. */
+.ds-pill:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-pill-ring-focus),
+    var(--ds-pill-halo-focus);
+}
+
+.ds-pill--disabled {
+  --pill-bg: var(--ds-pill-disabled-bg);
+  --pill-color: var(--ds-pill-disabled-color);
+  --pill-media-color: var(--ds-pill-disabled-media-color);
+  --pill-shadow: 0 0 transparent;
+  cursor: not-allowed;
+}
+
+.ds-pill__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  color: var(--pill-media-color);
+}
+.ds-pill--sm .ds-pill__icon {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-pill__icon > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Avatars shrink to fit the pill height. */
+.ds-pill__avatar {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.ds-pill__avatar .ds-avatar {
+  --avatar-size: var(--ds-size-icon-md);
+  --avatar-font-size: var(--ds-font-size-2xs);
+}
+.ds-pill--sm .ds-pill__avatar .ds-avatar {
+  --avatar-size: var(--ds-size-icon-sm);
+}
+
+.ds-pill__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ds-pill__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+  margin: 0;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: var(--ds-opacity-70);
+  transition:
+    opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-pill--sm .ds-pill__remove {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-pill__remove > svg {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-pill__remove:hover {
+  opacity: 1;
+  background-color: var(--pill-remove-hover);
+}
+.ds-pill__remove:active {
+  background-color: var(--ds-pill-remove-bg-active);
+}
+.ds-pill__remove:focus-visible {
+  opacity: 1;
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-pill-remove-ring-focus),
+    var(--ds-pill-remove-halo-focus);
+}
+
+/* Container: a wrapping row of pills (horizontal listbox). */
+.ds-pill-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-1);
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+.ds-pill-container--framed {
+  padding: var(--ds-space-2);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-lg);
+  background-color: var(--ds-pill-container-framed-bg);
+  min-height: var(--ds-size-control-md);
+  box-sizing: border-box;
+}
+.ds-pill-container:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-pill-container-ring-focus),
+    var(--ds-pill-container-halo-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-pill,
+  .ds-pill__remove {
+    transition: none;
+  }
+}

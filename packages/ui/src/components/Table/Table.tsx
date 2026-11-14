@@ -9,6 +9,7 @@ import {
   type ThHTMLAttributes,
 } from 'react';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 import './Table.css';
 
 export type TableSize = 'sm' | 'md';
@@ -145,10 +146,10 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(functi
       {sortable ? (
         <button type="button" className="ds-table__sort" onClick={() => onSort?.(next)}>
           <span className="ds-table__sort-label">{children}</span>
-          <svg className={cx('ds-table__sort-icon', `ds-table__sort-icon--${sortDirection}`)} viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-            <path className="ds-table__sort-up" d="M8 3.5l3 3.5H5z" fill="currentColor" />
-            <path className="ds-table__sort-down" d="M8 12.5L5 9h6z" fill="currentColor" />
-          </svg>
+          <Icon
+            name={sortDirection === 'asc' ? 'alt-arrow-up' : sortDirection === 'desc' ? 'alt-arrow-down' : 'sort-vertical'}
+            className={cx('ds-table__sort-icon', `ds-table__sort-icon--${sortDirection}`)}
+          />
         </button>
       ) : (
         children

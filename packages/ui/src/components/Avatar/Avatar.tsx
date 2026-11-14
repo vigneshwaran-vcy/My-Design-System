@@ -1,5 +1,6 @@
 import { Children, forwardRef, isValidElement, useEffect, useState, type HTMLAttributes, type ReactNode } from 'react';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 import './Avatar.css';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -80,12 +81,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
           {initials}
         </span>
       ) : (
-        <svg className="ds-avatar__placeholder" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path
-            d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.4-8 5.5V21h16v-1.5c0-3.1-3.6-5.5-8-5.5Z"
-            fill="currentColor"
-          />
-        </svg>
+        <Icon name="user" className="ds-avatar__placeholder" />
       )}
       {status && <span className={cx('ds-avatar__status', `ds-avatar__status--${status}`)} aria-hidden="true" />}
     </span>

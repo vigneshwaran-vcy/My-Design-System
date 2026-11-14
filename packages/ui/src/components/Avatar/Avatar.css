@@ -1,8 +1,8 @@
 .ds-avatar {
   --avatar-size: var(--ds-size-avatar-md);
   --avatar-font-size: var(--ds-font-size-sm);
-  --avatar-bg: var(--ds-color-bg-subtle);
-  --avatar-color: var(--ds-color-text-muted);
+  --avatar-bg: var(--ds-avatar-bg);
+  --avatar-color: var(--ds-avatar-color);
   --avatar-radius: var(--ds-radius-full);
   --avatar-status-size: calc(var(--ds-space-2) + var(--ds-border-width-thick));
 
@@ -19,7 +19,7 @@
   background-color: var(--avatar-bg);
   color: var(--avatar-color);
   /* A 1px ring edge keeps light images and tints from bleeding into the surface. */
-  box-shadow: var(--ds-shadow-inset);
+  box-shadow: var(--ds-avatar-shadow);
   font-family: var(--ds-font-family-sans);
   font-size: var(--avatar-font-size);
   font-weight: var(--ds-font-weight-medium);
@@ -72,25 +72,25 @@
 
 /* Deterministic tints for initials fallbacks */
 .ds-avatar--tint-accent {
-  --avatar-bg: var(--ds-color-bg-accent-subtle);
-  --avatar-color: var(--ds-color-text-accent);
+  --avatar-bg: var(--ds-avatar-tint-accent-bg);
+  --avatar-color: var(--ds-avatar-tint-accent-color);
 }
 .ds-avatar--tint-success {
-  --avatar-bg: var(--ds-color-bg-success-subtle);
-  --avatar-color: var(--ds-color-text-success);
+  --avatar-bg: var(--ds-avatar-tint-success-bg);
+  --avatar-color: var(--ds-avatar-tint-success-color);
 }
 .ds-avatar--tint-warn {
-  --avatar-bg: var(--ds-color-bg-warn-subtle);
-  --avatar-color: var(--ds-color-text-warn);
+  --avatar-bg: var(--ds-avatar-tint-warn-bg);
+  --avatar-color: var(--ds-avatar-tint-warn-color);
 }
 .ds-avatar--tint-danger {
-  --avatar-bg: var(--ds-color-bg-danger-subtle);
-  --avatar-color: var(--ds-color-text-danger);
+  --avatar-bg: var(--ds-avatar-tint-danger-bg);
+  --avatar-color: var(--ds-avatar-tint-danger-color);
 }
 /* The "+N" bubble is neutral so it reads as a count, not a person. */
 .ds-avatar--overflow {
-  --avatar-bg: var(--ds-color-bg-neutral-hover);
-  --avatar-color: var(--ds-color-text-muted);
+  --avatar-bg: var(--ds-avatar-overflow-bg);
+  --avatar-color: var(--ds-avatar-overflow-color);
 }
 
 .ds-avatar__image {
@@ -118,25 +118,25 @@
   box-sizing: border-box;
   width: var(--avatar-status-size);
   height: var(--avatar-status-size);
-  border: var(--ds-border-width-thick) solid var(--ds-color-bg-surface);
+  border: var(--ds-border-width-thick) solid var(--ds-avatar-status-border);
   border-radius: var(--ds-radius-full);
-  background-color: var(--ds-color-bg-neutral-active);
+  background-color: var(--ds-avatar-status-bg);
   transform: translate(15%, 15%);
 }
 .ds-avatar--square .ds-avatar__status {
   transform: translate(30%, 30%);
 }
 .ds-avatar__status--online {
-  background-color: var(--ds-color-bg-success);
+  background-color: var(--ds-avatar-status-online-bg);
 }
 .ds-avatar__status--offline {
-  background-color: var(--ds-color-bg-neutral-active);
+  background-color: var(--ds-avatar-status-offline-bg);
 }
 .ds-avatar__status--busy {
-  background-color: var(--ds-color-bg-danger);
+  background-color: var(--ds-avatar-status-busy-bg);
 }
 .ds-avatar__status--away {
-  background-color: var(--ds-color-bg-warn);
+  background-color: var(--ds-avatar-status-away-bg);
 }
 
 /* Group: overlapping stack with a surface-coloured ring separating each avatar. */
@@ -165,6 +165,6 @@
 }
 .ds-avatar-group__item > .ds-avatar {
   box-shadow:
-    0 0 0 var(--ds-border-width-thick) var(--ds-color-bg-surface),
-    var(--ds-shadow-inset);
+    0 0 0 var(--ds-border-width-thick) var(--ds-avatar-group-item-gap),
+    var(--ds-avatar-group-item-shadow);
 }

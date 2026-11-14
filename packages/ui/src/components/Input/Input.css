@@ -1,7 +1,7 @@
 .ds-field {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-2);
+  gap: var(--ds-space-1);
   font-family: var(--ds-font-family-sans);
 }
 
@@ -9,10 +9,10 @@
   font-size: var(--ds-font-size-sm);
   font-weight: var(--ds-font-weight-medium);
   line-height: var(--ds-font-line-height-tight);
-  color: var(--ds-color-text);
+  color: var(--ds-input-field-label-text);
 }
 .ds-field__required {
-  color: var(--ds-color-text-danger);
+  color: var(--ds-input-field-required-text);
 }
 
 .ds-field__hint,
@@ -22,23 +22,23 @@
   line-height: var(--ds-font-line-height-normal);
 }
 .ds-field__hint {
-  color: var(--ds-color-text-muted);
+  color: var(--ds-input-field-hint-text);
 }
 .ds-field__error {
-  color: var(--ds-color-text-danger);
+  color: var(--ds-input-field-error-text);
 }
 
 .ds-input {
   width: 100%;
   box-sizing: border-box;
   height: var(--ds-size-control-md);
-  padding-inline: var(--ds-space-4);
+  padding-inline: var(--ds-space-3);
   /* The visible edge is the 1px ring in shadow-control; the transparent border shows in forced-colors mode. */
   border: var(--ds-border-width-thin) solid transparent;
-  border-radius: var(--ds-radius-control);
-  background-color: var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-control);
-  color: var(--ds-color-text);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-input-bg);
+  box-shadow: var(--ds-input-shadow);
+  color: var(--ds-input-text);
   font: inherit;
   font-size: var(--ds-font-size-sm);
   transition:
@@ -47,18 +47,18 @@
     box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 .ds-input::placeholder {
-  color: var(--ds-color-text-muted);
+  color: var(--ds-input-placeholder-text);
 }
 
 .ds-input--filled {
-  background-color: var(--ds-color-bg-subtle);
+  background-color: var(--ds-input-filled-bg);
   border-color: transparent;
   box-shadow: none;
 }
 
 .ds-input--sm {
   height: var(--ds-size-control-sm);
-  padding-inline: var(--ds-space-3);
+  padding-inline: var(--ds-space-2);
   font-size: var(--ds-font-size-xs);
   border-radius: var(--ds-radius-md);
 }
@@ -66,38 +66,38 @@
   height: var(--ds-size-control-lg);
   padding-inline: var(--ds-space-4);
   font-size: var(--ds-font-size-md);
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--ds-radius-control);
 }
 
 .ds-input:hover:not(:disabled, :focus-visible, .ds-input--filled) {
-  box-shadow: var(--ds-shadow-control-hover);
+  box-shadow: var(--ds-input-shadow-hover);
 }
 /* Soft glow ring; the transparent outline keeps focus visible in forced-colors mode. */
 .ds-input:focus-visible {
   outline: var(--ds-border-width-thick) solid transparent;
-  border-color: var(--ds-color-border-focus);
-  background-color: var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-focus);
+  border-color: var(--ds-input-border-focus);
+  background-color: var(--ds-input-bg-focus);
+  box-shadow: var(--ds-input-shadow-focus);
 }
 
 .ds-input--invalid,
 .ds-input--invalid:hover:not(:disabled, :focus-visible) {
-  border-color: var(--ds-color-border-danger);
+  border-color: var(--ds-input-invalid-border);
 }
 .ds-input--invalid:focus-visible {
-  border-color: var(--ds-color-border-danger);
-  box-shadow: var(--ds-shadow-focus-danger);
+  border-color: var(--ds-input-invalid-border-focus);
+  box-shadow: var(--ds-input-invalid-shadow-focus);
 }
 
 .ds-input:disabled {
-  background-color: var(--ds-color-bg-disabled);
-  border-color: var(--ds-color-border);
+  background-color: var(--ds-input-bg-disabled);
+  border-color: var(--ds-input-border-disabled);
   box-shadow: none;
-  color: var(--ds-color-text-disabled);
+  color: var(--ds-input-text-disabled);
   cursor: not-allowed;
 }
 .ds-field--disabled .ds-field__label {
-  color: var(--ds-color-text-disabled);
+  color: var(--ds-input-field-disabled-label-text);
 }
 
 .ds-visually-hidden {

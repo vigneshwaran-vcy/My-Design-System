@@ -1,5 +1,6 @@
 import { forwardRef, type HTMLAttributes, type MouseEvent, type ReactNode } from 'react';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 import './Badge.css';
 
 export type BadgeVariant = 'neutral' | 'accent' | 'success' | 'warn' | 'danger' | 'outline';
@@ -75,9 +76,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
           aria-label={label ? `Remove ${label}` : 'Remove'}
           onClick={onRemove}
         >
-          <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">
-            <path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          <Icon name="close" />
         </button>
       )}
     </span>

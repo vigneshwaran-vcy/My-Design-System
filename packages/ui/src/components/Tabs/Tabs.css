@@ -1,15 +1,15 @@
 .ds-tabs {
-  --tabs-tab-height: var(--ds-size-button-lg);
+  --tabs-tab-height: var(--ds-size-button-md);
   --tabs-font-size: var(--ds-font-size-sm);
   --tabs-padding-x: var(--ds-space-3);
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-4);
+  gap: var(--ds-space-3);
   font-family: var(--ds-font-family-sans);
-  color: var(--ds-color-text);
+  color: var(--ds-tabs-text);
 }
 .ds-tabs--sm {
-  --tabs-tab-height: var(--ds-size-button-md);
+  --tabs-tab-height: var(--ds-size-button-sm);
   --tabs-font-size: var(--ds-font-size-xs);
   --tabs-padding-x: var(--ds-space-2);
 }
@@ -51,7 +51,7 @@
   border: var(--ds-border-width-thin) solid transparent;
   border-radius: var(--ds-radius-md);
   background: transparent;
-  color: var(--ds-color-text-muted);
+  color: var(--ds-tabs-tab-text);
   font-family: inherit;
   font-size: var(--tabs-font-size);
   font-weight: var(--ds-font-weight-medium);
@@ -65,17 +65,17 @@
     box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 .ds-tabs__tab:hover:not(:disabled) {
-  color: var(--ds-color-text);
+  color: var(--ds-tabs-tab-text-hover);
 }
 .ds-tabs__tab:disabled {
-  color: var(--ds-color-text-disabled);
+  color: var(--ds-tabs-tab-text-disabled);
   cursor: not-allowed;
 }
 /* Focus ring sits inside the tab so a scrolling tab row can't clip it. */
 .ds-tabs__tab:focus-visible {
   outline: var(--ds-border-width-thick) solid transparent;
   outline-offset: calc(var(--ds-border-width-thick) * -1);
-  box-shadow: inset 0 0 0 var(--ds-border-width-thick) var(--ds-color-border-focus);
+  box-shadow: inset 0 0 0 var(--ds-border-width-thick) var(--ds-tabs-tab-ring-focus);
   z-index: 1;
 }
 .ds-tabs--vertical .ds-tabs__tab {
@@ -102,25 +102,25 @@
   height: var(--ds-space-4);
   padding-inline: calc(var(--ds-space-1) + var(--ds-border-width-thin));
   border-radius: var(--ds-radius-full);
-  background-color: var(--ds-color-bg-neutral-hover);
-  color: var(--ds-color-text-muted);
+  background-color: var(--ds-tabs-badge-bg);
+  color: var(--ds-tabs-badge-text);
   font-size: var(--ds-font-size-2xs);
   font-weight: var(--ds-font-weight-medium);
   line-height: 1;
 }
 .ds-tabs__tab--selected .ds-tabs__badge {
-  background-color: var(--ds-color-bg-accent-subtle);
-  color: var(--ds-color-text-accent);
+  background-color: var(--ds-tabs-tab-selected-badge-bg);
+  color: var(--ds-tabs-tab-selected-badge-text);
 }
 
 /* Underline: hairline track, thick accent indicator on the selected tab */
 .ds-tabs--underline .ds-tabs__list {
   gap: var(--ds-space-2);
-  border-bottom: var(--ds-border-width-thin) solid var(--ds-color-border);
+  border-bottom: var(--ds-border-width-thin) solid var(--ds-tabs-underline-list-border);
 }
 .ds-tabs--underline.ds-tabs--vertical .ds-tabs__list {
   border-bottom: 0;
-  border-inline-end: var(--ds-border-width-thin) solid var(--ds-color-border);
+  border-inline-end: var(--ds-border-width-thin) solid var(--ds-tabs-underline-vertical-list-border);
 }
 .ds-tabs--underline .ds-tabs__tab {
   margin-bottom: calc(var(--ds-border-width-thin) * -1);
@@ -128,11 +128,11 @@
   border-bottom: var(--ds-border-width-thick) solid transparent;
 }
 .ds-tabs--underline .ds-tabs__tab:hover:not(:disabled) {
-  background-color: var(--ds-color-bg-neutral-hover);
+  background-color: var(--ds-tabs-underline-tab-bg-hover);
 }
 .ds-tabs--underline .ds-tabs__tab--selected {
-  color: var(--ds-color-text);
-  border-bottom-color: var(--ds-color-bg-accent);
+  color: var(--ds-tabs-underline-tab-selected-text);
+  border-bottom-color: var(--ds-tabs-underline-tab-selected-border);
 }
 .ds-tabs--underline.ds-tabs--vertical .ds-tabs__tab {
   margin-bottom: 0;
@@ -143,7 +143,7 @@
 }
 .ds-tabs--underline.ds-tabs--vertical .ds-tabs__tab--selected {
   border-bottom-color: transparent;
-  border-inline-end-color: var(--ds-color-bg-accent);
+  border-inline-end-color: var(--ds-tabs-underline-vertical-tab-selected-border);
 }
 
 /* Pill: a flat neutral track with a raised, surface-coloured selected pill */
@@ -151,8 +151,8 @@
   --tabs-track-padding: var(--ds-space-1);
   gap: var(--ds-space-1);
   padding: var(--tabs-track-padding);
-  border-radius: var(--ds-radius-control);
-  background-color: var(--ds-color-bg-neutral-hover);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-tabs-pill-list-bg);
   width: fit-content;
 }
 .ds-tabs--pill .ds-tabs__tab {
@@ -160,17 +160,17 @@
   border-radius: var(--ds-radius-md);
 }
 .ds-tabs--pill .ds-tabs__tab:hover:not(:disabled, .ds-tabs__tab--selected) {
-  background-color: var(--ds-color-bg-neutral-active);
+  background-color: var(--ds-tabs-pill-tab-bg-hover);
 }
 .ds-tabs--pill .ds-tabs__tab--selected {
-  background-color: var(--ds-color-bg-surface);
-  color: var(--ds-color-text);
-  box-shadow: var(--ds-shadow-flat);
+  background-color: var(--ds-tabs-pill-tab-selected-bg);
+  color: var(--ds-tabs-pill-tab-selected-text);
+  box-shadow: var(--ds-tabs-pill-tab-selected-shadow);
 }
 .ds-tabs--pill .ds-tabs__tab--selected:focus-visible {
   box-shadow:
-    inset 0 0 0 var(--ds-border-width-thick) var(--ds-color-border-focus),
-    var(--ds-shadow-flat);
+    inset 0 0 0 var(--ds-border-width-thick) var(--ds-tabs-pill-tab-selected-ring-focus),
+    var(--ds-tabs-pill-tab-selected-shadow-focus);
 }
 
 .ds-tabs__panel {
@@ -182,7 +182,7 @@
 }
 .ds-tabs__panel:focus-visible {
   border-radius: var(--ds-radius-md);
-  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-color-border-focus);
+  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-tabs-panel-ring-focus);
 }
 
 @media (prefers-reduced-motion: reduce) {

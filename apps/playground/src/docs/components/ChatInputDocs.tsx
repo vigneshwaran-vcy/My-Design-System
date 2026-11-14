@@ -1,4 +1,4 @@
-import { Button, ChatInput } from '@my-ds/ui';
+import { Button, ChatInput, Icon } from '@my-ds/ui';
 import { useEffect, useRef, useState } from 'react';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
@@ -38,7 +38,7 @@ function ChatDemo() {
         generating={generating}
         onStop={stop}
         hint="Replies are simulated. Press Stop while it's generating."
-        actions={<Button variant="ghost" size="sm" leadingIcon="+">Attach</Button>}
+        actions={<Button variant="ghost" size="sm" leadingIcon={<Icon name="add" />}>Attach</Button>}
       />
     </div>
   );
@@ -59,7 +59,7 @@ export function ChatInputDocs() {
   generating={isGenerating}
   onStop={cancel}
   hint="Replies are simulated."
-  actions={<Button variant="ghost" size="sm" leadingIcon="+">Attach</Button>}
+  actions={<Button variant="ghost" size="sm" leadingIcon={<Icon name="add" />}>Attach</Button>}
 />`}
         >
           <ChatDemo />

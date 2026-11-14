@@ -1,0 +1,23 @@
+{
+  "heading-text": "{color.text.muted}",
+  "list-bg": "{color.bg.surface}",
+  "list-shadow": "{shadow.control}",
+  "list-text": "{color.text.default}",
+  "list-filled-bg": "{color.bg.subtle}",
+  "list-shadow-hover": "{shadow.controlHover}",
+  "list-border-focus": "{color.border.focus}",
+  "list-shadow-focus": "{shadow.focus}",
+  "list-invalid-border": "{color.border.danger}",
+  "list-invalid-border-focus": "{color.border.danger}",
+  "list-invalid-shadow-focus": "{shadow.focusDanger}",
+  "list-bg-disabled": "{color.bg.disabled}",
+  "list-border-disabled": "{color.border.default}",
+  "list-text-disabled": "{color.text.disabled}",
+  "option-bg-hover": "{color.bg.neutral.hover}",
+  "option-selected-bg": "{color.bg.accent.subtle}",
+  "option-selected-text": "{color.text.accent}",
+  "list-option-active-ring-focus": "{color.border.focus}",
+  "option-text-disabled": "{color.text.disabled}",
+  "list-option-text-disabled": "{color.text.disabled}",
+  "empty-text": "{color.text.muted}"
+}

@@ -1,0 +1,179 @@
+/*
+ * Editable combobox. The control box looks exactly like Input (shadow-control ring, same heights and radii);
+ * the popup reuses Dropdown's list and option styles (.ds-dropdown__list / __option).
+ */
+.ds-combobox__anchor {
+  position: relative;
+}
+
+.ds-combobox__control {
+  --combobox-height: var(--ds-size-control-md);
+  --combobox-pad-block: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-1) var(--ds-space-2);
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--combobox-height);
+  padding: var(--combobox-pad-block) var(--ds-space-2) var(--combobox-pad-block) var(--ds-space-3);
+  /* The visible edge is the 1px ring in shadow-control; the transparent border shows in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-combobox-control-bg);
+  box-shadow: var(--ds-combobox-control-shadow);
+  color: var(--ds-combobox-control-text);
+  font-size: var(--ds-font-size-sm);
+  cursor: text;
+  transition:
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-combobox--multiple .ds-combobox__control {
+  --combobox-pad-block: var(--ds-space-1);
+}
+
+.ds-combobox__control--filled {
+  background-color: var(--ds-combobox-control-filled-bg);
+  box-shadow: none;
+}
+
+.ds-combobox__control--sm {
+  --combobox-height: var(--ds-size-control-sm);
+  padding-inline-start: var(--ds-space-2);
+  font-size: var(--ds-font-size-xs);
+  border-radius: var(--ds-radius-md);
+}
+.ds-combobox__control--lg {
+  --combobox-height: var(--ds-size-control-lg);
+  padding-inline-start: var(--ds-space-4);
+  font-size: var(--ds-font-size-md);
+  border-radius: var(--ds-radius-control);
+}
+
+.ds-combobox__control:hover:not(.ds-combobox__control--disabled, .ds-combobox__control--filled, :focus-within) {
+  box-shadow: var(--ds-combobox-control-shadow-hover);
+}
+/* Soft focus ring on the whole box; the transparent outline keeps focus visible in forced-colors mode. */
+.ds-combobox__control:focus-within {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-combobox-control-border-focus);
+  background-color: var(--ds-combobox-control-bg-focus);
+  box-shadow: var(--ds-combobox-control-shadow-focus);
+}
+
+.ds-combobox__control--invalid,
+.ds-combobox__control--invalid:hover {
+  border-color: var(--ds-combobox-control-invalid-border);
+}
+.ds-combobox__control--invalid:focus-within {
+  border-color: var(--ds-combobox-control-invalid-border-focus);
+  box-shadow: var(--ds-combobox-control-invalid-shadow-focus);
+}
+
+.ds-combobox__control--disabled {
+  background-color: var(--ds-combobox-control-disabled-bg);
+  border-color: var(--ds-combobox-control-disabled-border);
+  box-shadow: none;
+  color: var(--ds-combobox-control-disabled-text);
+  cursor: not-allowed;
+}
+
+.ds-combobox__search {
+  flex-shrink: 0;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  color: var(--ds-combobox-search-text);
+}
+.ds-combobox__control--sm .ds-combobox__search {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-combobox__control--lg .ds-combobox__search {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+}
+.ds-combobox__control:focus-within .ds-combobox__search {
+  color: var(--ds-combobox-control-search-text-focus);
+}
+
+.ds-combobox__chip {
+  max-width: 100%;
+}
+
+/* The input is borderless; the control box draws the edge and focus ring. */
+.ds-combobox__input {
+  flex: 1 1 calc(var(--ds-space-16) + var(--ds-space-4));
+  min-width: calc(var(--ds-space-16) + var(--ds-space-4));
+  box-sizing: border-box;
+  height: calc(var(--combobox-height) - var(--ds-border-width-thin) * 2 - var(--combobox-pad-block) * 2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.ds-combobox__input::placeholder {
+  color: var(--ds-combobox-input-placeholder-text);
+}
+.ds-combobox__input:disabled {
+  cursor: not-allowed;
+}
+.ds-combobox__input:disabled::placeholder {
+  color: var(--ds-combobox-input-placeholder-text-disabled);
+}
+
+.ds-combobox__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--ds-size-button-xs);
+  height: var(--ds-size-button-xs);
+  margin: 0;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md);
+  background: transparent;
+  color: var(--ds-combobox-clear-text);
+  cursor: pointer;
+  transition:
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-combobox__clear > svg {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-combobox__clear:hover {
+  color: var(--ds-combobox-clear-text-hover);
+  background-color: var(--ds-combobox-clear-bg-hover);
+}
+
+.ds-combobox__empty {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2);
+  color: var(--ds-combobox-empty-text);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-tight);
+}
+.ds-combobox__empty-icon {
+  flex-shrink: 0;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  opacity: var(--ds-opacity-70);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-combobox__control,
+  .ds-combobox__clear {
+    transition: none;
+  }
+}

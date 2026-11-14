@@ -1,0 +1,16 @@
+{
+  "list-bg": "{color.bg.surface}",
+  "list-shadow": "{shadow.overlay}",
+  "list-text": "{color.text.default}",
+  "item-text": "{color.text.default}",
+  "item-active-bg": "{color.bg.neutral.hover}",
+  "item-bg-active": "{color.bg.neutral.active}",
+  "item-ring-focus": "{color.border.focus}",
+  "item-text-disabled": "{color.text.disabled}",
+  "item-danger-text": "{color.text.danger}",
+  "item-danger-active-bg": "{color.bg.danger.subtle}",
+  "icon-text": "{color.text.muted}",
+  "shortcut-text": "{color.text.muted}",
+  "separator-bg": "{color.border.default}",
+  "label-text": "{color.text.muted}"
+}

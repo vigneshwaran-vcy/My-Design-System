@@ -1,4 +1,4 @@
-import { Badge, Tab, TabList, TabPanel, Tabs } from '@my-ds/ui';
+import { Badge, Tab, TabList, TabPanel, Tabs, Icon } from '@my-ds/ui';
 import { useState } from 'react';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
@@ -44,18 +44,18 @@ export function TabsDocs() {
           title="Pill (segmented)"
           code={`<Tabs variant="pill" defaultValue="board">
   <TabList aria-label="View">
-    <Tab value="board" icon="▦">Board</Tab>
-    <Tab value="list" icon="☰">List</Tab>
-    <Tab value="timeline" icon="▤">Timeline</Tab>
+    <Tab value="board" icon={<Icon name="widget" />}>Board</Tab>
+    <Tab value="list" icon={<Icon name="list" />}>List</Tab>
+    <Tab value="timeline" icon={<Icon name="sort-by-time" />}>Timeline</Tab>
   </TabList>
   …
 </Tabs>`}
         >
           <Tabs variant="pill" defaultValue="board" style={{ width: '100%' }}>
             <TabList aria-label="View">
-              <Tab value="board" icon="▦">Board</Tab>
-              <Tab value="list" icon="☰">List</Tab>
-              <Tab value="timeline" icon="▤">Timeline</Tab>
+              <Tab value="board" icon={<Icon name="widget" />}>Board</Tab>
+              <Tab value="list" icon={<Icon name="list" />}>List</Tab>
+              <Tab value="timeline" icon={<Icon name="sort-by-time" />}>Timeline</Tab>
             </TabList>
             <TabPanel value="board" style={panelStyle}>Cards grouped by status.</TabPanel>
             <TabPanel value="list" style={panelStyle}>A flat list of every task.</TabPanel>

@@ -1,0 +1,17 @@
+{
+  "bg": "{color.bg.surface}",
+  "text": "{color.text.default}",
+  "elevated-shadow": "{shadow.surface}",
+  "outlined-ring": "{color.border.default}",
+  "filled-bg": "{color.bg.frame}",
+  "ai-bg": "{color.bg.surface}",
+  "ai-edge": "{gradient.ai}",
+  "ai-shadow": "{shadow.surface}",
+  "interactive-elevated-shadow-hover": "{shadow.surfaceHover}",
+  "interactive-outlined-ring-hover": "{color.border.strong}",
+  "interactive-filled-bg-hover": "{color.bg.neutral.hover}",
+  "ring-focus": "{color.border.focus}",
+  "halo-focus": "{shadow.focus}",
+  "description-text": "{color.text.muted}",
+  "body-text": "{color.text.muted}"
+}

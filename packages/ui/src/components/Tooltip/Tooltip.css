@@ -20,9 +20,9 @@
   /* Solid inverse surface; the transparent border keeps an edge in forced-colors mode. */
   border: var(--ds-border-width-thin) solid transparent;
   border-radius: var(--ds-radius-md);
-  background-color: var(--ds-color-bg-inverse);
-  color: var(--ds-color-text-inverse);
-  box-shadow: var(--ds-shadow-sm);
+  background-color: var(--ds-tooltip-bubble-bg);
+  color: var(--ds-tooltip-bubble-text);
+  box-shadow: var(--ds-tooltip-bubble-shadow);
   font-family: var(--ds-font-family-sans);
   font-size: var(--ds-font-size-xs);
   font-weight: var(--ds-font-weight-medium);

@@ -1,0 +1,23 @@
+{
+  "text": "{color.text.default}",
+  "framed-bg": "{color.bg.frame}",
+  "target-marker-ring-focus": "{color.border.focus}",
+  "target-marker-halo-focus": "{shadow.focus}",
+  "marker-bg": "{color.bg.surface}",
+  "marker-ring": "{color.border.default}",
+  "marker-text": "{color.text.muted}",
+  "dot-bg": "{color.bg.accent.default}",
+  "step-completed-marker-bg": "{color.bg.accent.default}",
+  "step-completed-marker-text": "{color.text.onAccent}",
+  "step-current-marker-ring": "{color.border.accent}",
+  "step-error-marker-bg": "{color.bg.danger.default}",
+  "step-error-marker-text": "{color.text.onDanger}",
+  "target-marker-bg-hover": "{color.bg.accent.hover}",
+  "step-error-target-marker-bg-hover": "{color.bg.danger.hover}",
+  "target-marker-bg-active": "{color.bg.accent.active}",
+  "step-upcoming-label-text": "{color.text.muted}",
+  "step-error-label-text": "{color.text.danger}",
+  "description-text": "{color.text.muted}",
+  "step-after-bg": "{color.bg.track.default}",
+  "step-completed-after-bg": "{color.bg.accent.default}"
+}

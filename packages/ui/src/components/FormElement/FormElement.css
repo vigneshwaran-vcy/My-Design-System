@@ -1,0 +1,106 @@
+/*
+ * Field wrapper. Label, hint and error reuse the shared .ds-field* styles from Input.css;
+ * this file only adds the label row (required marker + inline help) and the horizontal layout.
+ */
+.ds-form-element {
+  --form-element-row: var(--ds-size-control-md);
+  --form-element-label-width: calc(var(--ds-space-16) * 2);
+}
+.ds-form-element--sm {
+  --form-element-row: var(--ds-size-control-sm);
+}
+.ds-form-element--lg {
+  --form-element-row: var(--ds-size-control-lg);
+}
+
+.ds-form-element__label-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+
+.ds-form-element__label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ds-space-1);
+}
+.ds-form-element--sm .ds-form-element__label {
+  font-size: var(--ds-font-size-xs);
+}
+.ds-form-element--lg .ds-form-element__label {
+  font-size: var(--ds-font-size-md);
+}
+
+.ds-form-element__required {
+  text-decoration: none;
+  cursor: default;
+}
+
+.ds-form-element__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  min-width: 0;
+}
+
+.ds-form-element__control {
+  min-width: 0;
+}
+
+/* Inline help: a small round info button that shows a tooltip. */
+.ds-form-element__help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+  margin: 0;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-full);
+  background: transparent;
+  color: var(--ds-form-element-help-text);
+  cursor: help;
+  transition:
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-form-element__help > svg {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-form-element__help:hover {
+  color: var(--ds-form-element-help-text-hover);
+  background-color: var(--ds-form-element-help-bg-hover);
+}
+.ds-form-element__help:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  color: var(--ds-form-element-help-text-focus);
+  box-shadow: 0 0 0 var(--ds-border-width-thin) var(--ds-form-element-help-ring-focus), var(--ds-form-element-help-halo-focus);
+}
+
+/* Horizontal: label column on the left, centred on the first control row. */
+.ds-form-element--horizontal {
+  display: grid;
+  grid-template-columns: var(--form-element-label-width) minmax(0, 1fr);
+  align-items: start;
+  column-gap: var(--ds-space-4);
+}
+.ds-form-element--horizontal > .ds-form-element__label-row {
+  min-height: var(--form-element-row);
+}
+.ds-form-element--horizontal > .ds-form-element__label-row.ds-visually-hidden + .ds-form-element__body {
+  grid-column: 2;
+}
+
+.ds-field--disabled .ds-form-element__help {
+  color: var(--ds-form-element-field-disabled-help-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-form-element__help {
+    transition: none;
+  }
+}

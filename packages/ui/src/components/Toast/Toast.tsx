@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { cx } from '../../utils/cx';
+import { Icon, type IconName } from '../Icon';
 import { Button } from '../Button';
 import './Toast.css';
 
@@ -98,12 +99,13 @@ export function useToast(): ToastContextValue {
   return ctx;
 }
 
-const icons: Record<ToastVariant, ReactNode> = {
+// Plain Solar glyphs: the coloured circle behind them comes from .ds-toast__icon.
+const icons: Record<ToastVariant, IconName | null> = {
   neutral: null,
-  info: <path d="M10 9v5M10 6.5v.01" />,
-  success: <path d="M6 10.5l2.5 2.5L14 7.5" />,
-  warn: <path d="M10 6.5v4.5M10 14v.01" />,
-  danger: <path d="M7 7l6 6M13 7l-6 6" />,
+  info: 'info',
+  success: 'check',
+  warn: 'alert',
+  danger: 'close',
 };
 
 function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: string) => void }) {
@@ -149,9 +151,7 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
     >
       {icon && (
         <span className="ds-toast__icon" aria-hidden="true">
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-            {icon}
-          </svg>
+          <Icon name={icon} />
         </span>
       )}
       <div className="ds-toast__content">
@@ -173,9 +173,7 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
         )}
       </div>
       <Button variant="ghost" size="xs" aria-label="Dismiss" className="ds-toast__close" onClick={dismiss}>
-        <svg viewBox="0 0 20 20" aria-hidden="true" className="ds-toast__close-icon">
-          <path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-        </svg>
+        <Icon name="close" className="ds-toast__close-icon" />
       </Button>
     </div>
   );

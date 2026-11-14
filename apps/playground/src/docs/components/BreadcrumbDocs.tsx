@@ -1,12 +1,6 @@
-import { Breadcrumb } from '@my-ds/ui';
+import { Breadcrumb, Icon } from '@my-ds/ui';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
-const HomeIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="m3 11 9-8 9 8" />
-    <path d="M5 10v10h14V10" />
-  </svg>
-);
 
 const trail = [
   { label: 'Workspace', href: '#' },
@@ -19,7 +13,7 @@ const trail = [
 export function BreadcrumbDocs() {
   return (
     <DocSection id="breadcrumb" eyebrow="Components" title="Breadcrumb" description="Shows where the current page sits in the hierarchy and links back up it. The last crumb is the current page; long trails collapse behind an ellipsis.">
-      <CodeBlock label="Breadcrumb import" code={`import { Breadcrumb } from '@my-ds/ui';`} />
+      <CodeBlock label="Breadcrumb import" code={`import { Breadcrumb, Icon } from '@my-ds/ui';`} />
 
       <SubSection title="Examples">
         <Example
@@ -37,8 +31,8 @@ export function BreadcrumbDocs() {
           <Breadcrumb items={trail} />
         </Example>
 
-        <Example title="With icons" code={`<Breadcrumb items={[{ label: 'Home', href: '/', icon: <HomeIcon /> }, { label: 'Customers', href: '/customers' }, { label: 'Acme Corp' }]} />`}>
-          <Breadcrumb items={[{ label: 'Home', href: '#', icon: <HomeIcon /> }, { label: 'Customers', href: '#' }, { label: 'Acme Corp' }]} />
+        <Example title="With icons" code={`<Breadcrumb items={[{ label: 'Home', href: '/', icon: <Icon name="home" /> }, { label: 'Customers', href: '/customers' }, { label: 'Acme Corp' }]} />`}>
+          <Breadcrumb items={[{ label: 'Home', href: '#', icon: <Icon name="home" /> }, { label: 'Customers', href: '#' }, { label: 'Acme Corp' }]} />
         </Example>
 
         <Example title="Collapsed (maxItems=3)" code={`<Breadcrumb items={items} maxItems={3} />`}>

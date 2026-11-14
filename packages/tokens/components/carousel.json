@@ -1,0 +1,11 @@
+{
+  "text": "{color.text.default}",
+  "framed-bg": "{color.bg.frame}",
+  "viewport-bg": "{color.bg.surface}",
+  "viewport-shadow": "{shadow.surface}",
+  "dot-before-bg": "{color.bg.track.default}",
+  "dot-before-bg-hover": "{color.bg.track.hover}",
+  "dot-before-bg-selected": "{color.bg.accent.default}",
+  "dot-ring-focus": "{color.border.focus}",
+  "dot-halo-focus": "{shadow.focus}"
+}

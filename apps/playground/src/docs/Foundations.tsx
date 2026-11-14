@@ -1,8 +1,10 @@
 import { themeNames, tokenList, type ThemeValue, type TokenEntry } from '@my-ds/tokens';
 import { Button, Input } from '@my-ds/ui';
 import { useState, type ReactNode } from 'react';
-import { CopyButton, DocSection, SubSection } from './DocBlocks';
+import { ComponentTokens } from './ComponentTokens';
+import { CopyButton, DocSection, SectionVisibility, SubSection } from './DocBlocks';
 import { PaletteRamps } from './PaletteRamps';
+import { Icons } from './Icons';
 import { TokenLayers } from './TokenLayers';
 
 const cssVar = (t: TokenEntry) => `var(${t.cssVar})`;
@@ -94,6 +96,7 @@ function MotionDemo({ duration, easing }: { duration: string; easing: string }) 
 export const foundationsNav = [
   ['tokens', 'All tokens'],
   ['layers', 'Token layers'],
+  ['component-tokens', 'Component tokens'],
   ['palette', 'Palette'],
   ['semantic-colors', 'Semantic colors'],
   ['typography', 'Typography'],
@@ -105,6 +108,7 @@ export const foundationsNav = [
   ['opacity', 'Opacity'],
   ['motion', 'Motion'],
   ['sizes', 'Sizes & borders'],
+  ['icons', 'Icons'],
 ] as const;
 
 type PaletteView = 'ramp' | 'swatches';
@@ -118,7 +122,10 @@ function readPaletteView(): PaletteView {
   }
 }
 
-export function Foundations() {
+/** Sections whose content is filtered by the "All tokens" search; they show under it while searching. */
+const SEARCHABLE = new Set(['palette', 'semantic-colors', 'typography', 'spacing', 'radius', 'shadows', 'gradients', 'blur', 'opacity', 'motion', 'sizes']);
+
+export function Foundations({ active }: { active: string }) {
   const [query, setQuery] = useState('');
   const [paletteView, setPaletteViewState] = useState<PaletteView>(readPaletteView);
   const setPaletteView = (view: PaletteView) => {
@@ -150,8 +157,11 @@ export function Foundations() {
   const typeGroups = ['font.family', 'font.size', 'font.weight', 'font.lineHeight'] as const;
   const sizeGroups = ['size.button', 'size.control', 'size.icon', 'border.width', 'breakpoint'] as const;
 
+  const searching = active === 'tokens' && q !== '';
+  const visible = (id: string) => id === active || (searching && SEARCHABLE.has(id));
+
   return (
-    <>
+    <SectionVisibility.Provider value={visible}>
       <DocSection
         id="tokens"
         eyebrow="Foundations"
@@ -171,12 +181,13 @@ export function Foundations() {
             placeholder="Name, variable or value — e.g. accent, space-4, #0260FF"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            hint={q ? `${list.length} of ${tokenList.length} tokens match` : undefined}
+            hint={q ? `${list.length} of ${tokenList.length} tokens match` : 'Matches from every category appear below as you type.'}
           />
         </div>
       </DocSection>
 
       <TokenLayers />
+      <ComponentTokens />
 
       <DocSection
         id="palette"
@@ -322,7 +333,43 @@ export function Foundations() {
         )}
       </DocSection>
 
-      <DocSection id="gradients" title="Gradients" description="Theme-aware gradients for accent fills, surfaces and AI moments. Use the ai gradient only for AI features.">
+      <DocSection id="gradients" title="Gradients" description="Theme-aware gradients for accent fills, surfaces and AI moments. The ai family is the only multi-colour gradient: blue-led (sky → blue → violet → fuchsia, with blue holding 28–58%), and only for AI features.">
+        {gradients.some((t) => t.name.startsWith('gradient.ai')) && (
+          <SubSection title="AI gradients in use">
+            <ul className="tk-ai-demos">
+              <li>
+                <span className="tk-ai-fill">✦ Ask AI</span>
+                <code className="tk-var">--ds-gradient-ai</code>
+                <span className="tk-ref">AI buttons, badges, avatars. Hover → ai-hover, pressed → ai-active.</span>
+              </li>
+              <li>
+                <span className="tk-ai-text">Generated with AI</span>
+                <code className="tk-var">--ds-gradient-ai-text</code>
+                <span className="tk-ref">Gradient text; darker stops in light theme so it stays readable.</span>
+              </li>
+              <li>
+                <span className="tk-ai-edge">AI suggestion</span>
+                <code className="tk-var">--ds-gradient-ai</code>
+                <span className="tk-ref">1px gradient edge on AI surfaces (Card, ChatInput).</span>
+              </li>
+              <li>
+                <span className="tk-ai-subtle">Summarised 12 messages</span>
+                <code className="tk-var">--ds-gradient-ai-subtle</code>
+                <span className="tk-ref">Tinted background for AI results and callouts.</span>
+              </li>
+              <li>
+                <span className="tk-ai-mesh">Your assistant</span>
+                <code className="tk-var">--ds-gradient-ai-mesh</code>
+                <span className="tk-ref">Soft multi-colour wash for AI panels and empty states.</span>
+              </li>
+              <li>
+                <span className="tk-ai-conic" role="img" aria-label="AI thinking indicator" />
+                <code className="tk-var">--ds-gradient-ai-conic</code>
+                <span className="tk-ref">Rings and “thinking” loaders.</span>
+              </li>
+            </ul>
+          </SubSection>
+        )}
         {gradients.length === 0 ? none : (
           <ul className="tk-tiles">
             {gradients.map((t) => (
@@ -410,6 +457,8 @@ export function Foundations() {
           </SubSection>
         )}
       </DocSection>
-    </>
+
+      <Icons />
+    </SectionVisibility.Provider>
   );
 }

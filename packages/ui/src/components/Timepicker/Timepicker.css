@@ -1,0 +1,179 @@
+/* Field chrome (label, hint, error, input look) comes from Input.css: .ds-field*, .ds-input*. */
+
+.ds-timepicker__control {
+  position: relative;
+}
+
+.ds-timepicker__control .ds-timepicker__input {
+  padding-inline-end: calc(var(--ds-size-button-sm) + var(--ds-space-2));
+  font-variant-numeric: tabular-nums;
+}
+.ds-timepicker__control .ds-timepicker__input--sm {
+  padding-inline-end: calc(var(--ds-size-button-xs) + var(--ds-space-2));
+}
+.ds-timepicker__control .ds-timepicker__input--lg {
+  padding-inline-end: calc(var(--ds-size-button-md) + var(--ds-space-2));
+}
+
+/* Toggle button: a quiet icon button inside the field's end edge. */
+.ds-timepicker__button {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: var(--ds-space-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--ds-size-button-sm);
+  height: var(--ds-size-button-sm);
+  margin-block: auto;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-sm);
+  background-color: transparent;
+  color: var(--ds-timepicker-button-text);
+  cursor: pointer;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-timepicker__button .ds-icon {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-timepicker__button--sm {
+  width: var(--ds-size-button-xs);
+  height: var(--ds-size-button-xs);
+  border-radius: var(--ds-radius-sm);
+}
+.ds-timepicker__button--lg {
+  width: var(--ds-size-button-md);
+  height: var(--ds-size-button-md);
+  border-radius: var(--ds-radius-md);
+}
+.ds-timepicker__button--lg .ds-icon {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+}
+
+.ds-timepicker__button:hover:not(:disabled) {
+  background-color: var(--ds-timepicker-button-bg-hover);
+  color: var(--ds-timepicker-button-text-hover);
+}
+.ds-timepicker__button:active:not(:disabled) {
+  background-color: var(--ds-timepicker-button-bg-active);
+}
+.ds-timepicker__button[aria-expanded='true'] {
+  color: var(--ds-timepicker-button-text-open);
+}
+/* Soft focus ring with a 1px edge; the transparent outline keeps focus visible in forced-colors mode. */
+.ds-timepicker__button:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-timepicker-button-ring-focus),
+    var(--ds-timepicker-button-halo-focus);
+}
+.ds-timepicker__button:disabled {
+  color: var(--ds-timepicker-button-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Open state keeps the soft focus ring, like the Dropdown trigger. */
+.ds-timepicker__input[aria-expanded='true'] {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-timepicker-input-border-open);
+  box-shadow: var(--ds-timepicker-input-shadow-open);
+}
+.ds-timepicker__input.ds-input--invalid[aria-expanded='true'] {
+  border-color: var(--ds-timepicker-input-invalid-border-open);
+  box-shadow: var(--ds-timepicker-input-invalid-shadow-open);
+}
+
+/* Floating listbox: solid surface, 1px ring edge inside the overlay shadow. */
+.ds-timepicker__list {
+  position: absolute;
+  z-index: var(--ds-layer-dropdown);
+  inset-inline: 0;
+  top: calc(100% + var(--ds-space-2));
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  max-height: calc(var(--ds-size-control-lg) * 6);
+  margin: 0;
+  padding: var(--ds-space-1);
+  overflow-y: auto;
+  list-style: none;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-timepicker-list-bg);
+  box-shadow: var(--ds-timepicker-list-shadow);
+  transform-origin: top center;
+  animation: ds-timepicker-in var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+/* Rows keep their height; a long list scrolls instead of squeezing them. */
+.ds-timepicker__list > * {
+  flex-shrink: 0;
+}
+.ds-timepicker__list[hidden] {
+  display: none;
+}
+
+@keyframes ds-timepicker-in {
+  from {
+    opacity: 0;
+    scale: var(--ds-motion-scale-pop);
+  }
+}
+
+.ds-timepicker__option {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-size-control-sm);
+  box-sizing: border-box;
+  padding: calc(var(--ds-space-1) + var(--ds-border-width-thick)) var(--ds-space-3);
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-timepicker-option-text);
+  font-size: var(--ds-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--ds-font-line-height-tight);
+  cursor: pointer;
+  transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-timepicker__option--active {
+  background-color: var(--ds-timepicker-option-active-bg);
+}
+.ds-timepicker__option--selected {
+  background-image: var(--ds-timepicker-option-selected-bg);
+  color: var(--ds-timepicker-option-selected-text);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.ds-timepicker__check {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  padding: var(--ds-border-width-thick);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-timepicker-check-bg);
+  color: var(--ds-timepicker-check-text);
+  visibility: hidden;
+}
+.ds-timepicker__option--selected .ds-timepicker__check {
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-timepicker__button,
+  .ds-timepicker__option {
+    transition: none;
+  }
+  .ds-timepicker__list {
+    animation: none;
+  }
+}

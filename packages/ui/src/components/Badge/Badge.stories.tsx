@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Icon } from '../Icon';
 import { useState } from 'react';
 import { Badge } from './Badge';
 
@@ -67,7 +68,7 @@ export const WithDot: Story = {
 };
 
 export const WithIcon: Story = {
-  args: { icon: '★', variant: 'accent', children: 'Featured' },
+  args: { icon: <Icon name="star" />, variant: 'accent', children: 'Featured' },
 };
 
 export const Removable: Story = {

@@ -39,7 +39,7 @@ export function SpinnerDocs() {
         </Example>
 
         <Example title="Loading a panel" code={`<div className="panel"><Spinner size="lg" color="muted" label="Loading invoices" /></div>`}>
-          <div style={{ display: 'grid', placeItems: 'center', width: '100%', minHeight: 'calc(var(--ds-space-16) * 2)', border: 'var(--ds-border-width-thin) dashed var(--ds-color-border)', borderRadius: 'var(--ds-radius-lg)' }}>
+          <div style={{ display: 'grid', placeItems: 'center', width: '100%', minHeight: 'var(--ds-space-16)', border: 'var(--ds-border-width-thin) dashed var(--ds-color-border)', borderRadius: 'var(--ds-radius-lg)' }}>
             <Spinner size="lg" color="muted" label="Loading invoices" />
           </div>
         </Example>

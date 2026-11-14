@@ -10,13 +10,13 @@
   box-sizing: border-box;
   min-width: var(--ds-size-panel-sm);
   max-width: var(--ds-size-panel-lg);
-  padding: var(--ds-space-4);
+  padding: var(--ds-space-3);
   /* Solid surface with a 1px ring edge in the shadow; the transparent border shows in forced-colors mode. */
   border: var(--ds-border-width-thin) solid transparent;
-  border-radius: var(--ds-radius-lg);
-  background-color: var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-overlay);
-  color: var(--ds-color-text);
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-popover-panel-bg);
+  box-shadow: var(--ds-popover-panel-shadow);
+  color: var(--ds-popover-panel-text);
   font-family: var(--ds-font-family-sans);
   font-size: var(--ds-font-size-sm);
   line-height: var(--ds-font-line-height-normal);
@@ -28,7 +28,7 @@
 }
 .ds-popover__panel:focus-visible {
   outline: var(--ds-border-width-thick) solid transparent;
-  box-shadow: var(--ds-shadow-overlay), var(--ds-shadow-focus);
+  box-shadow: var(--ds-popover-panel-shadow-focus), var(--ds-popover-panel-halo-focus);
 }
 
 .ds-popover--bottom-start > .ds-popover__panel {
@@ -57,11 +57,11 @@
   font-size: var(--ds-font-size-sm);
   font-weight: var(--ds-font-weight-semibold);
   line-height: var(--ds-font-line-height-tight);
-  color: var(--ds-color-text);
+  color: var(--ds-popover-title-text);
 }
 
 .ds-popover__body {
-  color: var(--ds-color-text);
+  color: var(--ds-popover-body-text);
 }
 
 @keyframes ds-popover-in {

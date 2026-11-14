@@ -1,0 +1,8 @@
+{
+  "text": "{color.text.default}",
+  "page-button-bg-hover-current": "{color.bg.surface}",
+  "page-button-shadow-hover-current": "{shadow.flat}",
+  "page-button-color-current": "{color.text.default}",
+  "ellipsis-text": "{color.text.muted}",
+  "status-text": "{color.text.muted}"
+}

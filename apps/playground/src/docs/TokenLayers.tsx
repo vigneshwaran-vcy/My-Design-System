@@ -34,12 +34,8 @@ type Role = (typeof ROLES)[number][0];
 const semanticOf = (role: Role) =>
   tokenList.filter((t) => t.themes && (role === 'shadow' || role === 'gradient' ? t.category === role : t.name.startsWith(`color.${role}.`)));
 
-// Start on the site's theme (App sets data-theme after this first render, so fall back to the OS preference).
-const initialTheme = (): Theme => {
-  const set = document.documentElement.dataset.theme;
-  if (set === 'dark' || set === 'light') return set;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-};
+// Start on the site's theme; the site defaults to light.
+const initialTheme = (): Theme => (document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
 
 function Swatch({ value }: { value: string }) {
   return <span className="tk-chip tk-chip--alpha" aria-hidden="true"><span style={{ background: value }} /></span>;
