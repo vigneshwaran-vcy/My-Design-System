@@ -1,12 +1,44 @@
+/*
+ * Each variant sets its look per state through --button-* custom properties;
+ * the base rules below apply them, so every variant gets the same state behaviour.
+ */
 .ds-button {
+  --button-bg: none;
+  --button-bg-hover: none;
+  --button-bg-active: none;
+  --button-color: var(--ds-button-color);
+  --button-color-hover: var(--button-color);
+  --button-border: transparent;
+  --button-border-hover: var(--button-border);
+  --button-shadow: 0 0 transparent;
+  --button-shadow-hover: var(--button-shadow);
+  --button-shadow-active: var(--button-shadow);
+  --button-filter-hover: none;
+  /*
+   * Selected (aria-pressed="true") look; each variant overrides these. They must not reference
+   * --button-border/--button-shadow, which the selected rule points back at them (a cycle).
+   */
+  --button-bg-selected: var(--ds-button-bg-selected);
+  --button-color-selected: var(--ds-button-color-selected);
+  --button-border-selected: transparent;
+  --button-shadow-selected: 0 0 transparent;
+  /* The shadow for the current state; focus adds its ring on top instead of replacing it. */
+  --button-shadow-state: var(--button-shadow);
+
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--ds-space-2);
-  height: var(--ds-size-control-md);
+  height: var(--ds-size-button-md);
   padding-inline: var(--ds-space-4);
-  border: var(--ds-border-width-thin) solid transparent;
+  border: var(--ds-border-width-thin) solid var(--button-border);
   border-radius: var(--ds-radius-md);
+  background-color: transparent;
+  background-image: var(--button-bg);
+  color: var(--button-color);
+  box-shadow: var(--button-shadow-state);
   font-family: var(--ds-font-family-sans);
   font-size: var(--ds-font-size-sm);
   font-weight: var(--ds-font-weight-medium);
@@ -15,27 +47,83 @@
   cursor: pointer;
   user-select: none;
   transition:
-    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out),
+    filter var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
     border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
     color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
 }
 
-.ds-button:focus-visible {
-  outline: var(--ds-border-width-thick) solid var(--ds-color-focus-ring);
-  outline-offset: var(--ds-border-width-thick);
+/*
+ * Gradients can't be transitioned, so hover/active gradients fade in on a layer underneath the label.
+ * It covers the (transparent) border too, so no strip of the resting fill shows around the edge on hover.
+ */
+.ds-button::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--ds-border-width-thin) * -1);
+  z-index: -1;
+  border-radius: inherit;
+  background-image: var(--button-bg-hover);
+  opacity: 0;
+  transition: opacity var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 
-/* Sizes */
-.ds-button--sm {
-  height: var(--ds-size-control-sm);
-  padding-inline: var(--ds-space-3);
+/* Hover: brighter fill and stronger shadow; buttons stay in place (no lift). */
+.ds-button:where(:hover:not(:disabled, [aria-disabled='true'])) {
+  border-color: var(--button-border-hover);
+  color: var(--button-color-hover);
+  --button-shadow-state: var(--button-shadow-hover);
+  filter: var(--button-filter-hover);
+}
+.ds-button:where(:hover:not(:disabled, [aria-disabled='true']))::before {
+  opacity: 1;
+}
+
+/* Active (pressed): deeper fill and pressed-in shadow. */
+.ds-button:where(:active:not(:disabled, [aria-disabled='true'])) {
+  --button-shadow-state: var(--button-shadow-active);
+  filter: none;
+  transition-duration: var(--ds-motion-duration-fast);
+}
+.ds-button:where(:active:not(:disabled, [aria-disabled='true']))::before {
+  background-image: var(--button-bg-active);
+  opacity: 1;
+  transition: none;
+}
+
+/*
+ * Focus: a background-coloured gap plus a solid ring, so it stays visible on gradients.
+ * The transparent outline keeps focus visible in forced-colors mode.
+ */
+.ds-button:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  outline-offset: var(--ds-border-width-thick);
+  box-shadow:
+    0 0 0 var(--ds-border-width-thick) var(--ds-button-gap-focus),
+    0 0 0 calc(var(--ds-border-width-thick) * 2) var(--ds-button-ring-focus),
+    var(--button-shadow-state);
+}
+
+/* Sizes: xs 22 · sm 26 · md 32 · lg 40 */
+.ds-button--xs {
+  height: var(--ds-size-button-xs);
+  gap: var(--ds-space-1);
+  padding-inline: var(--ds-space-2);
   font-size: var(--ds-font-size-xs);
   border-radius: var(--ds-radius-sm);
 }
+.ds-button--sm {
+  height: var(--ds-size-button-sm);
+  gap: var(--ds-space-1);
+  padding-inline: var(--ds-space-3);
+  font-size: var(--ds-font-size-xs);
+  border-radius: var(--ds-radius-md);
+}
 .ds-button--lg {
-  height: var(--ds-size-control-lg);
-  padding-inline: var(--ds-space-6);
-  font-size: var(--ds-font-size-md);
+  height: var(--ds-size-button-lg);
+  padding-inline: calc(var(--ds-space-4) + var(--ds-space-1));
+  font-size: var(--ds-font-size-sm);
+  border-radius: var(--ds-radius-control);
 }
 .ds-button--full-width {
   width: 100%;
@@ -43,54 +131,102 @@
 
 /* Variants */
 .ds-button--primary {
-  background-color: var(--ds-color-accent);
-  color: var(--ds-color-on-accent);
-}
-.ds-button--primary:where(:hover:not(:disabled, [aria-disabled='true'])) {
-  background-color: var(--ds-color-accent-hover);
-}
-.ds-button--primary:where(:active:not(:disabled, [aria-disabled='true'])) {
-  background-color: var(--ds-color-accent-active);
+  --button-bg: var(--ds-button-primary-bg);
+  --button-bg-hover: var(--ds-button-primary-bg-hover);
+  --button-bg-active: var(--ds-button-primary-bg-active);
+  --button-color: var(--ds-button-primary-color);
+  --button-shadow: var(--ds-button-primary-shadow);
+  --button-shadow-hover: var(--ds-button-primary-shadow-hover);
+  --button-shadow-active: var(--ds-button-primary-shadow-active);
+  --button-filter-hover: brightness(1.03);
+  --button-bg-selected: var(--ds-button-primary-bg-selected);
+  --button-color-selected: var(--ds-button-primary-color-selected);
+  --button-shadow-selected: var(--ds-button-primary-shadow-selected);
 }
 
+/* Flat: solid fill, a 1px ring edge and a small soft shadow; no gradient or sheen. */
 .ds-button--secondary {
-  background-color: var(--ds-color-surface);
-  border-color: var(--ds-color-border-strong);
-  color: var(--ds-color-text);
+  --button-bg: linear-gradient(var(--ds-button-secondary-bg), var(--ds-button-secondary-bg));
+  --button-bg-hover: linear-gradient(var(--ds-button-secondary-bg-hover), var(--ds-button-secondary-bg-hover));
+  --button-bg-active: linear-gradient(var(--ds-button-secondary-bg-active), var(--ds-button-secondary-bg-active));
+  /* The edge is the 1px ring in shadow-flat; the transparent border shows in forced-colors mode. */
+  --button-border: transparent;
+  --button-border-hover: transparent;
+  --button-shadow: var(--ds-button-secondary-shadow);
+  --button-shadow-hover: var(--ds-button-secondary-shadow-hover);
+  --button-shadow-active: var(--ds-button-secondary-shadow-active);
+  --button-bg-selected: var(--ds-button-secondary-bg-selected), linear-gradient(var(--ds-button-secondary-bg-selected-base), var(--ds-button-secondary-bg-selected-base));
+  --button-border-selected: var(--ds-button-secondary-border-selected);
+  --button-shadow-selected: 0 0 transparent;
 }
-.ds-button--secondary:where(:hover:not(:disabled, [aria-disabled='true'])) {
-  background-color: var(--ds-color-neutral-hover);
-}
-.ds-button--secondary:where(:active:not(:disabled, [aria-disabled='true'])) {
-  background-color: var(--ds-color-neutral-active);
+
+.ds-button--soft {
+  --button-bg: var(--ds-button-soft-bg);
+  --button-bg-hover: var(--ds-button-soft-bg-hover);
+  --button-bg-active: var(--ds-button-soft-bg-active);
+  --button-color: var(--ds-button-soft-color);
+  /* Flat on hover: only the tint deepens, no shadow or sheen. */
+  --button-shadow-active: var(--ds-button-soft-shadow-active);
+  --button-bg-selected: var(--ds-button-soft-bg-selected);
+  --button-border-selected: var(--ds-button-soft-border-selected);
+  --button-shadow-selected: var(--ds-button-soft-shadow-selected);
 }
 
 .ds-button--ghost {
-  background-color: transparent;
-  color: var(--ds-color-text);
-}
-.ds-button--ghost:where(:hover:not(:disabled, [aria-disabled='true'])) {
-  background-color: var(--ds-color-neutral-hover);
-}
-.ds-button--ghost:where(:active:not(:disabled, [aria-disabled='true'])) {
-  background-color: var(--ds-color-neutral-active);
+  --button-bg-hover: var(--ds-button-ghost-bg-hover);
+  --button-bg-active: var(--ds-button-ghost-bg-active);
+  --button-color-hover: var(--ds-button-ghost-color-hover);
+  --button-bg-selected: var(--ds-button-ghost-bg-selected);
 }
 
 .ds-button--danger {
-  background-color: var(--ds-color-danger);
-  color: var(--ds-color-on-danger);
-}
-.ds-button--danger:where(:hover:not(:disabled, [aria-disabled='true'])) {
-  background-color: var(--ds-color-danger-hover);
+  --button-bg: var(--ds-button-danger-bg);
+  --button-bg-hover: var(--ds-button-danger-bg-hover);
+  --button-bg-active: var(--ds-button-danger-bg-active);
+  --button-color: var(--ds-button-danger-color);
+  --button-shadow: var(--ds-button-danger-shadow);
+  --button-shadow-hover: var(--ds-button-danger-shadow-hover);
+  --button-shadow-active: var(--ds-button-danger-shadow-active);
+  --button-filter-hover: brightness(1.03);
+  --button-bg-selected: var(--ds-button-danger-bg-selected);
+  --button-color-selected: var(--ds-button-danger-color-selected);
+  --button-shadow-selected: var(--ds-button-danger-shadow-selected);
 }
 
-/* States */
+/*
+ * Selected (toggle on, aria-pressed="true"): a settled, pressed-in look that hover doesn't
+ * replace — hover only brightens it slightly, with no lift.
+ */
+.ds-button[aria-pressed='true'] {
+  --button-bg: var(--button-bg-selected);
+  --button-bg-hover: var(--button-bg-selected);
+  --button-color: var(--button-color-selected);
+  --button-color-hover: var(--button-color-selected);
+  --button-border: var(--button-border-selected);
+  --button-border-hover: var(--button-border-selected);
+  --button-shadow: var(--button-shadow-selected);
+  --button-shadow-hover: var(--button-shadow-selected);
+  --button-filter-hover: brightness(1.02);
+}
+/* Selected buttons draw a visible accent border; keep the hover layer inside it (its fill matches anyway). */
+.ds-button[aria-pressed='true']::before {
+  inset: 0;
+}
+.ds-button--secondary[aria-pressed='true'],
+.ds-button--soft[aria-pressed='true'] {
+  --button-filter-hover: none;
+}
+
+/* Disabled: flat and muted; no hover or press response. */
 .ds-button:disabled {
-  background-color: var(--ds-color-surface-disabled);
-  border-color: transparent;
-  color: var(--ds-color-text-disabled);
+  --button-bg: none;
+  --button-border: transparent;
+  --button-color: var(--ds-button-color-disabled);
+  --button-shadow: 0 0 transparent;
+  background-color: var(--ds-button-bg-disabled);
   cursor: not-allowed;
 }
+/* Loading keeps the variant's colours so the button doesn't flash grey mid-action. */
 .ds-button--loading {
   cursor: progress;
 }
@@ -106,10 +242,16 @@
 .ds-button__spinner {
   width: var(--ds-size-icon-sm);
   height: var(--ds-size-icon-sm);
+  box-sizing: border-box;
   border: var(--ds-border-width-thick) solid currentColor;
   border-right-color: transparent;
   border-radius: var(--ds-radius-full);
   animation: ds-button-spin calc(var(--ds-motion-duration-base) * 3) linear infinite;
+}
+.ds-button--xs :is(.ds-button__icon, .ds-button__spinner),
+.ds-button--sm :is(.ds-button__icon, .ds-button__spinner) {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
 }
 
 @keyframes ds-button-spin {
@@ -119,7 +261,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ds-button {
+  .ds-button,
+  .ds-button::before {
     transition: none;
   }
   .ds-button__spinner {

@@ -1,0 +1,138 @@
+/* Scrim and panel are siblings in the portal so each sits on its own layer. */
+.ds-modal__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ds-layer-overlay);
+  background-color: var(--ds-modal-scrim-bg);
+  animation: ds-modal-fade-in var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+
+/* Full-viewport flex container: centres the panel and scrolls when the panel is taller than the viewport. */
+.ds-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ds-layer-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: var(--ds-space-4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.ds-modal__panel {
+  --modal-max-width: var(--ds-size-panel-xl);
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  width: 100%;
+  max-width: var(--modal-max-width);
+  max-height: 100%;
+  margin: auto;
+  padding: var(--ds-space-4);
+  /* Solid surface with a 1px ring edge in the shadow; the transparent border shows in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-lg);
+  background-color: var(--ds-modal-panel-bg);
+  box-shadow: var(--ds-modal-panel-shadow);
+  color: var(--ds-modal-panel-text);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+  outline: none;
+  transform-origin: center;
+  animation: ds-modal-in var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-modal__panel:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow: var(--ds-modal-panel-shadow-focus), var(--ds-modal-panel-halo-focus);
+}
+
+/* Sizes: sm 384 · md 512 · lg 768 */
+.ds-modal--sm .ds-modal__panel {
+  --modal-max-width: var(--ds-size-panel-lg);
+}
+.ds-modal--lg .ds-modal__panel {
+  --modal-max-width: var(--ds-size-panel-2xl);
+}
+
+.ds-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+}
+.ds-modal__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+.ds-modal__title {
+  margin: 0;
+  font-size: var(--ds-font-size-lg);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-font-line-height-tight);
+  letter-spacing: var(--ds-font-tracking-tight);
+  color: var(--ds-modal-title-text);
+}
+.ds-modal__description {
+  margin: 0;
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-modal-description-text);
+}
+
+/* Close "×": a ghost xs Button pinned to the top-right corner, nudged so its hit area aligns with the padding. */
+.ds-modal__close {
+  flex-shrink: 0;
+  margin: calc(var(--ds-space-1) * -1) calc(var(--ds-space-2) * -1) 0 0;
+  padding-inline: 0;
+  width: var(--ds-size-button-sm);
+  height: var(--ds-size-button-sm);
+  color: var(--ds-modal-close-text);
+}
+.ds-modal__close-icon {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  display: block;
+}
+
+.ds-modal__body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: var(--ds-modal-body-text);
+}
+
+.ds-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+  padding-block-start: var(--ds-space-2);
+}
+
+@keyframes ds-modal-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes ds-modal-in {
+  from {
+    opacity: 0;
+    scale: var(--ds-motion-scale-pop);
+    translate: 0 var(--ds-space-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-modal__scrim,
+  .ds-modal__panel {
+    animation: none;
+  }
+}

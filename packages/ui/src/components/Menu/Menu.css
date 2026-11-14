@@ -1,0 +1,162 @@
+.ds-menu {
+  position: relative;
+  display: inline-flex;
+  --menu-offset: var(--ds-space-2);
+}
+
+/* The list matches .ds-dropdown__list: solid surface, ring edge in the shadow, space-2 padding. */
+.ds-menu__list {
+  position: absolute;
+  z-index: var(--ds-layer-dropdown);
+  top: calc(100% + var(--menu-offset));
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  min-width: var(--ds-size-panel-xs);
+  max-width: var(--ds-size-panel-md);
+  max-height: calc(var(--ds-size-control-lg) * 8);
+  margin: 0;
+  padding: var(--ds-space-1);
+  overflow-y: auto;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-menu-list-bg);
+  box-shadow: var(--ds-menu-list-shadow);
+  color: var(--ds-menu-list-text);
+  font-family: var(--ds-font-family-sans);
+  outline: none;
+  animation: ds-menu-in var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+/* Rows keep their height; a long list scrolls instead of squeezing them. */
+.ds-menu__list > * {
+  flex-shrink: 0;
+}
+.ds-menu__list[hidden] {
+  display: none;
+}
+.ds-menu--bottom-start > .ds-menu__list {
+  left: 0;
+  transform-origin: top left;
+}
+.ds-menu--bottom-end > .ds-menu__list {
+  right: 0;
+  transform-origin: top right;
+}
+/* Opens upward, for triggers near the bottom of the screen (sidebar account buttons). */
+.ds-menu--top-start > .ds-menu__list,
+.ds-menu--top-end > .ds-menu__list {
+  top: auto;
+  bottom: calc(100% + var(--menu-offset));
+}
+.ds-menu--top-start > .ds-menu__list {
+  left: 0;
+  transform-origin: bottom left;
+}
+.ds-menu--top-end > .ds-menu__list {
+  right: 0;
+  transform-origin: bottom right;
+}
+
+.ds-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  box-sizing: border-box;
+  min-height: var(--ds-size-control-sm);
+  padding: calc(var(--ds-space-1) + var(--ds-border-width-thick)) var(--ds-space-3);
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-menu-item-text);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-tight);
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+/* Active = the item with roving focus (keyboard or pointer); no separate hover state so the two never fight. */
+.ds-menu__item--active {
+  background-color: var(--ds-menu-item-active-bg);
+}
+.ds-menu__item:active:not([aria-disabled='true']) {
+  background-color: var(--ds-menu-item-bg-active);
+}
+.ds-menu__item:focus-visible {
+  box-shadow: inset 0 0 0 var(--ds-border-width-thick) var(--ds-menu-item-ring-focus);
+}
+.ds-menu__item[aria-disabled='true'] {
+  color: var(--ds-menu-item-text-disabled);
+  cursor: not-allowed;
+}
+
+.ds-menu__item--danger {
+  color: var(--ds-menu-item-danger-text);
+}
+.ds-menu__item--danger.ds-menu__item--active {
+  background-color: var(--ds-menu-item-danger-active-bg);
+}
+.ds-menu__item--danger .ds-menu__shortcut {
+  color: inherit;
+  opacity: var(--ds-opacity-80);
+}
+
+.ds-menu__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-menu-icon-text);
+}
+.ds-menu__item--danger .ds-menu__icon,
+.ds-menu__item[aria-disabled='true'] .ds-menu__icon {
+  color: inherit;
+}
+
+.ds-menu__item-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-menu__shortcut {
+  flex-shrink: 0;
+  margin-inline-start: var(--ds-space-4);
+  color: var(--ds-menu-shortcut-text);
+  font-family: var(--ds-font-family-mono);
+  font-size: var(--ds-font-size-xs);
+  letter-spacing: var(--ds-font-tracking-normal);
+}
+
+.ds-menu__separator {
+  height: var(--ds-border-width-thin);
+  margin: var(--ds-space-1) calc(var(--ds-space-2) * -1);
+  background-color: var(--ds-menu-separator-bg);
+}
+
+.ds-menu__label {
+  padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-1);
+  color: var(--ds-menu-label-text);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+}
+
+@keyframes ds-menu-in {
+  from {
+    opacity: 0;
+    scale: var(--ds-motion-scale-pop);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-menu__list {
+    animation: none;
+  }
+  .ds-menu__item {
+    transition: none;
+  }
+}

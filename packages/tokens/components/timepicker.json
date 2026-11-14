@@ -1,0 +1,22 @@
+{
+  "button-text": "{color.text.muted}",
+  "button-bg-hover": "{color.bg.neutral.hover}",
+  "button-text-hover": "{color.text.default}",
+  "button-bg-active": "{color.bg.neutral.active}",
+  "button-text-open": "{color.text.accent}",
+  "button-ring-focus": "{color.border.focus}",
+  "button-halo-focus": "{shadow.focus}",
+  "button-text-disabled": "{color.text.disabled}",
+  "input-border-open": "{color.border.focus}",
+  "input-shadow-open": "{shadow.focus}",
+  "input-invalid-border-open": "{color.border.danger}",
+  "input-invalid-shadow-open": "{shadow.focusDanger}",
+  "list-bg": "{color.bg.surface}",
+  "list-shadow": "{shadow.overlay}",
+  "option-text": "{color.text.default}",
+  "option-active-bg": "{color.bg.neutral.hover}",
+  "option-selected-bg": "{gradient.accentSubtle}",
+  "option-selected-text": "{color.text.accent}",
+  "check-bg": "{color.bg.accent.default}",
+  "check-text": "{color.text.onAccent}"
+}

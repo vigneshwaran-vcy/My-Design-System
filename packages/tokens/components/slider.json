@@ -1,0 +1,20 @@
+{
+  "fill": "{color.bg.accent.default}",
+  "fill-hover": "{color.bg.accent.hover}",
+  "rest": "{color.bg.track.default}",
+  "neutral-fill": "{color.text.default}",
+  "neutral-fill-hover": "{color.text.default}",
+  "invalid-fill": "{color.bg.danger.default}",
+  "invalid-fill-hover": "{color.bg.danger.hover}",
+  "value-text": "{color.text.muted}",
+  "range-text": "{color.text.muted}",
+  "input-thumb-bg": "{color.text.onAccent}",
+  "input-thumb-shadow": "{shadow.knob}",
+  "input-track-bg-hover": "{color.bg.track.hover}",
+  "input-thumb-border-focus": "{color.border.focus}",
+  "input-thumb-shadow-focus": "{shadow.knob}",
+  "input-thumb-halo-focus": "{shadow.focus}",
+  "invalid-input-thumb-border-focus": "{color.border.danger}",
+  "invalid-input-thumb-shadow-focus": "{shadow.knob}",
+  "invalid-input-thumb-halo-focus": "{shadow.focusDanger}"
+}

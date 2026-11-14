@@ -1,0 +1,23 @@
+{
+  "bg": "{color.bg.subtle}",
+  "color": "{color.text.muted}",
+  "shadow": "{shadow.inset}",
+  "tint-accent-bg": "{color.bg.accent.subtle}",
+  "tint-accent-color": "{color.text.accent}",
+  "tint-success-bg": "{color.bg.success.subtle}",
+  "tint-success-color": "{color.text.success}",
+  "tint-warn-bg": "{color.bg.warn.subtle}",
+  "tint-warn-color": "{color.text.warn}",
+  "tint-danger-bg": "{color.bg.danger.subtle}",
+  "tint-danger-color": "{color.text.danger}",
+  "overflow-bg": "{color.bg.neutral.hover}",
+  "overflow-color": "{color.text.muted}",
+  "status-border": "{color.bg.surface}",
+  "status-bg": "{color.bg.neutral.active}",
+  "status-online-bg": "{color.bg.success.default}",
+  "status-offline-bg": "{color.bg.neutral.active}",
+  "status-busy-bg": "{color.bg.danger.default}",
+  "status-away-bg": "{color.bg.warn.default}",
+  "group-item-gap": "{color.bg.surface}",
+  "group-item-shadow": "{shadow.inset}"
+}

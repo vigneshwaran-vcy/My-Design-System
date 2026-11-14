@@ -1,0 +1,52 @@
+.ds-separator {
+  --separator-gap: 0;
+  flex-shrink: 0;
+  background-color: var(--ds-separator-bg);
+  font-family: var(--ds-font-family-sans);
+}
+
+.ds-separator--horizontal {
+  width: 100%;
+  height: var(--ds-border-width-thin);
+  margin-block: var(--separator-gap);
+}
+.ds-separator--vertical {
+  align-self: stretch;
+  width: var(--ds-border-width-thin);
+  min-height: var(--ds-size-icon-md);
+  margin-inline: var(--separator-gap);
+}
+
+.ds-separator--spacing-sm {
+  --separator-gap: var(--ds-space-2);
+}
+.ds-separator--spacing-md {
+  --separator-gap: var(--ds-space-4);
+}
+.ds-separator--spacing-lg {
+  --separator-gap: var(--ds-space-6);
+}
+
+/* Labelled: the fill becomes two lines drawn by pseudo-elements with the text centred between them. */
+.ds-separator--labeled {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  height: auto;
+  background: none;
+}
+.ds-separator--labeled::before,
+.ds-separator--labeled::after {
+  content: '';
+  flex: 1 1 0;
+  height: var(--ds-border-width-thin);
+  background-color: var(--ds-separator-labeled-before-bg);
+}
+.ds-separator__label {
+  flex-shrink: 0;
+  color: var(--ds-separator-label-text);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+  white-space: nowrap;
+}

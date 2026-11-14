@@ -1,0 +1,138 @@
+.ds-switch {
+  --switch-width: var(--ds-size-switch-width);
+  --switch-height: var(--ds-size-switch-height);
+  --switch-pad: var(--ds-border-width-thin);
+  --switch-stretch: var(--ds-space-1);
+  --switch-thumb: calc(var(--switch-height) - var(--switch-pad) * 2 - var(--ds-border-width-thin) * 2);
+  --switch-travel: calc(var(--switch-width) - var(--switch-height));
+  --switch-font-size: var(--ds-font-size-sm);
+
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--ds-space-3);
+  font-family: var(--ds-font-family-sans);
+  color: var(--ds-switch-text);
+}
+
+.ds-switch--sm {
+  --switch-width: var(--ds-size-switch-width-sm);
+  --switch-height: var(--ds-size-switch-height-sm);
+  --switch-font-size: var(--ds-font-size-xs);
+}
+
+/* Label before the track */
+.ds-switch--label-start .ds-switch__control {
+  order: 1;
+}
+
+/*
+ * Premium flat switch: a solid track (no stroke, no shading) and a raised white knob.
+ * The knob is the only element with depth: a hairline ring plus a soft neutral shadow.
+ */
+.ds-switch__control {
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  margin: 0;
+  /* Centre the track on the first line of text. */
+  margin-block-start: calc((var(--switch-font-size) * var(--ds-font-line-height-normal) - var(--switch-height)) / 2);
+  padding: var(--switch-pad);
+  /* Transparent border keeps an edge in forced-colors mode; it is invisible otherwise. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-switch-control-bg);
+  cursor: pointer;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+.ds-switch__thumb {
+  display: block;
+  width: var(--switch-thumb);
+  height: var(--switch-thumb);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-switch-thumb-bg);
+  box-shadow: var(--ds-switch-thumb-shadow);
+  transition:
+    transform var(--ds-motion-duration-base) var(--ds-motion-easing-out),
+    width var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+/* On: solid accent track, knob slides to the end. */
+.ds-switch__control[aria-checked='true'] {
+  background-color: var(--ds-switch-control-bg-checked);
+}
+.ds-switch__control[aria-checked='true'] .ds-switch__thumb {
+  transform: translateX(var(--switch-travel));
+}
+
+/* Hover: the track deepens one step. */
+.ds-switch__control:hover:not(:disabled) {
+  background-color: var(--ds-switch-control-bg-hover);
+}
+.ds-switch__control[aria-checked='true']:hover:not(:disabled) {
+  background-color: var(--ds-switch-control-bg-checked-hover);
+}
+
+/* Pressed: the knob stretches toward its destination, then slides on release. */
+.ds-switch__control:active:not(:disabled) .ds-switch__thumb {
+  width: calc(var(--switch-thumb) + var(--switch-stretch));
+}
+.ds-switch__control[aria-checked='true']:active:not(:disabled) .ds-switch__thumb {
+  transform: translateX(calc(var(--switch-travel) - var(--switch-stretch)));
+}
+
+/* Focus: soft ring outside the track; the transparent outline keeps focus visible in forced-colors mode. */
+.ds-switch__control:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow: var(--ds-switch-control-shadow-focus);
+}
+
+/* Disabled: the switch keeps its look, faded (shadcn-style), so on/off stays readable in both themes. */
+.ds-switch__control:disabled {
+  opacity: var(--ds-opacity-40);
+  cursor: not-allowed;
+}
+
+/* Text column */
+.ds-switch__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+.ds-switch__label {
+  font-size: var(--switch-font-size);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-normal);
+  cursor: pointer;
+  user-select: none;
+}
+.ds-switch__description {
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-normal);
+  color: var(--ds-switch-description-text);
+}
+.ds-switch--disabled .ds-switch__label {
+  cursor: not-allowed;
+  color: var(--ds-switch-disabled-label-text);
+}
+.ds-switch--disabled .ds-switch__description {
+  color: var(--ds-switch-disabled-description-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-switch__control,
+  .ds-switch__thumb {
+    transition: none;
+  }
+  .ds-switch__control:active:not(:disabled) .ds-switch__thumb {
+    width: var(--switch-thumb);
+  }
+  .ds-switch__control[aria-checked='true']:active:not(:disabled) .ds-switch__thumb {
+    transform: translateX(var(--switch-travel));
+  }
+}

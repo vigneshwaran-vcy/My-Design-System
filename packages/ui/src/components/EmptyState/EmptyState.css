@@ -1,0 +1,84 @@
+.ds-empty-state {
+  --empty-tile: var(--ds-size-tile-md);
+  --empty-icon: var(--ds-size-icon-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-8) var(--ds-space-6);
+  color: var(--ds-empty-state-text);
+  font-family: var(--ds-font-family-sans);
+  text-align: center;
+}
+.ds-empty-state--sm {
+  --empty-tile: var(--ds-size-tile-sm);
+  --empty-icon: var(--ds-size-icon-md);
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-6) var(--ds-space-4);
+}
+
+.ds-empty-state__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--empty-icon);
+  height: var(--empty-icon);
+  margin-bottom: var(--ds-space-2);
+  color: var(--ds-empty-state-icon-text);
+}
+.ds-empty-state__icon > svg {
+  width: 100%;
+  height: 100%;
+}
+/* Illustration tile: solid subtle fill with a dashed ring offset around it, concentric corners. */
+.ds-empty-state__icon--tile {
+  width: var(--empty-tile);
+  height: var(--empty-tile);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-xl);
+  background-color: var(--ds-empty-state-icon-tile-bg);
+  outline: var(--ds-border-width-thin) dashed var(--ds-empty-state-icon-tile-outline);
+  outline-offset: var(--ds-space-1);
+}
+.ds-empty-state__icon--tile > svg {
+  width: var(--empty-icon);
+  height: var(--empty-icon);
+}
+.ds-empty-state--sm .ds-empty-state__icon--tile {
+  border-radius: var(--ds-radius-lg);
+}
+
+.ds-empty-state__title {
+  margin: 0;
+  font-size: var(--ds-font-size-md);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-font-line-height-tight);
+  letter-spacing: var(--ds-font-tracking-tight);
+}
+.ds-empty-state--sm .ds-empty-state__title {
+  font-size: var(--ds-font-size-sm);
+}
+
+.ds-empty-state__description {
+  margin: 0;
+  max-width: var(--ds-size-panel-lg);
+  color: var(--ds-empty-state-description-text);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+}
+.ds-empty-state--sm .ds-empty-state__description {
+  font-size: var(--ds-font-size-xs);
+}
+
+.ds-empty-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-3);
+}
+.ds-empty-state--sm .ds-empty-state__actions {
+  margin-top: var(--ds-space-3);
+}

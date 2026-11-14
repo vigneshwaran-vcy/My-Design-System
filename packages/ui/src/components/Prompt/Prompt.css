@@ -1,0 +1,64 @@
+/*
+ * Prompt: a Modal panel with a coloured header band along the top edge and a tinted status icon tile.
+ * The band is a flat solid fill clipped to the panel's rounded top corners; no glow or gradient.
+ */
+.ds-prompt {
+  --prompt-band: var(--ds-prompt-band);
+  --prompt-icon-bg: var(--ds-prompt-icon-bg);
+  --prompt-icon-color: var(--ds-prompt-icon-color);
+
+  overflow: hidden;
+  padding-block-start: calc(var(--ds-space-4) + var(--ds-space-1));
+}
+.ds-prompt::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--ds-space-1);
+  background-color: var(--prompt-band);
+}
+
+.ds-prompt--info {
+  --prompt-band: var(--ds-prompt-info-band);
+  --prompt-icon-bg: var(--ds-prompt-info-icon-bg);
+  --prompt-icon-color: var(--ds-prompt-info-icon-color);
+}
+.ds-prompt--danger {
+  --prompt-band: var(--ds-prompt-danger-band);
+  --prompt-icon-bg: var(--ds-prompt-danger-icon-bg);
+  --prompt-icon-color: var(--ds-prompt-danger-icon-color);
+}
+.ds-prompt--success {
+  --prompt-band: var(--ds-prompt-success-band);
+  --prompt-icon-bg: var(--ds-prompt-success-icon-bg);
+  --prompt-icon-color: var(--ds-prompt-success-icon-color);
+}
+
+.ds-prompt__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+.ds-prompt__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-size-button-md);
+  height: var(--ds-size-button-md);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--prompt-icon-bg);
+  color: var(--prompt-icon-color);
+}
+.ds-prompt__icon > svg {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+}
+.ds-prompt__title {
+  min-width: 0;
+}
+
+/* Description lines up under the title text, past the icon tile. */
+.ds-prompt .ds-modal__description {
+  padding-inline-start: calc(var(--ds-size-button-md) + var(--ds-space-3));
+}

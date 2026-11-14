@@ -1,0 +1,169 @@
+/*
+ * Themed native range input. The filled part of the track is a hard-stop gradient driven by
+ * --slider-progress (set inline from the value); the thumb is the Switch's raised white knob.
+ */
+.ds-slider {
+  --slider-track: calc(var(--ds-space-1) + var(--ds-border-width-thin));
+  --slider-thumb: var(--ds-size-icon-sm);
+  --slider-fill: var(--ds-slider-fill);
+  --slider-fill-hover: var(--ds-slider-fill-hover);
+  --slider-rest: var(--ds-slider-rest);
+  --slider-progress: 0%;
+}
+
+.ds-slider--sm {
+  --slider-track: var(--ds-space-1);
+  --slider-thumb: var(--ds-size-checkbox-sm);
+}
+.ds-slider--lg {
+  --slider-track: var(--ds-space-2);
+  --slider-thumb: var(--ds-size-icon-md);
+}
+
+.ds-slider--neutral {
+  --slider-fill: var(--ds-slider-neutral-fill);
+  --slider-fill-hover: var(--ds-slider-neutral-fill-hover);
+}
+.ds-slider--invalid {
+  --slider-fill: var(--ds-slider-invalid-fill);
+  --slider-fill-hover: var(--ds-slider-invalid-fill-hover);
+}
+
+.ds-slider__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+}
+
+.ds-slider__value {
+  color: var(--ds-slider-value-text);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--ds-font-line-height-tight);
+}
+.ds-slider--sm .ds-slider__value {
+  font-size: var(--ds-font-size-xs);
+}
+
+.ds-slider__range {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ds-slider-range-text);
+  font-size: var(--ds-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--ds-font-line-height-tight);
+}
+
+.ds-slider__input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: var(--slider-thumb);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  /* Focus is drawn on the thumb; the transparent outline keeps it visible in forced-colors mode. */
+  outline: var(--ds-border-width-thick) solid transparent;
+}
+
+/* Track (WebKit / Blink) */
+.ds-slider__input::-webkit-slider-runnable-track {
+  height: var(--slider-track);
+  border: 0;
+  border-radius: var(--ds-radius-full);
+  background: linear-gradient(
+    to right,
+    var(--slider-fill) var(--slider-progress),
+    var(--slider-rest) var(--slider-progress)
+  );
+  transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+/* Track (Firefox) */
+.ds-slider__input::-moz-range-track {
+  height: var(--slider-track);
+  border: 0;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--slider-rest);
+}
+.ds-slider__input::-moz-range-progress {
+  height: var(--slider-track);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--slider-fill);
+}
+
+/* Thumb: raised white knob, never moves or grows on hover/press. */
+.ds-slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  width: var(--slider-thumb);
+  height: var(--slider-thumb);
+  margin-top: calc((var(--slider-track) - var(--slider-thumb)) / 2);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-slider-input-thumb-bg);
+  box-shadow: var(--ds-slider-input-thumb-shadow);
+  transition: box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-slider__input::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--slider-thumb);
+  height: var(--slider-thumb);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-slider-input-thumb-bg);
+  box-shadow: var(--ds-slider-input-thumb-shadow);
+  transition: box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+/* Hover: the fill deepens one step. */
+.ds-slider__input:hover:not(:disabled)::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--slider-fill-hover) var(--slider-progress),
+    var(--ds-slider-input-track-bg-hover) var(--slider-progress)
+  );
+}
+.ds-slider__input:hover:not(:disabled)::-moz-range-track {
+  background-color: var(--ds-slider-input-track-bg-hover);
+}
+.ds-slider__input:hover:not(:disabled)::-moz-range-progress {
+  background-color: var(--slider-fill-hover);
+}
+
+/* Focus: soft ring + 1px focus edge around the knob. */
+.ds-slider__input:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ds-slider-input-thumb-border-focus);
+  box-shadow: var(--ds-slider-input-thumb-shadow-focus), var(--ds-slider-input-thumb-halo-focus);
+}
+.ds-slider__input:focus-visible::-moz-range-thumb {
+  border-color: var(--ds-slider-input-thumb-border-focus);
+  box-shadow: var(--ds-slider-input-thumb-shadow-focus), var(--ds-slider-input-thumb-halo-focus);
+}
+.ds-slider--invalid .ds-slider__input:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ds-slider-invalid-input-thumb-border-focus);
+  box-shadow: var(--ds-slider-invalid-input-thumb-shadow-focus), var(--ds-slider-invalid-input-thumb-halo-focus);
+}
+.ds-slider--invalid .ds-slider__input:focus-visible::-moz-range-thumb {
+  border-color: var(--ds-slider-invalid-input-thumb-border-focus);
+  box-shadow: var(--ds-slider-invalid-input-thumb-shadow-focus), var(--ds-slider-invalid-input-thumb-halo-focus);
+}
+
+/* Disabled: the whole control fades, like Switch. */
+.ds-slider__input:disabled {
+  opacity: var(--ds-opacity-40);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-slider__input::-webkit-slider-thumb,
+  .ds-slider__input::-webkit-slider-runnable-track,
+  .ds-slider__input::-moz-range-thumb {
+    transition: none;
+  }
+}

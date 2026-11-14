@@ -1,0 +1,207 @@
+.ds-calendar {
+  --calendar-cell: var(--ds-size-control-md);
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  box-sizing: border-box;
+  color: var(--ds-calendar-text);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-tight);
+}
+
+.ds-calendar--sm {
+  --calendar-cell: var(--ds-size-button-sm);
+  font-size: var(--ds-font-size-xs);
+}
+.ds-calendar--lg {
+  --calendar-cell: var(--ds-size-control-lg);
+  font-size: var(--ds-font-size-md);
+}
+
+/* Framed surface: solid fill, 1px ring edge in the shadow; the transparent border shows in forced-colors mode. */
+.ds-calendar--outline {
+  padding: var(--ds-space-2);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-lg);
+  background-color: var(--ds-calendar-outline-bg);
+  box-shadow: var(--ds-calendar-outline-shadow);
+}
+
+/* Header: prev year / prev month · Month Year · next month / next year */
+.ds-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+}
+.ds-calendar__nav-group {
+  display: flex;
+  gap: var(--ds-space-1);
+}
+.ds-calendar__title {
+  flex: 1;
+  margin: 0;
+  font-size: inherit;
+  font-weight: var(--ds-font-weight-semibold);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ds-calendar__nav,
+.ds-calendar__day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md);
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+.ds-calendar__nav {
+  width: var(--ds-size-button-md);
+  height: var(--ds-size-button-sm);
+  color: var(--ds-calendar-nav-text);
+}
+.ds-calendar--sm .ds-calendar__nav {
+  width: var(--ds-size-button-sm);
+  height: var(--ds-size-button-sm);
+}
+.ds-calendar__nav .ds-icon {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-calendar__nav:hover:not(:disabled) {
+  background-color: var(--ds-calendar-nav-bg-hover);
+  color: var(--ds-calendar-nav-text-hover);
+}
+.ds-calendar__nav:active:not(:disabled) {
+  background-color: var(--ds-calendar-nav-bg-active);
+}
+.ds-calendar__nav:disabled {
+  color: var(--ds-calendar-nav-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Grid */
+.ds-calendar__grid {
+  border-collapse: separate;
+  border-spacing: 0 var(--ds-space-1);
+  margin-block: calc(var(--ds-space-1) * -1);
+}
+.ds-calendar__weekday {
+  width: var(--calendar-cell);
+  height: var(--ds-size-button-sm);
+  padding: 0;
+  color: var(--ds-calendar-weekday-text);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  text-align: center;
+}
+.ds-calendar__cell {
+  padding: 0;
+  text-align: center;
+}
+
+.ds-calendar__day {
+  position: relative;
+  width: var(--calendar-cell);
+  height: var(--calendar-cell);
+  font-variant-numeric: tabular-nums;
+}
+.ds-calendar__day:hover:not(.ds-calendar__day--selected, .ds-calendar__day--disabled) {
+  background-color: var(--ds-calendar-day-bg-hover);
+}
+.ds-calendar__day:active:not(.ds-calendar__day--selected, .ds-calendar__day--disabled) {
+  background-color: var(--ds-calendar-day-bg-active);
+}
+
+/* Soft focus ring with a 1px edge; the transparent outline keeps focus visible in forced-colors mode. */
+.ds-calendar__nav:focus-visible,
+.ds-calendar__day:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-calendar-nav-ring-focus),
+    var(--ds-calendar-nav-halo-focus);
+}
+
+.ds-calendar__day--outside {
+  color: var(--ds-calendar-day-outside-text);
+}
+
+/* Today: accent text and a small accent dot. */
+.ds-calendar__day--today {
+  color: var(--ds-calendar-day-today-text);
+  font-weight: var(--ds-font-weight-semibold);
+}
+.ds-calendar__day--today::after {
+  content: '';
+  position: absolute;
+  inset-block-end: var(--ds-space-1);
+  inset-inline-start: 50%;
+  width: var(--ds-space-1);
+  height: var(--ds-space-1);
+  border-radius: var(--ds-radius-full);
+  background-color: currentColor;
+  transform: translateX(-50%);
+}
+
+/* Selected: flat accent fill. */
+.ds-calendar__day--selected {
+  background-color: var(--ds-calendar-day-selected-bg);
+  color: var(--ds-calendar-day-selected-text);
+  font-weight: var(--ds-font-weight-medium);
+}
+.ds-calendar__day--selected:hover {
+  background-color: var(--ds-calendar-day-selected-bg-hover);
+}
+.ds-calendar__day--selected:active {
+  background-color: var(--ds-calendar-day-selected-bg-active);
+}
+
+.ds-calendar__day--disabled {
+  color: var(--ds-calendar-day-disabled-text);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+/* Range: a flat tinted band joins start and end; the ends keep the solid accent fill. */
+.ds-calendar__cell--in-range {
+  background-color: var(--ds-calendar-cell-in-range-bg);
+}
+.ds-calendar__cell--in-range .ds-calendar__day:not(.ds-calendar__day--selected, .ds-calendar__day--disabled) {
+  color: var(--ds-calendar-cell-in-range-day-text);
+}
+.ds-calendar__cell--in-range:first-child,
+.ds-calendar__cell--range-start {
+  border-start-start-radius: var(--ds-radius-md);
+  border-end-start-radius: var(--ds-radius-md);
+}
+.ds-calendar__cell--in-range:last-child,
+.ds-calendar__cell--range-end {
+  border-start-end-radius: var(--ds-radius-md);
+  border-end-end-radius: var(--ds-radius-md);
+}
+
+.ds-calendar__footer {
+  display: flex;
+  justify-content: center;
+  padding-block-start: var(--ds-space-2);
+  border-block-start: var(--ds-border-width-thin) solid var(--ds-calendar-footer-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-calendar__nav,
+  .ds-calendar__day {
+    transition: none;
+  }
+}

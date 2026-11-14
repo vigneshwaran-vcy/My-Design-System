@@ -1,5 +1,11 @@
 import { Button } from '@my-ds/ui';
-import { useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+
+/**
+ * The docs site shows one page at a time. A parent that renders several sections (Foundations)
+ * provides this to say which of them are on screen; without a provider every section shows.
+ */
+export const SectionVisibility = createContext<(id: string) => boolean>(() => true);
 
 export function DocSection({ id, eyebrow, title, description, children }: {
   id: string;
@@ -8,6 +14,8 @@ export function DocSection({ id, eyebrow, title, description, children }: {
   description?: ReactNode;
   children: ReactNode;
 }) {
+  const visible = useContext(SectionVisibility);
+  if (!visible(id)) return null;
   return (
     <section id={id} className="doc-section" aria-labelledby={`${id}-title`}>
       <header className="doc-section__header">

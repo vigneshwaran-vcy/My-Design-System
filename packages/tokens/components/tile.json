@@ -1,0 +1,15 @@
+{
+  "text": "{color.text.default}",
+  "card-bg": "{color.bg.surface}",
+  "card-shadow": "{shadow.surface}",
+  "card-shadow-hover": "{shadow.surfaceHover}",
+  "card-ring-focus": "{color.border.focus}",
+  "card-halo-focus": "{shadow.focus}",
+  "title-text": "{color.text.default}",
+  "link-text": "{color.text.accent}",
+  "link-ring-focus": "{color.border.focus}",
+  "link-halo-focus": "{shadow.focus}",
+  "detail-label-text": "{color.text.muted}",
+  "detail-value-text": "{color.text.default}",
+  "body-text": "{color.text.muted}"
+}

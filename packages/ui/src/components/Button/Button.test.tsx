@@ -17,6 +17,16 @@ describe('Button', () => {
     expect(screen.getByRole('button')).toHaveClass('ds-button--danger', 'ds-button--lg');
   });
 
+  it.each(['xs', 'sm', 'md', 'lg'] as const)('applies the %s size class', (size) => {
+    render(<Button size={size}>Sized</Button>);
+    expect(screen.getByRole('button')).toHaveClass(`ds-button--${size}`);
+  });
+
+  it('supports the soft variant', () => {
+    render(<Button variant="soft">Soft</Button>);
+    expect(screen.getByRole('button')).toHaveClass('ds-button--soft');
+  });
+
   it('fires onClick from mouse and keyboard (Enter + Space)', async () => {
     const user = userEvent.setup();
     const onClick = vi.fn();
@@ -62,6 +72,22 @@ describe('Button', () => {
   it('hides decorative icons from assistive tech', () => {
     render(<Button leadingIcon="+">Add</Button>);
     expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument();
+  });
+
+  it('acts as a toggle button when selected is set', async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    const { rerender } = render(<Button selected={false} onClick={onClick}>Bold</Button>);
+    const button = screen.getByRole('button', { name: 'Bold', pressed: false });
+    await user.click(button);
+    expect(onClick).toHaveBeenCalledOnce();
+    rerender(<Button selected onClick={onClick}>Bold</Button>);
+    expect(screen.getByRole('button', { name: 'Bold', pressed: true })).toBe(button);
+  });
+
+  it('is not a toggle unless selected is set', () => {
+    render(<Button>Save</Button>);
+    expect(screen.getByRole('button')).not.toHaveAttribute('aria-pressed');
   });
 
   it('forwards refs and extra props', () => {

@@ -1,0 +1,12 @@
+{
+  "fill": "{color.bg.accent.default}",
+  "track": "{color.bg.neutral.hover}",
+  "text": "{color.text.default}",
+  "accent-fill": "{color.bg.accent.default}",
+  "success-fill": "{color.bg.success.default}",
+  "warn-fill": "{color.bg.warn.default}",
+  "danger-fill": "{color.bg.danger.default}",
+  "value-text": "{color.text.muted}",
+  "circle-value-text": "{color.text.default}",
+  "circle-label-text": "{color.text.muted}"
+}

@@ -1,0 +1,77 @@
+/*
+ * Controls reuse Button: ghost for pages and arrows, secondary (solid surface + flat ring shadow)
+ * for the current page, so it reads as a settled, raised tab with no motion.
+ */
+.ds-pagination {
+  font-family: var(--ds-font-family-sans);
+  color: var(--ds-pagination-text);
+}
+
+.ds-pagination__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-pagination__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Square page and arrow buttons; the min-width matches the button height for each size. */
+.ds-pagination .ds-pagination__page,
+.ds-pagination .ds-pagination__control {
+  min-width: var(--ds-size-button-sm);
+  padding-inline: var(--ds-space-1);
+  font-variant-numeric: tabular-nums;
+}
+.ds-pagination--sm .ds-pagination__page,
+.ds-pagination--sm .ds-pagination__control {
+  min-width: var(--ds-size-button-xs);
+}
+.ds-pagination__control svg {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-pagination--sm .ds-pagination__control svg {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+
+/* Current page: keep the surface look on hover too (no accent tint), as it is not actionable. */
+.ds-pagination .ds-pagination__page[aria-current='page'] {
+  --button-bg-hover: linear-gradient(var(--ds-pagination-page-button-bg-hover-current), var(--ds-pagination-page-button-bg-hover-current));
+  --button-shadow-hover: var(--ds-pagination-page-button-shadow-hover-current);
+  --button-color: var(--ds-pagination-page-button-color-current);
+  cursor: default;
+}
+
+.ds-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ds-size-button-sm);
+  height: var(--ds-size-button-sm);
+  color: var(--ds-pagination-ellipsis-text);
+  font-size: var(--ds-font-size-xs);
+  user-select: none;
+}
+.ds-pagination--sm .ds-pagination__ellipsis {
+  min-width: var(--ds-size-button-xs);
+  height: var(--ds-size-button-xs);
+}
+
+.ds-pagination__status {
+  padding-inline: var(--ds-space-2);
+  color: var(--ds-pagination-status-text);
+  font-size: var(--ds-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ds-pagination--sm .ds-pagination__status {
+  font-size: var(--ds-font-size-xs);
+}

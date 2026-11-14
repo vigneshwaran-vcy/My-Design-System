@@ -1,0 +1,12 @@
+{
+  "button-text": "{color.text.muted}",
+  "button-bg-hover": "{color.bg.neutral.hover}",
+  "button-text-hover": "{color.text.default}",
+  "button-bg-active": "{color.bg.neutral.active}",
+  "button-text-open": "{color.text.accent}",
+  "button-ring-focus": "{color.border.focus}",
+  "button-halo-focus": "{shadow.focus}",
+  "button-text-disabled": "{color.text.disabled}",
+  "popover-bg": "{color.bg.surface}",
+  "popover-shadow": "{shadow.overlay}"
+}

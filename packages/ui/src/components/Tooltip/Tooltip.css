@@ -1,0 +1,76 @@
+/* The wrapper only provides a positioning context; it should not change how the child lays out. */
+.ds-tooltip {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+}
+
+/* Floating distance between the child and the bubble. */
+.ds-tooltip {
+  --tooltip-offset: var(--ds-space-2);
+}
+
+.ds-tooltip__bubble {
+  position: absolute;
+  z-index: var(--ds-layer-tooltip);
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--ds-size-panel-sm);
+  padding: var(--ds-space-1) var(--ds-space-2);
+  /* Solid inverse surface; the transparent border keeps an edge in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-tooltip-bubble-bg);
+  color: var(--ds-tooltip-bubble-text);
+  box-shadow: var(--ds-tooltip-bubble-shadow);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-normal);
+  text-align: start;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+  animation: ds-tooltip-in var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-tooltip__bubble[hidden] {
+  display: none;
+}
+
+/* Placement: `translate` positions, so the animation can own `scale` without a conflict. */
+.ds-tooltip--top > .ds-tooltip__bubble {
+  bottom: calc(100% + var(--tooltip-offset));
+  left: 50%;
+  translate: -50% 0;
+  transform-origin: bottom center;
+}
+.ds-tooltip--bottom > .ds-tooltip__bubble {
+  top: calc(100% + var(--tooltip-offset));
+  left: 50%;
+  translate: -50% 0;
+  transform-origin: top center;
+}
+.ds-tooltip--left > .ds-tooltip__bubble {
+  right: calc(100% + var(--tooltip-offset));
+  top: 50%;
+  translate: 0 -50%;
+  transform-origin: center right;
+}
+.ds-tooltip--right > .ds-tooltip__bubble {
+  left: calc(100% + var(--tooltip-offset));
+  top: 50%;
+  translate: 0 -50%;
+  transform-origin: center left;
+}
+
+@keyframes ds-tooltip-in {
+  from {
+    opacity: 0;
+    scale: var(--ds-motion-scale-pop);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-tooltip__bubble {
+    animation: none;
+  }
+}

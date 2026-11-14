@@ -1,0 +1,14 @@
+{
+  "band": "{color.bg.warn.default}",
+  "icon-bg": "{color.bg.warn.subtle}",
+  "icon-color": "{color.text.warn}",
+  "info-band": "{color.bg.accent.default}",
+  "info-icon-bg": "{color.bg.accent.subtle}",
+  "info-icon-color": "{color.text.accent}",
+  "danger-band": "{color.bg.danger.default}",
+  "danger-icon-bg": "{color.bg.danger.subtle}",
+  "danger-icon-color": "{color.text.danger}",
+  "success-band": "{color.bg.success.default}",
+  "success-icon-bg": "{color.bg.success.subtle}",
+  "success-icon-color": "{color.text.success}"
+}

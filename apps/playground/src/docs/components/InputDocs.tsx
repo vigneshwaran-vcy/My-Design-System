@@ -65,7 +65,7 @@ export function InputDocs() {
             { name: 'hint', type: 'ReactNode', description: 'Helper text, linked via aria-describedby.' },
             { name: 'error', type: 'ReactNode', description: 'Sets aria-invalid, red border, and announces the message.' },
             { name: 'variant', type: "'outline' | 'filled'", default: "'outline'", description: 'Bordered or tinted background.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 32 / 40 / 48.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 26 / 32 / 40.' },
             { name: 'id', type: 'string', default: 'auto (useId)', description: 'Override the generated id.' },
           ]}
         />

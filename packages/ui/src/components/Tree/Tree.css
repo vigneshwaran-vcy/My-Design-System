@@ -1,0 +1,160 @@
+/*
+ * Tree view. Flat rows indented per level; hover tints the row, the selected row takes the
+ * accent tint with an accent icon. The focus ring is drawn on the row (the treeitem <li>
+ * also holds its children, so it never draws its own outline).
+ *   default  bare       framed  tinted frame (bg-frame, padding space-3, radius xl)
+ */
+.ds-tree {
+  --tree-row-height: var(--ds-size-button-sm);
+  --tree-font-size: var(--ds-font-size-sm);
+  --tree-icon-size: var(--ds-size-icon-sm);
+  --tree-indent: calc(var(--ds-size-icon-sm) + var(--ds-space-1));
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-border-width-thin);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--ds-font-family-sans);
+  color: var(--ds-tree-text);
+}
+.ds-tree--sm {
+  --tree-row-height: var(--ds-size-button-xs);
+  --tree-font-size: var(--ds-font-size-xs);
+  --tree-icon-size: var(--ds-size-icon-xs);
+  --tree-indent: calc(var(--ds-size-icon-xs) + var(--ds-space-2));
+}
+.ds-tree--framed {
+  padding: var(--ds-space-2);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-xl);
+  background-color: var(--ds-tree-framed-bg);
+}
+
+.ds-tree__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-border-width-thin);
+  margin: 0;
+  padding: var(--ds-border-width-thin) 0 0;
+  list-style: none;
+}
+.ds-tree__group[hidden] {
+  display: none;
+}
+
+.ds-tree__item {
+  outline: none;
+}
+
+.ds-tree__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  box-sizing: border-box;
+  min-height: var(--tree-row-height);
+  padding-inline: calc(var(--ds-space-1) + var(--tree-level, 0) * var(--tree-indent)) var(--ds-space-2);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-tree-row-text);
+  font-size: var(--tree-font-size);
+  line-height: var(--ds-font-line-height-tight);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-tree__item:not(.ds-tree__item--disabled) > .ds-tree__row:hover {
+  background-color: var(--ds-tree-item-row-bg-hover);
+}
+.ds-tree--framed .ds-tree__item:not(.ds-tree__item--disabled, .ds-tree__item--selected) > .ds-tree__row:hover {
+  background-color: var(--ds-tree-framed-item-row-bg-hover);
+}
+.ds-tree__item:not(.ds-tree__item--disabled) > .ds-tree__row:active {
+  background-color: var(--ds-tree-item-row-bg-active);
+}
+.ds-tree__item--selected > .ds-tree__row,
+.ds-tree__item--selected:not(.ds-tree__item--disabled) > .ds-tree__row:hover {
+  background-color: var(--ds-tree-item-selected-row-bg);
+  font-weight: var(--ds-font-weight-medium);
+}
+.ds-tree__item--selected > .ds-tree__row .ds-tree__icon {
+  color: var(--ds-tree-item-selected-row-icon-text);
+}
+.ds-tree__item--disabled > .ds-tree__row {
+  color: var(--ds-tree-item-disabled-row-text);
+  cursor: not-allowed;
+}
+.ds-tree__item:focus-visible > .ds-tree__row {
+  z-index: 1;
+  outline: var(--ds-border-width-thick) solid transparent;
+  outline-offset: calc(var(--ds-border-width-thick) * -1);
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-tree-item-row-ring-focus),
+    var(--ds-tree-item-row-halo-focus);
+}
+
+.ds-tree__toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--tree-icon-size);
+  height: var(--tree-icon-size);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-tree-toggle-text);
+  transition: transform var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-tree__toggle > svg {
+  width: 100%;
+  height: 100%;
+}
+.ds-tree__item[aria-expanded='true'] > .ds-tree__row > .ds-tree__toggle {
+  transform: rotate(90deg);
+}
+.ds-tree__item--disabled > .ds-tree__row > .ds-tree__toggle {
+  color: var(--ds-tree-item-disabled-row-toggle-text);
+}
+
+.ds-tree__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--tree-icon-size);
+  height: var(--tree-icon-size);
+  color: var(--ds-tree-icon-text);
+}
+.ds-tree__icon > svg {
+  width: 100%;
+  height: 100%;
+}
+.ds-tree__item--disabled > .ds-tree__row .ds-tree__icon {
+  color: var(--ds-tree-item-disabled-row-icon-text);
+}
+
+.ds-tree__label {
+  flex: 1;
+  min-width: 0;
+  padding-inline-start: var(--ds-space-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-tree__meta {
+  flex-shrink: 0;
+  color: var(--ds-tree-meta-text);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-regular);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-tree__row,
+  .ds-tree__toggle {
+    transition: none;
+  }
+}

@@ -1,0 +1,129 @@
+/* Field chrome (label, hint, error, input look) comes from Input.css: .ds-field*, .ds-input*. */
+
+.ds-datepicker__control {
+  position: relative;
+}
+
+.ds-datepicker__control .ds-datepicker__input {
+  padding-inline-end: calc(var(--ds-size-button-sm) + var(--ds-space-2));
+  font-variant-numeric: tabular-nums;
+}
+.ds-datepicker__control .ds-datepicker__input--sm {
+  padding-inline-end: calc(var(--ds-size-button-xs) + var(--ds-space-2));
+}
+.ds-datepicker__control .ds-datepicker__input--lg {
+  padding-inline-end: calc(var(--ds-size-button-md) + var(--ds-space-2));
+}
+
+/* Calendar button: a quiet icon button inside the field's end edge. */
+.ds-datepicker__button {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: var(--ds-space-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--ds-size-button-sm);
+  height: var(--ds-size-button-sm);
+  margin-block: auto;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-sm);
+  background-color: transparent;
+  color: var(--ds-datepicker-button-text);
+  cursor: pointer;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-datepicker__button .ds-icon {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-datepicker__button--sm {
+  width: var(--ds-size-button-xs);
+  height: var(--ds-size-button-xs);
+  border-radius: var(--ds-radius-sm);
+}
+.ds-datepicker__button--lg {
+  width: var(--ds-size-button-md);
+  height: var(--ds-size-button-md);
+  border-radius: var(--ds-radius-md);
+}
+.ds-datepicker__button--lg .ds-icon {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+}
+
+.ds-datepicker__button:hover:not(:disabled) {
+  background-color: var(--ds-datepicker-button-bg-hover);
+  color: var(--ds-datepicker-button-text-hover);
+}
+.ds-datepicker__button:active:not(:disabled) {
+  background-color: var(--ds-datepicker-button-bg-active);
+}
+.ds-datepicker__button[aria-expanded='true'] {
+  color: var(--ds-datepicker-button-text-open);
+}
+/* Soft focus ring with a 1px edge; the transparent outline keeps focus visible in forced-colors mode. */
+.ds-datepicker__button:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-datepicker-button-ring-focus),
+    var(--ds-datepicker-button-halo-focus);
+}
+.ds-datepicker__button:disabled {
+  color: var(--ds-datepicker-button-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Floating calendar: solid surface, 1px ring edge inside the overlay shadow. */
+.ds-datepicker__popover {
+  position: absolute;
+  z-index: var(--ds-layer-dropdown);
+  box-sizing: border-box;
+  padding: var(--ds-space-2);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-lg);
+  background-color: var(--ds-datepicker-popover-bg);
+  box-shadow: var(--ds-datepicker-popover-shadow);
+  animation: ds-datepicker-in var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-datepicker__popover--bottom-start {
+  top: calc(100% + var(--ds-space-2));
+  inset-inline-start: 0;
+  transform-origin: top left;
+}
+.ds-datepicker__popover--bottom-end {
+  top: calc(100% + var(--ds-space-2));
+  inset-inline-end: 0;
+  transform-origin: top right;
+}
+.ds-datepicker__popover--top-start {
+  bottom: calc(100% + var(--ds-space-2));
+  inset-inline-start: 0;
+  transform-origin: bottom left;
+}
+.ds-datepicker__popover--top-end {
+  bottom: calc(100% + var(--ds-space-2));
+  inset-inline-end: 0;
+  transform-origin: bottom right;
+}
+
+@keyframes ds-datepicker-in {
+  from {
+    opacity: 0;
+    scale: var(--ds-motion-scale-pop);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-datepicker__button {
+    transition: none;
+  }
+  .ds-datepicker__popover {
+    animation: none;
+  }
+}

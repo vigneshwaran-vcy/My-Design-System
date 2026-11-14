@@ -1,0 +1,9 @@
+{
+  "panel-bg": "{color.bg.surface}",
+  "panel-shadow": "{shadow.overlay}",
+  "panel-text": "{color.text.default}",
+  "panel-shadow-focus": "{shadow.overlay}",
+  "panel-halo-focus": "{shadow.focus}",
+  "title-text": "{color.text.default}",
+  "body-text": "{color.text.default}"
+}

@@ -1,0 +1,152 @@
+/*
+ * Square icon toggle. Unchecked: flat surface with a 1px ring edge (shadow-flat) or an accent tint (soft).
+ * Checked: solid accent fill with a check. It never moves on hover or press; only fill and shadow change.
+ */
+.ds-checkbox-button {
+  --checkbox-button-size: var(--ds-size-button-md);
+  --checkbox-button-icon: var(--ds-size-icon-sm);
+  --checkbox-button-radius: var(--ds-radius-md);
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ds-checkbox-button--sm {
+  --checkbox-button-size: var(--ds-size-button-sm);
+  --checkbox-button-icon: var(--ds-size-icon-xs);
+  --checkbox-button-radius: var(--ds-radius-md);
+}
+.ds-checkbox-button--lg {
+  --checkbox-button-size: var(--ds-size-button-lg);
+  --checkbox-button-icon: var(--ds-size-icon-md);
+  --checkbox-button-radius: var(--ds-radius-control);
+}
+
+.ds-checkbox-button__box {
+  --cbb-bg: var(--ds-checkbox-button-box-bg);
+  --cbb-bg-hover: var(--ds-checkbox-button-box-bg-hover);
+  --cbb-bg-active: var(--ds-checkbox-button-box-bg-active);
+  --cbb-color: var(--ds-checkbox-button-box-color);
+  --cbb-color-hover: var(--ds-checkbox-button-box-color-hover);
+  --cbb-shadow: var(--ds-checkbox-button-box-shadow);
+  --cbb-shadow-hover: var(--ds-checkbox-button-box-shadow-hover);
+
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: var(--checkbox-button-size);
+  height: var(--checkbox-button-size);
+  /* The edge is the 1px ring in the shadow; the transparent border shows in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--checkbox-button-radius);
+  background-color: var(--cbb-bg);
+  box-shadow: var(--cbb-shadow);
+  color: var(--cbb-color);
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+
+.ds-checkbox-button--soft .ds-checkbox-button__box {
+  --cbb-bg: var(--ds-checkbox-button-soft-box-bg);
+  --cbb-bg-hover: var(--ds-checkbox-button-soft-box-bg-hover);
+  --cbb-bg-active: var(--ds-checkbox-button-soft-box-bg-active);
+  --cbb-color: var(--ds-checkbox-button-soft-box-color);
+  --cbb-color-hover: var(--ds-checkbox-button-soft-box-color-hover);
+  --cbb-shadow: 0 0 transparent;
+  --cbb-shadow-hover: var(--ds-checkbox-button-soft-box-shadow-hover);
+}
+
+.ds-checkbox-button__icon {
+  grid-area: 1 / 1;
+  width: var(--checkbox-button-icon);
+  height: var(--checkbox-button-icon);
+  transition:
+    opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    transform var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-checkbox-button__icon--on {
+  opacity: 0;
+  transform: scale(var(--ds-motion-scale-mark));
+}
+
+/* Checked: solid accent fill, check pops in. */
+.ds-checkbox-button__input:checked + .ds-checkbox-button__box {
+  --cbb-bg: var(--ds-checkbox-button-input-box-bg-checked);
+  --cbb-bg-hover: var(--ds-checkbox-button-input-box-bg-hover-checked);
+  --cbb-bg-active: var(--ds-checkbox-button-input-box-bg-active-checked);
+  --cbb-color: var(--ds-checkbox-button-input-box-color-checked);
+  --cbb-color-hover: var(--ds-checkbox-button-input-box-color-hover-checked);
+  --cbb-shadow: 0 0 transparent;
+  --cbb-shadow-hover: 0 0 transparent;
+}
+.ds-checkbox-button__input:checked + .ds-checkbox-button__box .ds-checkbox-button__icon--off {
+  opacity: 0;
+  transform: scale(var(--ds-motion-scale-mark));
+}
+.ds-checkbox-button__input:checked + .ds-checkbox-button__box .ds-checkbox-button__icon--on {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hover / pressed: fill and shadow only. */
+.ds-checkbox-button:hover .ds-checkbox-button__input:not(:disabled) + .ds-checkbox-button__box {
+  background-color: var(--cbb-bg-hover);
+  box-shadow: var(--cbb-shadow-hover);
+  color: var(--cbb-color-hover);
+}
+.ds-checkbox-button:active .ds-checkbox-button__input:not(:disabled) + .ds-checkbox-button__box {
+  background-color: var(--cbb-bg-active);
+  transition-duration: var(--ds-motion-duration-fast);
+}
+
+/* Focus: 1px focus edge + soft ring; the transparent outline keeps it visible in forced-colors mode. */
+.ds-checkbox-button__input:focus-visible + .ds-checkbox-button__box {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-checkbox-button-input-box-border-focus);
+  box-shadow: var(--ds-checkbox-button-input-box-shadow-focus);
+}
+
+/* Invalid */
+.ds-checkbox-button--invalid .ds-checkbox-button__input:not(:disabled) + .ds-checkbox-button__box {
+  border-color: var(--ds-checkbox-button-invalid-input-box-border);
+}
+.ds-checkbox-button--invalid .ds-checkbox-button__input:not(:disabled):checked + .ds-checkbox-button__box {
+  --cbb-bg: var(--ds-checkbox-button-invalid-input-box-bg-checked);
+  --cbb-bg-hover: var(--ds-checkbox-button-invalid-input-box-bg-hover-checked);
+  --cbb-bg-active: var(--ds-checkbox-button-invalid-input-box-bg-active-checked);
+  --cbb-color: var(--ds-checkbox-button-invalid-input-box-color-checked);
+  --cbb-color-hover: var(--ds-checkbox-button-invalid-input-box-color-hover-checked);
+}
+.ds-checkbox-button--invalid .ds-checkbox-button__input:focus-visible + .ds-checkbox-button__box {
+  border-color: var(--ds-checkbox-button-invalid-input-box-border-focus);
+  box-shadow: var(--ds-checkbox-button-invalid-input-box-shadow-focus);
+}
+
+/* Disabled */
+.ds-checkbox-button--disabled {
+  cursor: not-allowed;
+}
+.ds-checkbox-button__input:disabled + .ds-checkbox-button__box {
+  --cbb-bg: var(--ds-checkbox-button-input-box-bg-disabled);
+  --cbb-color: var(--ds-checkbox-button-input-box-color-disabled);
+  --cbb-shadow: 0 0 transparent;
+  border-color: var(--ds-checkbox-button-input-box-border-disabled);
+}
+.ds-checkbox-button__input:disabled:checked + .ds-checkbox-button__box {
+  --cbb-bg: var(--ds-checkbox-button-input-box-bg-disabled-checked);
+  --cbb-color: var(--ds-checkbox-button-input-box-color-disabled-checked);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-checkbox-button__box,
+  .ds-checkbox-button__icon {
+    transition: none;
+  }
+}

@@ -1,0 +1,78 @@
+.ds-popover {
+  position: relative;
+  display: inline-flex;
+  --popover-offset: var(--ds-space-2);
+}
+
+.ds-popover__panel {
+  position: absolute;
+  z-index: var(--ds-layer-dropdown);
+  box-sizing: border-box;
+  min-width: var(--ds-size-panel-sm);
+  max-width: var(--ds-size-panel-lg);
+  padding: var(--ds-space-3);
+  /* Solid surface with a 1px ring edge in the shadow; the transparent border shows in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-popover-panel-bg);
+  box-shadow: var(--ds-popover-panel-shadow);
+  color: var(--ds-popover-panel-text);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+  outline: none;
+  animation: ds-popover-in var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-popover__panel[hidden] {
+  display: none;
+}
+.ds-popover__panel:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow: var(--ds-popover-panel-shadow-focus), var(--ds-popover-panel-halo-focus);
+}
+
+.ds-popover--bottom-start > .ds-popover__panel {
+  top: calc(100% + var(--popover-offset));
+  left: 0;
+  transform-origin: top left;
+}
+.ds-popover--bottom-end > .ds-popover__panel {
+  top: calc(100% + var(--popover-offset));
+  right: 0;
+  transform-origin: top right;
+}
+.ds-popover--top-start > .ds-popover__panel {
+  bottom: calc(100% + var(--popover-offset));
+  left: 0;
+  transform-origin: bottom left;
+}
+.ds-popover--top-end > .ds-popover__panel {
+  bottom: calc(100% + var(--popover-offset));
+  right: 0;
+  transform-origin: bottom right;
+}
+
+.ds-popover__title {
+  margin-block-end: var(--ds-space-2);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-font-line-height-tight);
+  color: var(--ds-popover-title-text);
+}
+
+.ds-popover__body {
+  color: var(--ds-popover-body-text);
+}
+
+@keyframes ds-popover-in {
+  from {
+    opacity: 0;
+    scale: var(--ds-motion-scale-pop);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-popover__panel {
+    animation: none;
+  }
+}

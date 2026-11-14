@@ -1,4 +1,4 @@
-import { Button } from '@my-ds/ui';
+import { Button, Icon } from '@my-ds/ui';
 import { useState } from 'react';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
@@ -10,7 +10,7 @@ export function ButtonDocs() {
   };
 
   return (
-    <DocSection id="button" eyebrow="Components" title="Button" description="Triggers an action. Use one primary button per view; secondary and ghost for everything else; danger only for destructive actions.">
+    <DocSection id="button" eyebrow="Components" title="Button" description="Triggers an action. Use one primary button per view; secondary, soft and ghost for everything else; danger only for destructive actions.">
       <CodeBlock label="Button import" code={`import { Button } from '@my-ds/ui';`} />
 
       <SubSection title="Examples">
@@ -18,18 +18,22 @@ export function ButtonDocs() {
           title="Variants"
           code={`<Button>Primary</Button>
 <Button variant="secondary">Secondary</Button>
+<Button variant="soft">Soft</Button>
 <Button variant="ghost">Ghost</Button>
 <Button variant="danger">Delete</Button>`}
         >
           <Button>Primary</Button>
           <Button variant="secondary">Secondary</Button>
+          <Button variant="soft">Soft</Button>
           <Button variant="ghost">Ghost</Button>
           <Button variant="danger">Delete</Button>
         </Example>
 
-        <Example title="Sizes" code={`<Button size="sm">Small</Button>
+        <Example title="Sizes — 22 / 26 / 32 / 40" code={`<Button size="xs">Extra small</Button>
+<Button size="sm">Small</Button>
 <Button size="md">Medium</Button>
 <Button size="lg">Large</Button>`}>
+          <Button size="xs">Extra small</Button>
           <Button size="sm">Small</Button>
           <Button size="md">Medium</Button>
           <Button size="lg">Large</Button>
@@ -42,10 +46,10 @@ export function ButtonDocs() {
           <Button loading={loading} onClick={save}>{loading ? 'Saving…' : 'Click to load'}</Button>
         </Example>
 
-        <Example title="With icons" code={`<Button leadingIcon="+">New project</Button>
-<Button variant="secondary" trailingIcon="→">Continue</Button>`}>
-          <Button leadingIcon="+">New project</Button>
-          <Button variant="secondary" trailingIcon="→">Continue</Button>
+        <Example title="With icons" code={`<Button leadingIcon={<Icon name="add" />}>New project</Button>
+<Button variant="secondary" trailingIcon={<Icon name="arrow-right" />}>Continue</Button>`}>
+          <Button leadingIcon={<Icon name="add" />}>New project</Button>
+          <Button variant="secondary" trailingIcon={<Icon name="arrow-right" />}>Continue</Button>
         </Example>
 
         <Example title="Full width" code={`<Button fullWidth>Continue</Button>`}>
@@ -57,8 +61,8 @@ export function ButtonDocs() {
         <PropsTable
           caption="Button props (plus all native <button> attributes)"
           rows={[
-            { name: 'variant', type: "'primary' | 'secondary' | 'ghost' | 'danger'", default: "'primary'", description: 'Visual emphasis.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 32 / 40 / 48 (size-control-*).' },
+            { name: 'variant', type: "'primary' | 'secondary' | 'soft' | 'ghost' | 'danger'", default: "'primary'", description: 'Visual emphasis. soft is a tinted, low-emphasis accent.' },
+            { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 22 / 26 / 32 / 40 (size-button-*).' },
             { name: 'loading', type: 'boolean', default: 'false', description: 'Shows a spinner, sets aria-busy, ignores clicks but stays focusable.' },
             { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Stretches to the container width.' },
             { name: 'leadingIcon', type: 'ReactNode', description: 'Decorative icon before the label (hidden from screen readers).' },

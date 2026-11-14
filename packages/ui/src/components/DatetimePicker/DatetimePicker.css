@@ -1,0 +1,16 @@
+/* Field chrome (label, hint, error) comes from Input.css: .ds-field*. */
+
+/* Side by side when there is room; wraps to stacked fields on narrow containers. */
+.ds-datetimepicker__fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+}
+.ds-datetimepicker__date {
+  flex: 3 1 var(--ds-size-panel-xs);
+  min-width: 0;
+}
+.ds-datetimepicker__time {
+  flex: 2 1 calc(var(--ds-size-panel-xs) - var(--ds-space-12));
+  min-width: 0;
+}

@@ -1,0 +1,5 @@
+{
+  "bg": "{color.border.default}",
+  "labeled-before-bg": "{color.border.default}",
+  "label-text": "{color.text.muted}"
+}

@@ -67,7 +67,7 @@ export function CardDocs() {
           caption="Card props (plus native HTML attributes)"
           rows={[
             { name: 'variant', type: "'elevated' | 'outlined' | 'filled'", default: "'elevated'", description: 'Shadow, border only, or tinted surface.' },
-            { name: 'padding', type: "'none' | 'sm' | 'md' | 'lg'", default: "'md'", description: 'Inner padding 0 / 12 / 24 / 32.' },
+            { name: 'padding', type: "'none' | 'sm' | 'md' | 'lg'", default: "'md'", description: 'Inner padding 0 / 12 / 16 / 24.' },
             { name: 'as', type: "'div' | 'section' | 'article' | 'form'", default: "'div'", description: 'Semantic element.' },
           ]}
         />

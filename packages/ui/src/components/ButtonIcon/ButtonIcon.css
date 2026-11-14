@@ -1,0 +1,152 @@
+/*
+ * Icon-only button. Each variant sets its per-state look through --button-icon-* properties;
+ * the base rules apply them. Flat fills, ring edges in the shadow, never moves on hover or press.
+ */
+.ds-button-icon {
+  --button-icon-size: var(--ds-size-button-md);
+  --button-icon-glyph: var(--ds-size-icon-sm);
+  --button-icon-bg: transparent;
+  --button-icon-bg-hover: var(--ds-button-icon-bg-hover);
+  --button-icon-bg-active: var(--ds-button-icon-bg-active);
+  --button-icon-color: var(--ds-button-icon-color);
+  --button-icon-color-hover: var(--ds-button-icon-color-hover);
+  --button-icon-border: transparent;
+  --button-icon-shadow: 0 0 transparent;
+  --button-icon-shadow-hover: var(--button-icon-shadow);
+  --button-icon-shadow-active: var(--button-icon-shadow);
+  /* Selected (aria-pressed="true"); must not reference the resting properties (the selected rule points back). */
+  --button-icon-bg-selected: var(--ds-button-icon-bg-selected);
+  --button-icon-color-selected: var(--ds-button-icon-color-selected);
+  --button-icon-border-selected: transparent;
+  --button-icon-shadow-selected: 0 0 transparent;
+  --button-icon-shadow-state: var(--button-icon-shadow);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--button-icon-size);
+  height: var(--button-icon-size);
+  margin: 0;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid var(--button-icon-border);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--button-icon-bg);
+  color: var(--button-icon-color);
+  box-shadow: var(--button-icon-shadow-state);
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+
+.ds-button-icon__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--button-icon-glyph);
+  height: var(--button-icon-glyph);
+}
+.ds-button-icon__icon > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ds-button-icon:where(:hover:not(:disabled)) {
+  background-color: var(--button-icon-bg-hover);
+  color: var(--button-icon-color-hover);
+  --button-icon-shadow-state: var(--button-icon-shadow-hover);
+}
+.ds-button-icon:where(:active:not(:disabled)) {
+  background-color: var(--button-icon-bg-active);
+  --button-icon-shadow-state: var(--button-icon-shadow-active);
+  transition-duration: var(--ds-motion-duration-fast);
+}
+
+/* Soft focus: a 1px focus ring plus the focus halo, on top of the state shadow. */
+.ds-button-icon:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-button-icon-ring-focus),
+    var(--ds-button-icon-halo-focus),
+    var(--button-icon-shadow-state);
+}
+
+/* Sizes: xs 22 · sm 26 · md 32 · lg 40 (Button heights) */
+.ds-button-icon--xs {
+  --button-icon-size: var(--ds-size-button-xs);
+  --button-icon-glyph: var(--ds-size-icon-xs);
+  border-radius: var(--ds-radius-sm);
+}
+.ds-button-icon--sm {
+  --button-icon-size: var(--ds-size-button-sm);
+  --button-icon-glyph: var(--ds-size-icon-sm);
+}
+.ds-button-icon--lg {
+  --button-icon-size: var(--ds-size-button-lg);
+  --button-icon-glyph: var(--ds-size-icon-md);
+  border-radius: var(--ds-radius-control);
+}
+
+/* Variants */
+.ds-button-icon--container {
+  --button-icon-bg: var(--ds-button-icon-container-bg);
+  --button-icon-color: var(--ds-button-icon-container-color);
+}
+
+/* Border: flat surface with a 1px ring edge and a small soft shadow (like the Secondary button). */
+.ds-button-icon--border {
+  --button-icon-bg: var(--ds-button-icon-border-bg);
+  --button-icon-color: var(--ds-button-icon-border-color);
+  --button-icon-shadow: var(--ds-button-icon-border-shadow);
+  --button-icon-shadow-hover: var(--ds-button-icon-border-shadow-hover);
+  --button-icon-border-selected: var(--ds-button-icon-border-selected);
+}
+
+/* Brand: solid flat accent fill. */
+.ds-button-icon--brand {
+  --button-icon-bg: var(--ds-button-icon-brand-bg);
+  --button-icon-bg-hover: var(--ds-button-icon-brand-bg-hover);
+  --button-icon-bg-active: var(--ds-button-icon-brand-bg-active);
+  --button-icon-color: var(--ds-button-icon-brand-color);
+  --button-icon-color-hover: var(--ds-button-icon-brand-color-hover);
+  --button-icon-shadow: var(--ds-button-icon-brand-shadow);
+  --button-icon-shadow-hover: var(--ds-button-icon-brand-shadow-hover);
+  --button-icon-bg-selected: var(--ds-button-icon-brand-bg-selected);
+  --button-icon-color-selected: var(--ds-button-icon-brand-color-selected);
+  --button-icon-shadow-selected: var(--ds-button-icon-brand-shadow-selected);
+}
+
+/* Selected (toggle on): a settled tint that hover doesn't replace. */
+.ds-button-icon[aria-pressed='true'] {
+  --button-icon-bg: var(--button-icon-bg-selected);
+  --button-icon-bg-hover: var(--button-icon-bg-selected);
+  --button-icon-color: var(--button-icon-color-selected);
+  --button-icon-color-hover: var(--button-icon-color-selected);
+  --button-icon-border: var(--button-icon-border-selected);
+  --button-icon-shadow: var(--button-icon-shadow-selected);
+  --button-icon-shadow-hover: var(--button-icon-shadow-selected);
+}
+
+.ds-button-icon:disabled {
+  --button-icon-color: var(--ds-button-icon-color-disabled);
+  --button-icon-shadow: 0 0 transparent;
+  --button-icon-border: transparent;
+  cursor: not-allowed;
+}
+.ds-button-icon:is(.ds-button-icon--container, .ds-button-icon--border, .ds-button-icon--brand):disabled {
+  --button-icon-bg: var(--ds-button-icon-container-bg-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-button-icon {
+    transition: none;
+  }
+}

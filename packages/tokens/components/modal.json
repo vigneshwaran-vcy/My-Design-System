@@ -1,0 +1,12 @@
+{
+  "scrim-bg": "{color.bg.overlay}",
+  "panel-bg": "{color.bg.surface}",
+  "panel-shadow": "{shadow.overlay}",
+  "panel-text": "{color.text.default}",
+  "panel-shadow-focus": "{shadow.overlay}",
+  "panel-halo-focus": "{shadow.focus}",
+  "title-text": "{color.text.default}",
+  "description-text": "{color.text.muted}",
+  "close-text": "{color.text.muted}",
+  "body-text": "{color.text.default}"
+}

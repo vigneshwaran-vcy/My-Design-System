@@ -1,0 +1,19 @@
+{
+  "accent": "{color.bg.accent.default}",
+  "bg": "{color.bg.surface}",
+  "shadow": "{shadow.overlay}",
+  "text": "{color.text.default}",
+  "neutral-accent": "{color.border.strong}",
+  "info-accent": "{color.bg.accent.default}",
+  "success-accent": "{color.bg.success.default}",
+  "warn-accent": "{color.bg.warn.default}",
+  "danger-accent": "{color.bg.danger.default}",
+  "icon-text": "{color.text.inverse}",
+  "info-icon-text": "{color.text.onAccent}",
+  "success-icon-text": "{color.text.onSuccess}",
+  "warn-icon-text": "{color.text.onWarn}",
+  "danger-icon-text": "{color.text.onDanger}",
+  "title-text": "{color.text.default}",
+  "description-text": "{color.text.muted}",
+  "close-text": "{color.text.muted}"
+}

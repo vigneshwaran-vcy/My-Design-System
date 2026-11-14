@@ -1,0 +1,9 @@
+{
+  "help-text": "{color.text.muted}",
+  "help-text-hover": "{color.text.default}",
+  "help-bg-hover": "{color.bg.neutral.hover}",
+  "help-text-focus": "{color.text.default}",
+  "help-ring-focus": "{color.border.focus}",
+  "help-halo-focus": "{shadow.focus}",
+  "field-disabled-help-text": "{color.text.disabled}"
+}

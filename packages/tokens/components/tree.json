@@ -1,0 +1,18 @@
+{
+  "text": "{color.text.default}",
+  "framed-bg": "{color.bg.frame}",
+  "row-text": "{color.text.default}",
+  "item-row-bg-hover": "{color.bg.neutral.hover}",
+  "framed-item-row-bg-hover": "{color.bg.neutral.active}",
+  "item-row-bg-active": "{color.bg.neutral.active}",
+  "item-selected-row-bg": "{color.bg.accent.subtle}",
+  "item-selected-row-icon-text": "{color.text.accent}",
+  "item-disabled-row-text": "{color.text.disabled}",
+  "item-row-ring-focus": "{color.border.focus}",
+  "item-row-halo-focus": "{shadow.focus}",
+  "toggle-text": "{color.text.muted}",
+  "item-disabled-row-toggle-text": "{color.text.disabled}",
+  "icon-text": "{color.text.muted}",
+  "item-disabled-row-icon-text": "{color.text.disabled}",
+  "meta-text": "{color.text.muted}"
+}

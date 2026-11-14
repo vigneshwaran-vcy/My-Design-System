@@ -1,0 +1,124 @@
+/*
+ * Carousel. The slide viewport is a surface (shadow-surface ring, radius xl); slides slide
+ * sideways. Controls sit below: rotation (ghost), previous/next (secondary: solid fill +
+ * shadow-flat ring), and a dot tablist using the flat track colours with an accent pill for the
+ * current slide. Controls never move.
+ *   framed  everything in a tinted frame (bg-frame, padding space-3, radius xl), the viewport
+ *           an inset surface at radius xl - space-3.
+ */
+.ds-carousel {
+  --carousel-radius: var(--ds-radius-xl);
+  --carousel-dot: var(--ds-space-2);
+  --carousel-dot-active: var(--ds-space-6);
+  --carousel-dot-hit: var(--ds-size-button-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  font-family: var(--ds-font-family-sans);
+  color: var(--ds-carousel-text);
+}
+.ds-carousel--sm {
+  --carousel-dot: var(--ds-space-1);
+  --carousel-dot-active: var(--ds-space-4);
+  --carousel-dot-hit: var(--ds-size-button-xs);
+  gap: var(--ds-space-2);
+}
+.ds-carousel--framed {
+  --carousel-radius: calc(var(--ds-radius-xl) - var(--ds-space-3));
+  padding: var(--ds-space-3);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-xl);
+  background-color: var(--ds-carousel-framed-bg);
+}
+
+.ds-carousel__viewport {
+  overflow: hidden;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--carousel-radius);
+  background-color: var(--ds-carousel-viewport-bg);
+  box-shadow: var(--ds-carousel-viewport-shadow);
+}
+
+.ds-carousel__track {
+  display: flex;
+  transition: transform var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+
+.ds-carousel__slide {
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.ds-carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+}
+
+/* Square icon buttons (previous / next / rotation). */
+.ds-carousel .ds-carousel__control {
+  min-width: var(--ds-size-button-sm);
+  padding-inline: 0;
+}
+.ds-carousel--sm .ds-carousel__control {
+  min-width: var(--ds-size-button-xs);
+}
+.ds-carousel__control svg {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-carousel--sm .ds-carousel__control svg {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-carousel__dots {
+  display: flex;
+  align-items: center;
+  margin-inline: var(--ds-space-1);
+}
+
+/* Each dot keeps a comfortable hit area; the visible mark is the ::before pill. */
+.ds-carousel__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--carousel-dot-hit);
+  margin: 0;
+  padding: 0 var(--ds-space-1);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-full);
+  background: none;
+  cursor: pointer;
+}
+.ds-carousel__dot::before {
+  content: '';
+  width: var(--carousel-dot);
+  height: var(--carousel-dot);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-carousel-dot-before-bg);
+  transition:
+    width var(--ds-motion-duration-base) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-carousel__dot:hover::before {
+  background-color: var(--ds-carousel-dot-before-bg-hover);
+}
+.ds-carousel__dot[aria-selected='true']::before {
+  width: var(--carousel-dot-active);
+  background-color: var(--ds-carousel-dot-before-bg-selected);
+}
+.ds-carousel__dot:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-carousel-dot-ring-focus),
+    var(--ds-carousel-dot-halo-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-carousel__track,
+  .ds-carousel__dot::before {
+    transition: none;
+  }
+}

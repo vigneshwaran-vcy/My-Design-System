@@ -1,0 +1,171 @@
+/*
+ * Each variant sets its colours through --badge-* custom properties; the base rules apply them.
+ * subtle = tinted fill + coloured text, solid = full fill + on-colour text.
+ */
+.ds-badge {
+  --badge-bg: var(--ds-badge-bg);
+  --badge-color: var(--ds-badge-color);
+  --badge-dot: var(--ds-badge-dot);
+  --badge-edge: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  box-sizing: border-box;
+  height: var(--ds-size-badge-md);
+  padding-inline: var(--ds-space-2);
+  border: var(--ds-border-width-thin) solid var(--badge-edge);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--badge-bg);
+  color: var(--badge-color);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+  letter-spacing: var(--ds-font-tracking-normal);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ds-badge--sm {
+  height: var(--ds-size-badge-sm);
+  padding-inline: calc(var(--ds-space-2) - var(--ds-border-width-thick));
+  font-size: var(--ds-font-size-2xs);
+}
+
+/* Subtle: tinted fill + coloured text */
+.ds-badge--subtle.ds-badge--neutral {
+  --badge-bg: var(--ds-badge-subtle-neutral-bg);
+  --badge-color: var(--ds-badge-subtle-neutral-color);
+  --badge-dot: var(--ds-badge-subtle-neutral-dot);
+}
+.ds-badge--subtle.ds-badge--accent {
+  --badge-bg: var(--ds-badge-subtle-accent-bg);
+  --badge-color: var(--ds-badge-subtle-accent-color);
+  --badge-dot: var(--ds-badge-subtle-accent-dot);
+}
+.ds-badge--subtle.ds-badge--success {
+  --badge-bg: var(--ds-badge-subtle-success-bg);
+  --badge-color: var(--ds-badge-subtle-success-color);
+  --badge-dot: var(--ds-badge-subtle-success-dot);
+}
+.ds-badge--subtle.ds-badge--warn {
+  --badge-bg: var(--ds-badge-subtle-warn-bg);
+  --badge-color: var(--ds-badge-subtle-warn-color);
+  --badge-dot: var(--ds-badge-subtle-warn-dot);
+}
+.ds-badge--subtle.ds-badge--danger {
+  --badge-bg: var(--ds-badge-subtle-danger-bg);
+  --badge-color: var(--ds-badge-subtle-danger-color);
+  --badge-dot: var(--ds-badge-subtle-danger-dot);
+}
+
+/* Solid: full colour fill + on-colour text */
+.ds-badge--solid.ds-badge--neutral {
+  --badge-bg: var(--ds-badge-solid-neutral-bg);
+  --badge-color: var(--ds-badge-solid-neutral-color);
+  --badge-dot: currentColor;
+}
+.ds-badge--solid.ds-badge--accent {
+  --badge-bg: var(--ds-badge-solid-accent-bg);
+  --badge-color: var(--ds-badge-solid-accent-color);
+  --badge-dot: currentColor;
+}
+.ds-badge--solid.ds-badge--success {
+  --badge-bg: var(--ds-badge-solid-success-bg);
+  --badge-color: var(--ds-badge-solid-success-color);
+  --badge-dot: currentColor;
+}
+.ds-badge--solid.ds-badge--warn {
+  --badge-bg: var(--ds-badge-solid-warn-bg);
+  --badge-color: var(--ds-badge-solid-warn-color);
+  --badge-dot: currentColor;
+}
+.ds-badge--solid.ds-badge--danger {
+  --badge-bg: var(--ds-badge-solid-danger-bg);
+  --badge-color: var(--ds-badge-solid-danger-color);
+  --badge-dot: currentColor;
+}
+
+/* Outline: neutral ring, no fill (same in both appearances) */
+.ds-badge--outline {
+  --badge-bg: transparent;
+  --badge-color: var(--ds-badge-outline-color);
+  --badge-dot: var(--ds-badge-outline-dot);
+  --badge-edge: var(--ds-badge-outline-edge);
+}
+
+.ds-badge__dot {
+  flex-shrink: 0;
+  width: calc(var(--ds-space-2) - var(--ds-border-width-thick));
+  height: calc(var(--ds-space-2) - var(--ds-border-width-thick));
+  border-radius: var(--ds-radius-full);
+  background-color: var(--badge-dot);
+}
+
+.ds-badge__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-badge__icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ds-badge__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Removable: tuck the "×" into the trailing padding so the pill stays balanced. */
+.ds-badge--removable {
+  padding-inline-end: var(--ds-space-1);
+}
+.ds-badge__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-radius-full);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: var(--ds-opacity-70);
+  transition:
+    opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-badge__remove > svg {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-badge__remove:hover {
+  opacity: 1;
+  background-color: var(--ds-badge-remove-bg-hover);
+}
+.ds-badge--solid .ds-badge__remove:hover {
+  background-color: transparent;
+}
+.ds-badge__remove:focus-visible {
+  opacity: 1;
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-badge-remove-ring-focus);
+}
+.ds-badge--sm .ds-badge__remove {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-badge__remove {
+    transition: none;
+  }
+}

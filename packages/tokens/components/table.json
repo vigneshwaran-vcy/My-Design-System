@@ -1,0 +1,23 @@
+{
+  "container-bg": "{color.bg.surface}",
+  "container-shadow": "{shadow.surface}",
+  "container-text": "{color.text.default}",
+  "caption-text": "{color.text.muted}",
+  "caption-border": "{color.border.default}",
+  "head-bg": "{color.bg.subtle}",
+  "head-text": "{color.text.muted}",
+  "head-border": "{color.border.default}",
+  "cell-border": "{color.border.default}",
+  "cell-text": "{color.text.default}",
+  "striped-body-row-cell-bg": "{color.bg.subtle}",
+  "row-interactive-cell-bg-hover": "{color.bg.neutral.hover}",
+  "row-selected-cell-bg": "{color.bg.accent.subtle}",
+  "row-selected-interactive-cell-bg-hover": "{color.bg.accent.subtle}",
+  "row-cell-bg-focus": "{color.bg.neutral.hover}",
+  "sort-text-hover": "{color.text.default}",
+  "head-sorted-sort-text": "{color.text.default}",
+  "sort-ring-focus": "{color.border.focus}",
+  "sort-icon-text": "{color.text.muted}",
+  "sort-icon-asc-text": "{color.text.default}",
+  "empty-cell-text": "{color.text.muted}"
+}

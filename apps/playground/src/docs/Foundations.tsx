@@ -1,7 +1,11 @@
 import { themeNames, tokenList, type ThemeValue, type TokenEntry } from '@my-ds/tokens';
 import { Button, Input } from '@my-ds/ui';
 import { useState, type ReactNode } from 'react';
-import { CopyButton, DocSection, SubSection } from './DocBlocks';
+import { ComponentTokens } from './ComponentTokens';
+import { CopyButton, DocSection, SectionVisibility, SubSection } from './DocBlocks';
+import { PaletteRamps } from './PaletteRamps';
+import { Icons } from './Icons';
+import { TokenLayers } from './TokenLayers';
 
 const cssVar = (t: TokenEntry) => `var(${t.cssVar})`;
 const leaf = (t: TokenEntry) => t.name.split('.').pop()!;
@@ -16,6 +20,16 @@ function byGroup(list: TokenEntry[]) {
   const groups = new Map<string, TokenEntry[]>();
   for (const t of list) groups.set(t.group, [...(groups.get(t.group) ?? []), t]);
   return [...groups];
+}
+
+/** Semantic colours by role (color.bg.accent.hover → "bg"), keeping nested states together. */
+function byRole(list: TokenEntry[]) {
+  const roles = new Map<string, TokenEntry[]>();
+  for (const t of list) {
+    const role = t.name.split('.')[1];
+    roles.set(role, [...(roles.get(role) ?? []), t]);
+  }
+  return [...roles];
 }
 
 function TokenMeta({ token, showValue = true }: { token: TokenEntry; showValue?: boolean }) {
@@ -81,37 +95,73 @@ function MotionDemo({ duration, easing }: { duration: string; easing: string }) 
 
 export const foundationsNav = [
   ['tokens', 'All tokens'],
+  ['layers', 'Token layers'],
+  ['component-tokens', 'Component tokens'],
   ['palette', 'Palette'],
   ['semantic-colors', 'Semantic colors'],
   ['typography', 'Typography'],
   ['spacing', 'Spacing'],
   ['radius', 'Radius'],
   ['shadows', 'Shadows'],
+  ['gradients', 'Gradients'],
+  ['blur', 'Blur'],
+  ['opacity', 'Opacity'],
   ['motion', 'Motion'],
   ['sizes', 'Sizes & borders'],
+  ['icons', 'Icons'],
 ] as const;
 
-export function Foundations() {
+type PaletteView = 'ramp' | 'swatches';
+const PALETTE_VIEW_KEY = 'ds-docs-palette-view';
+
+function readPaletteView(): PaletteView {
+  try {
+    return localStorage.getItem(PALETTE_VIEW_KEY) === 'swatches' ? 'swatches' : 'ramp';
+  } catch {
+    return 'ramp';
+  }
+}
+
+/** Sections whose content is filtered by the "All tokens" search; they show under it while searching. */
+const SEARCHABLE = new Set(['palette', 'semantic-colors', 'typography', 'spacing', 'radius', 'shadows', 'gradients', 'blur', 'opacity', 'motion', 'sizes']);
+
+export function Foundations({ active }: { active: string }) {
   const [query, setQuery] = useState('');
+  const [paletteView, setPaletteViewState] = useState<PaletteView>(readPaletteView);
+  const setPaletteView = (view: PaletteView) => {
+    setPaletteViewState(view);
+    try {
+      localStorage.setItem(PALETTE_VIEW_KEY, view);
+    } catch {
+      // Storage can be unavailable (private mode); the choice just won't be remembered.
+    }
+  };
   const q = query.trim().toLowerCase();
   const list = tokenList.filter((t) => matches(t, q));
   const pick = (...groups: string[]) => list.filter((t) => groups.includes(t.group));
   const none = <Empty>No tokens match “{query}”.</Empty>;
 
   const palette = list.filter((t) => t.category === 'palette');
-  const colors = pick('color');
+  const colors = list.filter((t) => t.category === 'color');
   const shadows = pick('shadow');
   const space = pick('space');
   const radius = pick('radius');
+  const gradients = pick('gradient');
+  const blurs = list.filter((t) => t.category === 'blur');
   const durations = pick('motion.duration');
   const easings = pick('motion.easing');
+  const scales = pick('motion.scale');
+  const opacities = list.filter((t) => t.category === 'opacity');
   const easeOut = tokenList.find((t) => t.group === 'motion.easing')!;
   const baseDuration = tokenList.find((t) => t.name === 'motion.duration.base')!;
   const typeGroups = ['font.family', 'font.size', 'font.weight', 'font.lineHeight'] as const;
-  const sizeGroups = ['size.control', 'size.icon', 'border.width', 'breakpoint'] as const;
+  const sizeGroups = ['size.button', 'size.control', 'size.icon', 'border.width', 'breakpoint'] as const;
+
+  const searching = active === 'tokens' && q !== '';
+  const visible = (id: string) => id === active || (searching && SEARCHABLE.has(id));
 
   return (
-    <>
+    <SectionVisibility.Provider value={visible}>
       <DocSection
         id="tokens"
         eyebrow="Foundations"
@@ -128,22 +178,43 @@ export function Foundations() {
           <Input
             label="Filter tokens"
             type="search"
-            placeholder="Name, variable or value — e.g. accent, space-4, #4F46E5"
+            placeholder="Name, variable or value — e.g. accent, space-4, #0260FF"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            hint={q ? `${list.length} of ${tokenList.length} tokens match` : undefined}
+            hint={q ? `${list.length} of ${tokenList.length} tokens match` : 'Matches from every category appear below as you type.'}
           />
         </div>
       </DocSection>
 
-      <DocSection id="palette" title="Palette" description="Raw colour primitives. Components never use these directly — they go through semantic colours.">
+      <TokenLayers />
+      <ComponentTokens />
+
+      <DocSection
+        id="palette"
+        title="Palette"
+        description={
+          <>
+            Colour primitives (layer 2). Each <code>…Alpha</code> group is the same hue at 5–80% opacity, for shadows, tints
+            and glass. Components never use these directly — they go through semantic colours.
+          </>
+        }
+      >
+        <div role="group" aria-label="Palette view" className="ly-toggle tk-view-toggle">
+          <Button size="sm" variant="secondary" selected={paletteView === 'ramp'} onClick={() => setPaletteView('ramp')}>
+            Ramp
+          </Button>
+          <Button size="sm" variant="secondary" selected={paletteView === 'swatches'} onClick={() => setPaletteView('swatches')}>
+            Swatches
+          </Button>
+        </div>
         {palette.length === 0 && none}
-        {byGroup(palette).map(([group, tokens]) => (
+        {palette.length > 0 && paletteView === 'ramp' && <PaletteRamps tokens={palette} />}
+        {paletteView === 'swatches' && byGroup(palette).map(([group, tokens]) => (
           <SubSection key={group} title={group === 'palette' ? 'base' : group.split('.')[1]}>
             <ul className="tk-swatches">
               {tokens.map((t) => (
                 <li key={t.name} className="tk-swatch">
-                  <span className="tk-swatch__chip" style={{ background: cssVar(t) }} aria-hidden="true" />
+                  <span className="tk-swatch__chip tk-chip--alpha" aria-hidden="true"><span style={{ background: cssVar(t) }} /></span>
                   <span className="tk-swatch__name">{leaf(t)}</span>
                   <TokenMeta token={t} />
                 </li>
@@ -153,35 +224,47 @@ export function Foundations() {
         ))}
       </DocSection>
 
-      <DocSection id="semantic-colors" title="Semantic colours" description="Theme-aware colours that components use. Each points at a palette primitive per theme.">
-        {colors.length === 0 ? none : (
-          <div className="doc-table-wrap">
-            <table className="doc-table tk-semantic">
-              <caption>Semantic colour tokens</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Token</th>
-                  <th scope="col">Current</th>
-                  {themeNames.map((n) => <th key={n} scope="col">{n}</th>)}
-                </tr>
-              </thead>
-              <tbody>
-                {colors.map((t) => (
-                  <tr key={t.name}>
-                    <th scope="row">
-                      <div className="tk-meta">
-                        <code className="tk-var">{t.cssVar}</code>
-                        <CopyButton value={cssVar(t)} label={t.cssVar} />
-                      </div>
-                    </th>
-                    <td><span className="tk-chip tk-chip--lg" style={{ background: cssVar(t) }} aria-hidden="true" /></td>
-                    {themeNames.map((n) => <td key={n}><ThemeCell value={t.themes![n]} /></td>)}
+      <DocSection
+        id="semantic-colors"
+        title="Semantic colours"
+        description={
+          <>
+            Theme-aware colours that components use, grouped by role: <code>bg</code> for fills, <code>text</code> for
+            text and icons, <code>border</code> for edges and focus rings. Each points at a palette primitive per theme.
+          </>
+        }
+      >
+        {colors.length === 0 && none}
+        {byRole(colors).map(([role, tokens]) => (
+          <SubSection key={role} title={role}>
+            <div className="doc-table-wrap">
+              <table className="doc-table tk-semantic">
+                <caption>Semantic {role} colours</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Token</th>
+                    <th scope="col">Current</th>
+                    {themeNames.map((n) => <th key={n} scope="col">{n}</th>)}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {tokens.map((t) => (
+                    <tr key={t.name}>
+                      <th scope="row">
+                        <div className="tk-meta">
+                          <code className="tk-var">{t.cssVar}</code>
+                          <CopyButton value={cssVar(t)} label={t.cssVar} />
+                        </div>
+                      </th>
+                      <td><span className="tk-chip tk-chip--lg" style={{ background: cssVar(t) }} aria-hidden="true" /></td>
+                      {themeNames.map((n) => <td key={n}><ThemeCell value={t.themes![n]} /></td>)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </SubSection>
+        ))}
       </DocSection>
 
       <DocSection id="typography" title="Typography" description="Inter for UI text. Sizes xs–4xl, weights 400 / 500 / 600.">
@@ -250,6 +333,81 @@ export function Foundations() {
         )}
       </DocSection>
 
+      <DocSection id="gradients" title="Gradients" description="Theme-aware gradients for accent fills, surfaces and AI moments. The ai family is the only multi-colour gradient: blue-led (sky → blue → violet → fuchsia, with blue holding 28–58%), and only for AI features.">
+        {gradients.some((t) => t.name.startsWith('gradient.ai')) && (
+          <SubSection title="AI gradients in use">
+            <ul className="tk-ai-demos">
+              <li>
+                <span className="tk-ai-fill">✦ Ask AI</span>
+                <code className="tk-var">--ds-gradient-ai</code>
+                <span className="tk-ref">AI buttons, badges, avatars. Hover → ai-hover, pressed → ai-active.</span>
+              </li>
+              <li>
+                <span className="tk-ai-text">Generated with AI</span>
+                <code className="tk-var">--ds-gradient-ai-text</code>
+                <span className="tk-ref">Gradient text; darker stops in light theme so it stays readable.</span>
+              </li>
+              <li>
+                <span className="tk-ai-edge">AI suggestion</span>
+                <code className="tk-var">--ds-gradient-ai</code>
+                <span className="tk-ref">1px gradient edge on AI surfaces (Card, ChatInput).</span>
+              </li>
+              <li>
+                <span className="tk-ai-subtle">Summarised 12 messages</span>
+                <code className="tk-var">--ds-gradient-ai-subtle</code>
+                <span className="tk-ref">Tinted background for AI results and callouts.</span>
+              </li>
+              <li>
+                <span className="tk-ai-mesh">Your assistant</span>
+                <code className="tk-var">--ds-gradient-ai-mesh</code>
+                <span className="tk-ref">Soft multi-colour wash for AI panels and empty states.</span>
+              </li>
+              <li>
+                <span className="tk-ai-conic" role="img" aria-label="AI thinking indicator" />
+                <code className="tk-var">--ds-gradient-ai-conic</code>
+                <span className="tk-ref">Rings and “thinking” loaders.</span>
+              </li>
+            </ul>
+          </SubSection>
+        )}
+        {gradients.length === 0 ? none : (
+          <ul className="tk-tiles">
+            {gradients.map((t) => (
+              <li key={t.name} className="tk-tile">
+                <span className="tk-gradient-box" style={{ background: cssVar(t) }} />
+                <span className="tk-row__name">{t.name}</span>
+                <TokenMeta token={t} showValue={false} />
+                {themeNames.map((n) => (
+                  <span key={n} className="tk-ref"><strong>{n}:</strong> {t.themes![n].value}</span>
+                ))}
+              </li>
+            ))}
+          </ul>
+        )}
+      </DocSection>
+
+      <DocSection id="blur" title="Blur" description="Backdrop blur for frosted-glass popovers. Pair with color-glass as the background.">
+        {blurs.length === 0 ? none : (
+          <TokenRows
+            tokens={blurs}
+            preview={(t) => (
+              <div className="tk-blur-demo">
+                <span className="tk-blur-demo__bg" aria-hidden="true">Aa Bb Cc</span>
+                <span className="tk-blur-demo__glass" style={{ backdropFilter: `blur(${cssVar(t)})`, WebkitBackdropFilter: `blur(${cssVar(t)})` }}>
+                  glass
+                </span>
+              </div>
+            )}
+          />
+        )}
+      </DocSection>
+
+      <DocSection id="opacity" title="Opacity" description="Partial see-through for de-emphasised icons, spinner tracks and pulses. Colour tints use alpha colours instead.">
+        {opacities.length === 0 ? none : (
+          <TokenRows tokens={opacities} preview={(t) => <span className="tk-fill-box" style={{ opacity: cssVar(t) }} aria-hidden="true" />} />
+        )}
+      </DocSection>
+
       <DocSection id="motion" title="Motion" description="Short and calm: 150ms for hover/colour changes, 250ms for larger movements, always ease-out. Press Play to compare.">
         {durations.length + easings.length === 0 && none}
         {durations.length > 0 && (
@@ -262,12 +420,23 @@ export function Foundations() {
             <TokenRows tokens={easings} preview={(t) => <MotionDemo duration={cssVar(baseDuration)} easing={cssVar(t)} />} />
           </SubSection>
         )}
+        {scales.length > 0 && (
+          <SubSection title="Scale">
+            <p className="doc-muted">Start size for pop-in panels (pop) and selection marks (mark), and the peak of a pulse.</p>
+            <TokenRows tokens={scales} preview={(t) => <span className="tk-fill-box" style={{ scale: cssVar(t) }} aria-hidden="true" />} />
+          </SubSection>
+        )}
       </DocSection>
 
-      <DocSection id="sizes" title="Sizes & borders" description="Control heights, icon sizes, border widths and breakpoints.">
+      <DocSection id="sizes" title="Sizes & borders" description="Button and control heights, icon sizes, border widths and breakpoints.">
         {sizeGroups.every((g) => pick(g).length === 0) && none}
+        {pick('size.button').length > 0 && (
+          <SubSection title="Button heights">
+            <TokenRows tokens={pick('size.button')} preview={(t) => <span className="tk-control-box" style={{ height: cssVar(t) }}>{leaf(t)}</span>} />
+          </SubSection>
+        )}
         {pick('size.control').length > 0 && (
-          <SubSection title="Control heights">
+          <SubSection title="Control heights (inputs, dropdowns)">
             <TokenRows tokens={pick('size.control')} preview={(t) => <span className="tk-control-box" style={{ height: cssVar(t) }}>{leaf(t)}</span>} />
           </SubSection>
         )}
@@ -288,6 +457,8 @@ export function Foundations() {
           </SubSection>
         )}
       </DocSection>
-    </>
+
+      <Icons />
+    </SectionVisibility.Provider>
   );
 }

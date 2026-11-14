@@ -1,0 +1,6 @@
+{
+  "bg": "{color.bg.subtle}",
+  "shadow": "{shadow.flat}",
+  "text": "{color.text.muted}",
+  "group-separator-text": "{color.text.muted}"
+}

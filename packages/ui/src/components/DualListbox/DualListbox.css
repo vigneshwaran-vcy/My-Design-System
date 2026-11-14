@@ -1,0 +1,166 @@
+/*
+ * Dual listbox: two input-like list panels (shadow-control ring, control radius) with a column of
+ * Secondary move buttons between them. Options use the Dropdown option look: neutral wash for hover,
+ * accent tint for selected, and an inset focus ring on the keyboard cursor while the list has focus.
+ */
+.ds-dual-listbox {
+  --dual-listbox-row: var(--ds-size-control-sm);
+  --dual-listbox-font: var(--ds-font-size-sm);
+  --dual-listbox-radius: var(--ds-radius-control);
+  --dual-listbox-pad: var(--ds-space-1);
+}
+.ds-dual-listbox--sm {
+  --dual-listbox-row: var(--ds-size-button-xs);
+  --dual-listbox-font: var(--ds-font-size-xs);
+  --dual-listbox-radius: var(--ds-radius-md);
+}
+.ds-dual-listbox--lg {
+  --dual-listbox-row: var(--ds-size-control-md);
+  --dual-listbox-font: var(--ds-font-size-md);
+  --dual-listbox-radius: var(--ds-radius-lg);
+}
+
+.ds-dual-listbox__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+.ds-dual-listbox--reorderable .ds-dual-listbox__body {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+}
+
+.ds-dual-listbox__pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  min-width: 0;
+}
+
+.ds-dual-listbox__heading {
+  color: var(--ds-dual-listbox-heading-text);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+}
+
+.ds-dual-listbox__list {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: calc(var(--dual-listbox-row) * var(--dual-listbox-rows) + var(--dual-listbox-pad) * 2 + var(--ds-border-width-thin) * 2);
+  margin: 0;
+  padding: var(--dual-listbox-pad);
+  overflow-y: auto;
+  list-style: none;
+  /* The visible edge is the 1px ring in shadow-control; the transparent border shows in forced-colors mode. */
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--dual-listbox-radius);
+  background-color: var(--ds-dual-listbox-list-bg);
+  box-shadow: var(--ds-dual-listbox-list-shadow);
+  color: var(--ds-dual-listbox-list-text);
+  font-size: var(--dual-listbox-font);
+  transition:
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-dual-listbox__list--filled {
+  background-color: var(--ds-dual-listbox-list-filled-bg);
+  box-shadow: none;
+}
+.ds-dual-listbox__list:hover:not(:focus-visible, [aria-disabled='true'], .ds-dual-listbox__list--filled) {
+  box-shadow: var(--ds-dual-listbox-list-shadow-hover);
+}
+.ds-dual-listbox__list:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-dual-listbox-list-border-focus);
+  box-shadow: var(--ds-dual-listbox-list-shadow-focus);
+}
+
+.ds-dual-listbox__list--invalid,
+.ds-dual-listbox__list--invalid:hover {
+  border-color: var(--ds-dual-listbox-list-invalid-border);
+}
+.ds-dual-listbox__list--invalid:focus-visible {
+  border-color: var(--ds-dual-listbox-list-invalid-border-focus);
+  box-shadow: var(--ds-dual-listbox-list-invalid-shadow-focus);
+}
+
+.ds-dual-listbox__list[aria-disabled='true'] {
+  background-color: var(--ds-dual-listbox-list-bg-disabled);
+  border-color: var(--ds-dual-listbox-list-border-disabled);
+  box-shadow: none;
+  color: var(--ds-dual-listbox-list-text-disabled);
+  cursor: not-allowed;
+}
+
+.ds-dual-listbox__option {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: var(--dual-listbox-row);
+  padding-inline: var(--ds-space-3);
+  border-radius: calc(var(--dual-listbox-radius) - var(--dual-listbox-pad));
+  line-height: var(--ds-font-line-height-tight);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-dual-listbox__option-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-dual-listbox__option:hover:not([aria-disabled='true']) {
+  background-color: var(--ds-dual-listbox-option-bg-hover);
+}
+.ds-dual-listbox__option--selected,
+.ds-dual-listbox__option--selected:hover:not([aria-disabled='true']) {
+  background-color: var(--ds-dual-listbox-option-selected-bg);
+  color: var(--ds-dual-listbox-option-selected-text);
+  font-weight: var(--ds-font-weight-medium);
+}
+/* Keyboard cursor: an inset focus ring, only while the list itself has keyboard focus. */
+.ds-dual-listbox__list:focus-visible .ds-dual-listbox__option--active {
+  box-shadow: inset 0 0 0 var(--ds-border-width-thin) var(--ds-dual-listbox-list-option-active-ring-focus);
+}
+.ds-dual-listbox__option[aria-disabled='true'] {
+  color: var(--ds-dual-listbox-option-text-disabled);
+  cursor: not-allowed;
+}
+.ds-dual-listbox__list[aria-disabled='true'] .ds-dual-listbox__option {
+  color: var(--ds-dual-listbox-list-option-text-disabled);
+  cursor: not-allowed;
+}
+
+.ds-dual-listbox__empty {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-dual-listbox-empty-text);
+  font-size: var(--ds-font-size-xs);
+}
+
+.ds-dual-listbox__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  /* Offset by the heading so the buttons centre on the list, not the pane. */
+  margin-block-start: calc(var(--ds-font-size-xs) * var(--ds-font-line-height-tight) + var(--ds-space-2));
+}
+.ds-dual-listbox__action {
+  padding-inline: var(--ds-space-2);
+}
+.ds-dual-listbox__action svg {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-dual-listbox__list,
+  .ds-dual-listbox__option {
+    transition: none;
+  }
+}

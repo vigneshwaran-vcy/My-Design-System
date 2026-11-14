@@ -1,0 +1,188 @@
+/*
+ * Colour picker. The trigger reuses Dropdown's trigger styles (same heights, radii, ring, focus);
+ * the panel is a Popover. Swatch colours come in through --color-picker-color (set inline from data,
+ * never written in CSS). Each swatch carries a faint inner ring so light colours stay visible on white.
+ */
+.ds-color-picker .ds-popover {
+  display: flex;
+  flex-direction: column;
+}
+
+.ds-color-picker__value {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  min-width: 0;
+}
+
+.ds-color-picker__swatch,
+.ds-color-picker__preview {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--color-picker-color);
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 var(--ds-border-width-thin) var(--ds-color-picker-swatch-ring);
+}
+.ds-dropdown__trigger--sm .ds-color-picker__swatch {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-dropdown__trigger--lg .ds-color-picker__swatch {
+  width: var(--ds-size-icon-lg);
+  height: var(--ds-size-icon-lg);
+  border-radius: var(--ds-radius-md);
+}
+
+.ds-color-picker__hex {
+  overflow: hidden;
+  font-family: var(--ds-font-family-mono);
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-dropdown__trigger:disabled .ds-color-picker__swatch {
+  opacity: var(--ds-opacity-40);
+}
+
+.ds-color-picker__panel {
+  min-width: 0;
+  padding: var(--ds-space-3);
+}
+.ds-color-picker__panel .ds-popover__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+}
+
+/* Swatch grid */
+.ds-color-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--color-picker-columns), var(--ds-size-button-sm));
+  gap: var(--ds-space-1);
+}
+
+.ds-color-picker__option {
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: var(--ds-size-button-sm);
+  height: var(--ds-size-button-sm);
+  margin: 0;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md);
+  background-color: var(--color-picker-color);
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 var(--ds-border-width-thin) var(--ds-color-picker-option-ring);
+  color: var(--ds-color-picker-option-text);
+  cursor: pointer;
+  transition: box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-color-picker__option:hover {
+  box-shadow:
+    inset 0 0 0 var(--ds-border-width-thin) var(--ds-color-picker-option-edge),
+    0 0 0 var(--ds-border-width-thick) var(--ds-color-picker-option-ring-hover);
+}
+
+/* Selected: a gap ring in the surface colour + a 1px accent ring, and a check on a dark pill. */
+.ds-color-picker__option[aria-checked='true'] {
+  box-shadow:
+    inset 0 0 0 var(--ds-border-width-thin) var(--ds-color-picker-option-edge),
+    0 0 0 var(--ds-border-width-thick) var(--ds-color-picker-option-gap-checked),
+    0 0 0 calc(var(--ds-border-width-thick) + var(--ds-border-width-thin)) var(--ds-color-picker-option-ring-checked);
+}
+.ds-color-picker__check {
+  box-sizing: border-box;
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+  padding: var(--ds-border-width-thick);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-color-picker-check-bg);
+  color: var(--ds-color-picker-check-text);
+  opacity: 0;
+  transform: scale(var(--ds-motion-scale-mark));
+  transition:
+    opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    transform var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-color-picker__option[aria-checked='true'] .ds-color-picker__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ds-color-picker__option:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-color-picker-option-border-focus);
+  box-shadow:
+    0 0 0 var(--ds-border-width-thick) var(--ds-color-picker-option-gap-focus),
+    0 0 0 calc(var(--ds-border-width-thick) + var(--ds-border-width-thin)) var(--ds-color-picker-option-ring-focus),
+    var(--ds-color-picker-option-halo-focus);
+}
+
+/* Custom row: preview + hex field + native picker */
+.ds-color-picker__custom {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-2);
+  padding-block-start: var(--ds-space-3);
+  border-block-start: var(--ds-border-width-thin) solid var(--ds-color-picker-custom-border);
+}
+.ds-color-picker__preview {
+  width: var(--ds-size-control-sm);
+  height: var(--ds-size-control-sm);
+  border-radius: var(--ds-radius-md);
+}
+.ds-color-picker__hex-field {
+  flex: 1;
+  min-width: 0;
+}
+.ds-color-picker__hex-field .ds-input {
+  font-family: var(--ds-font-family-mono);
+}
+
+.ds-color-picker__native {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--ds-size-control-sm);
+  height: var(--ds-size-control-sm);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-color-picker-native-bg);
+  box-shadow: var(--ds-color-picker-native-shadow);
+  color: var(--ds-color-picker-native-text);
+  cursor: pointer;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-color-picker__native > svg {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-color-picker__native:hover {
+  background-color: var(--ds-color-picker-native-bg-hover);
+  box-shadow: var(--ds-color-picker-native-shadow-hover);
+  color: var(--ds-color-picker-native-text-hover);
+}
+.ds-color-picker__native:focus-within {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-color-picker-native-border-focus);
+  box-shadow: var(--ds-color-picker-native-shadow-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-color-picker__option,
+  .ds-color-picker__check,
+  .ds-color-picker__native {
+    transition: none;
+  }
+}
