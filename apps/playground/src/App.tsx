@@ -1,4 +1,4 @@
-import { ButtonIcon, Icon, Input, Kbd } from '@my-ds/ui';
+import { ButtonIcon, Icon, Kbd, Menu, type IconName, type MenuItem } from '@my-ds/ui';
 import { useEffect, useMemo, useRef, useState, type ComponentType, type KeyboardEvent } from 'react';
 import { AlertDocs } from './docs/components/AlertDocs';
 import { AvatarDocs } from './docs/components/AvatarDocs';
@@ -50,6 +50,7 @@ import { SliderDocs } from './docs/components/SliderDocs';
 import { TileDocs } from './docs/components/TileDocs';
 import { TimepickerDocs } from './docs/components/TimepickerDocs';
 import { TreeDocs } from './docs/components/TreeDocs';
+import { SidebarDocs } from './docs/components/SidebarDocs';
 import { VerticalNavigationDocs } from './docs/components/VerticalNavigationDocs';
 import { Foundations, foundationsNav } from './docs/Foundations';
 import { Overview } from './docs/Overview';
@@ -64,7 +65,7 @@ const NAV = [
   { title: 'Overlays', items: [['modal', 'Modal'], ['popover', 'Popover'], ['menu', 'Menu'], ['tooltip', 'Tooltip'], ['toast', 'Toast'], ['prompt', 'Prompt']] },
   { title: 'Data display', items: [['card', 'Card'], ['table', 'Table'], ['badge', 'Badge'], ['avatar', 'Avatar'], ['tabs', 'Tabs'], ['kbd', 'Kbd'], ['separator', 'Separator'], ['pill', 'Pills'], ['tile', 'Tiles'], ['dynamic-icon', 'Dynamic icons'], ['accordion', 'Accordion'], ['tree', 'Tree'], ['carousel', 'Carousel']] },
   { title: 'Feedback', items: [['alert', 'Alert'], ['progress', 'Progress'], ['spinner', 'Spinner'], ['skeleton', 'Skeleton'], ['empty-state', 'Empty state']] },
-  { title: 'Navigation', items: [['breadcrumb', 'Breadcrumb'], ['pagination', 'Pagination'], ['vertical-navigation', 'Vertical navigation'], ['scoped-tabs', 'Scoped tabs'], ['progress-indicator', 'Progress indicator']] },
+  { title: 'Navigation', items: [['breadcrumb', 'Breadcrumb'], ['pagination', 'Pagination'], ['sidebar', 'Sidebar'], ['vertical-navigation', 'Vertical navigation'], ['scoped-tabs', 'Scoped tabs'], ['progress-indicator', 'Progress indicator']] },
 ] as const;
 
 /** Component pages by id; Overview and the Foundations pages are rendered separately. */
@@ -117,6 +118,7 @@ const COMPONENT_PAGES: Record<string, ComponentType> = {
   'empty-state': EmptyStateDocs,
   'breadcrumb': BreadcrumbDocs,
   'pagination': PaginationDocs,
+  sidebar: SidebarDocs,
   'vertical-navigation': VerticalNavigationDocs,
   'scoped-tabs': ScopedTabsDocs,
   'progress-indicator': ProgressIndicatorDocs,
@@ -147,14 +149,48 @@ function usePage() {
 }
 
 const COLLAPSED_KEY = 'ds-docs-nav-collapsed';
-function readCollapsed(): string[] {
+const FAVORITES_KEY = 'ds-docs-nav-favorites';
+const RAIL_KEY = 'ds-docs-nav-rail';
+const FAVORITES = 'Favorites';
+
+const GROUP_ICONS: Record<string, IconName> = {
+  [FAVORITES]: 'star',
+  'Getting started': 'home',
+  Foundations: 'palette',
+  Forms: 'pen',
+  'Date & time': 'calendar',
+  Overlays: 'copy',
+  'Data display': 'chart-2',
+  Feedback: 'bell',
+  Navigation: 'map-point',
+};
+
+/** A saved list of strings; private windows may block storage, so every read and write is guarded. */
+function readList(key: string): string[] {
   try {
-    const saved = JSON.parse(localStorage.getItem(COLLAPSED_KEY) ?? '[]');
+    const saved = JSON.parse(localStorage.getItem(key) ?? '[]');
     return Array.isArray(saved) ? saved.filter((v) => typeof v === 'string') : [];
   } catch {
     return [];
   }
 }
+function save(key: string, value: unknown) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // The panel still works for this visit.
+  }
+}
+function readRail() {
+  try {
+    return localStorage.getItem(RAIL_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+/** ⌘ on Apple devices, Ctrl elsewhere. */
+const MOD = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘' : 'Ctrl ';
 
 const isTyping = (target: EventTarget | null) =>
   target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
@@ -163,6 +199,8 @@ export function App() {
   // Always open in the light theme; dark is opt-in via the theme switch.
   const [theme, setTheme] = useState<Theme>('light');
   const [navOpen, setNavOpen] = useState(false);
+  // Desktop only: the panel collapsed to a rail of group icons.
+  const [rail, setRail] = useState(readRail);
   const active = usePage();
   const index = PAGES.findIndex((p) => p.id === active);
   const current = PAGES[index];
@@ -174,14 +212,16 @@ export function App() {
     document.documentElement.dataset.theme = theme;
   }, [theme]);
 
+  useEffect(() => save(RAIL_KEY, rail), [rail]);
+
   // The phone drawer closes once a page is chosen.
   useEffect(() => setNavOpen(false), [active]);
 
   return (
-    <div className="pg" data-nav-open={navOpen || undefined}>
+    <div className="pg" data-nav-open={navOpen || undefined} data-rail={rail || undefined}>
       <a className="pg__skip" href="#main">Skip to content</a>
 
-      <Sidebar active={active} open={navOpen} onClose={() => setNavOpen(false)} />
+      <Sidebar active={active} open={navOpen} rail={rail} onClose={() => setNavOpen(false)} onRailChange={setRail} />
       <div className="pg__scrim" onClick={() => setNavOpen(false)} aria-hidden="true" />
 
       <div className="pg__content">
@@ -232,36 +272,48 @@ export function App() {
 }
 
 /**
- * Left panel: brand and search stay put, the page list scrolls beneath them.
- * Search filters every page ("/" or ⌘K focuses it, Enter opens the first match, ↓ moves into the list);
- * groups collapse and remember their state; on phones the panel is a drawer.
+ * Left panel, modelled on the Notion / ClickUp / Align UI sidebars:
+ * a workspace header, search (⌘K or "/"), pinned Favorites, icon-led groups whose pages hang off a
+ * tree line, and a footer of shortcuts. It collapses to a rail of group icons with fly-out menus
+ * (⌘\), and on phones it is a drawer.
  */
-function Sidebar({ active, open, onClose }: { active: string; open: boolean; onClose: () => void }) {
+function Sidebar({ active, open, rail, onClose, onRailChange }: {
+  active: string;
+  open: boolean;
+  rail: boolean;
+  onClose: () => void;
+  onRailChange: (rail: boolean) => void;
+}) {
   const [query, setQuery] = useState('');
-  const [collapsed, setCollapsed] = useState(readCollapsed);
+  const [collapsed, setCollapsed] = useState(() => readList(COLLAPSED_KEY));
+  const [favorites, setFavorites] = useState(() => readList(FAVORITES_KEY).filter((id) => PAGES.some((p) => p.id === id)));
   const searchRef = useRef<HTMLInputElement>(null);
   const navRef = useRef<HTMLElement>(null);
+  // Set when search is requested from the rail; honoured once the full panel has rendered.
+  const wantSearch = useRef(false);
   const q = query.trim().toLowerCase();
+  // The phone drawer always shows the full panel.
+  const showRail = rail && !open;
 
-  const groups = useMemo(
-    () =>
-      NAV.map((g) => ({
-        title: g.title as string,
-        // A match on the group name keeps the whole group.
-        items: g.items.filter(([id, label]) => !q || g.title.toLowerCase().includes(q) || label.toLowerCase().includes(q) || id.includes(q)),
-      })).filter((g) => g.items.length > 0),
-    [q],
+  const allGroups = useMemo(
+    () => NAV.map((g) => ({ title: g.title as string, items: g.items.map(([id, label]) => [id, label] as [string, string]) })),
+    [],
   );
+  const groups = useMemo(() => {
+    if (q) {
+      // A match on the group name keeps the whole group.
+      return allGroups
+        .map((g) => ({ ...g, items: g.items.filter(([id, label]) => g.title.toLowerCase().includes(q) || label.toLowerCase().includes(q) || id.includes(q)) }))
+        .filter((g) => g.items.length > 0);
+    }
+    const pinned = favorites.flatMap((id) => PAGES.filter((p) => p.id === id).map((p) => [p.id, p.label] as [string, string]));
+    return pinned.length ? [{ title: FAVORITES, items: pinned }, ...allGroups] : allGroups;
+  }, [q, favorites, allGroups]);
   const firstMatch = groups[0]?.items[0]?.[0];
   const activeGroup = NAV.find((g) => g.items.some(([id]) => id === active))?.title;
 
-  useEffect(() => {
-    try {
-      localStorage.setItem(COLLAPSED_KEY, JSON.stringify(collapsed));
-    } catch {
-      // Private windows may block storage; the panel still works for this visit.
-    }
-  }, [collapsed]);
+  useEffect(() => save(COLLAPSED_KEY, collapsed), [collapsed]);
+  useEffect(() => save(FAVORITES_KEY, favorites), [favorites]);
 
   // The current page's group is always open, and its link is scrolled into view inside the list.
   useEffect(() => {
@@ -269,33 +321,88 @@ function Sidebar({ active, open, onClose }: { active: string; open: boolean; onC
   }, [activeGroup]);
   useEffect(() => {
     const list = navRef.current;
-    const link = list?.querySelector<HTMLElement>('.pg__nav-link[aria-current]');
+    const link =
+      list?.querySelector<HTMLElement>('.pg__nav-group:not([data-favorites]) .pg__nav-link[aria-current]') ??
+      list?.querySelector<HTMLElement>('.pg__nav-link[aria-current]');
     if (!list || !link) return;
     const l = link.getBoundingClientRect();
     const b = list.getBoundingClientRect();
     if (l.top < b.top) list.scrollTop -= b.top - l.top + l.height;
     else if (l.bottom > b.bottom) list.scrollTop += l.bottom - b.bottom + l.height;
-  }, [active, collapsed]);
+  }, [active, collapsed, showRail]);
 
-  // "/" or ⌘K / Ctrl+K jumps to search from anywhere; Escape closes the phone drawer.
+  // "/" or ⌘K searches from anywhere, ⌘\ collapses or expands the panel, Escape closes the phone drawer.
   useEffect(() => {
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
-      const shortcut = (event.key === '/' && !isTyping(event.target)) || (event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey));
-      if (shortcut) {
+      const mod = event.metaKey || event.ctrlKey;
+      if ((event.key === '/' && !isTyping(event.target)) || (mod && event.key.toLowerCase() === 'k')) {
         event.preventDefault();
-        searchRef.current?.focus();
-        searchRef.current?.select();
+        if (showRail) {
+          wantSearch.current = true;
+          onRailChange(false);
+        } else {
+          searchRef.current?.focus();
+          searchRef.current?.select();
+        }
+      } else if (mod && event.key === '\\') {
+        event.preventDefault();
+        onRailChange(!rail);
       } else if (event.key === 'Escape' && open) {
         onClose();
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open, onClose]);
+  }, [open, rail, showRail, onClose, onRailChange]);
 
   useEffect(() => {
-    if (open) searchRef.current?.focus();
-  }, [open]);
+    if (showRail || !(open || wantSearch.current)) return;
+    wantSearch.current = false;
+    searchRef.current?.focus();
+  }, [open, showRail]);
+
+  if (showRail) {
+    return (
+      <aside className="pg__sidebar pg__sidebar--rail">
+        <ButtonIcon variant="bare" icon="sidebar-minimalistic" label={`Expand sidebar (${MOD}\\)`} onClick={() => onRailChange(false)} />
+        <ButtonIcon
+          variant="bare"
+          icon="search"
+          label={`Search pages (${MOD}K)`}
+          onClick={() => {
+            wantSearch.current = true;
+            onRailChange(false);
+          }}
+        />
+        <span className="pg__rail-sep" aria-hidden="true" />
+        <nav aria-label="Documentation" className="pg__rail-nav">
+          {groups.map((g) => {
+            const items: MenuItem[] = [
+              { id: `label-${g.title}`, type: 'label', label: g.title },
+              ...g.items.map(([id, label]) => ({ id, label })),
+            ];
+            return (
+              <Menu
+                key={g.title}
+                items={items}
+                onSelect={(id) => {
+                  window.location.hash = id;
+                }}
+                trigger={
+                  <ButtonIcon
+                    variant="bare"
+                    icon={GROUP_ICONS[g.title]}
+                    label={g.title}
+                    className={g.title === activeGroup ? 'pg__rail-item pg__rail-item--active' : 'pg__rail-item'}
+                  />
+                }
+              />
+            );
+          })}
+        </nav>
+      </aside>
+    );
+  }
 
   const links = () => [...(navRef.current?.querySelectorAll<HTMLElement>('.pg__nav-link') ?? [])];
 
@@ -325,30 +432,41 @@ function Sidebar({ active, open, onClose }: { active: string; open: boolean; onC
   };
 
   const toggle = (title: string) => setCollapsed((c) => (c.includes(title) ? c.filter((t) => t !== title) : [...c, title]));
+  const toggleFavorite = (id: string) => setFavorites((f) => (f.includes(id) ? f.filter((x) => x !== id) : [...f, id]));
 
   return (
     <aside className="pg__sidebar" data-open={open || undefined}>
       <div className="pg__sidebar-head">
         <div className="pg__brand">
           <span className="pg__logo" aria-hidden="true" />
-          <span className="pg__brand-name">My Design System</span>
-          <span className="pg__version">v0.1</span>
+          <span className="pg__brand-text">
+            <span className="pg__brand-name">My Design System</span>
+            <span className="pg__brand-meta">v0.1 · {Object.keys(COMPONENT_PAGES).length} components</span>
+          </span>
+          <ButtonIcon
+            className="pg__collapse"
+            variant="bare"
+            size="sm"
+            icon="sidebar-minimalistic"
+            label={`Collapse sidebar (${MOD}\\)`}
+            onClick={() => onRailChange(true)}
+          />
           <ButtonIcon className="pg__close" variant="bare" size="sm" icon="close" label="Close navigation" onClick={onClose} />
         </div>
         <div className="pg__search">
-          <Input
+          <Icon name="search" className="pg__search-icon" />
+          <input
             ref={searchRef}
-            label="Search pages"
-            hideLabel
+            className="pg__search-input"
             type="search"
-            size="sm"
-            placeholder="Search pages…"
+            aria-label="Search pages"
+            aria-controls="pg-nav"
+            placeholder="Search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={onSearchKeyDown}
-            aria-controls="pg-nav"
           />
-          {!query && <Kbd className="pg__search-key" size="sm">/</Kbd>}
+          {!query && <Kbd className="pg__search-key" size="sm">{MOD}K</Kbd>}
         </div>
       </div>
 
@@ -359,7 +477,7 @@ function Sidebar({ active, open, onClose }: { active: string; open: boolean; onC
           const isOpen = q !== '' || !collapsed.includes(g.title);
           const listId = `pg-nav-${g.title.toLowerCase().replace(/[^a-z]+/g, '-')}`;
           return (
-            <div key={g.title} className="pg__nav-group">
+            <div key={g.title} className="pg__nav-group" data-favorites={g.title === FAVORITES || undefined}>
               <button
                 type="button"
                 className="pg__nav-toggle"
@@ -368,23 +486,42 @@ function Sidebar({ active, open, onClose }: { active: string; open: boolean; onC
                 disabled={q !== ''}
                 onClick={() => toggle(g.title)}
               >
-                <Icon name="alt-arrow-down" className="pg__nav-chevron" />
+                <Icon name={GROUP_ICONS[g.title]} className="pg__nav-icon" />
                 <span className="pg__nav-title">{g.title}</span>
                 <span className="pg__nav-count">{g.items.length}</span>
+                <Icon name="alt-arrow-down" className="pg__nav-chevron" />
               </button>
               <ul id={listId} className="pg__nav-list" hidden={!isOpen}>
-                {g.items.map(([id, label]) => (
-                  <li key={id}>
-                    <a href={`#${id}`} className="pg__nav-link" aria-current={active === id ? 'page' : undefined}>
-                      {label}
-                    </a>
-                  </li>
-                ))}
+                {g.items.map(([id, label]) => {
+                  const pinned = favorites.includes(id);
+                  return (
+                    <li key={id} className="pg__nav-item">
+                      <a href={`#${id}`} className="pg__nav-link" aria-current={active === id ? 'page' : undefined}>
+                        {label}
+                      </a>
+                      <button
+                        type="button"
+                        className="pg__nav-star"
+                        aria-pressed={pinned}
+                        aria-label={pinned ? `Remove ${label} from favorites` : `Add ${label} to favorites`}
+                        title={pinned ? 'Remove from favorites' : 'Add to favorites'}
+                        onClick={() => toggleFavorite(id)}
+                      >
+                        <Icon name="star" />
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           );
         })}
       </nav>
+
+      <div className="pg__sidebar-foot">
+        <span className="pg__hint"><Kbd size="sm">/</Kbd> Search</span>
+        <span className="pg__hint"><Kbd size="sm">{MOD}\</Kbd> Collapse</span>
+      </div>
     </aside>
   );
 }

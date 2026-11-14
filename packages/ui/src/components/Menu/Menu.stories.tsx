@@ -26,7 +26,7 @@ const meta = {
     trigger: <Button variant="secondary">Actions</Button>,
   },
   argTypes: {
-    placement: { control: 'inline-radio', options: ['bottom-start', 'bottom-end'] },
+    placement: { control: 'inline-radio', options: ['bottom-start', 'bottom-end', 'top-start', 'top-end'] },
   },
   decorators: [
     (Story) => (

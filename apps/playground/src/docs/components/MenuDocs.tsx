@@ -75,7 +75,7 @@ export function MenuDocs() {
           rows={[
             { name: 'trigger', type: 'ReactElement', description: 'Cloned with aria-haspopup="menu", aria-expanded, aria-controls, a toggling onClick and ArrowDown/ArrowUp to open.' },
             { name: 'items', type: 'MenuItem[]', description: "Action items { id, label, icon?, shortcut?, danger?, disabled?, onSelect?, textValue? }, plus { type: 'separator' } and { type: 'label', label }." },
-            { name: 'placement', type: "'bottom-start' | 'bottom-end'", default: "'bottom-start'", description: 'Which edge of the trigger the list aligns to.' },
+            { name: 'placement', type: "'bottom-start' | 'bottom-end' | 'top-start' | 'top-end'", default: "'bottom-start'", description: 'Opens below or above the trigger (top for triggers near the bottom, like a sidebar account button), aligned to its start or end edge.' },
             { name: 'open / defaultOpen', type: 'boolean', description: 'Controlled or initial open state.' },
             { name: 'onOpenChange', type: '(open: boolean) => void', description: 'Fires on every open and close.' },
             { name: 'onSelect', type: '(id: string) => void', description: 'Fires after the item’s own onSelect. The menu closes and focus returns to the trigger.' },

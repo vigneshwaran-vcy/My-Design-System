@@ -43,7 +43,10 @@ code {
   transform: none;
 }
 
-/* Sidebar: brand + search stay fixed; only the page list scrolls. */
+/*
+ * Sidebar, after Notion / ClickUp / Align UI: a workspace header and search that stay put, a page
+ * list that scrolls (icon-led groups with pages on a tree line), and a footer of shortcuts.
+ */
 .pg__sidebar {
   position: sticky;
   top: 0;
@@ -57,39 +60,46 @@ code {
 .pg__sidebar-head {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-2);
-  padding: var(--ds-space-3);
-  border-bottom: var(--ds-border-width-thin) solid var(--ds-color-border);
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-2);
 }
+
+/* Workspace header: logo tile, name over a muted meta line, collapse button. */
 .pg__brand {
   display: flex;
   align-items: center;
   gap: var(--ds-space-2);
-  height: var(--ds-size-button-md);
-  padding-inline: var(--ds-space-2);
-  font-size: var(--ds-font-size-sm);
-  font-weight: var(--ds-font-weight-semibold);
-  letter-spacing: var(--ds-font-tracking-tight);
+  padding-inline-start: var(--ds-space-1);
 }
 .pg__logo {
   flex-shrink: 0;
-  width: var(--ds-size-icon-md);
-  height: var(--ds-size-icon-md);
+  width: var(--ds-size-button-sm);
+  height: var(--ds-size-button-sm);
   border-radius: var(--ds-radius-md);
   background-image: var(--ds-gradient-accent);
   box-shadow: var(--ds-shadow-raised);
 }
+.pg__brand-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: var(--ds-font-line-height-tight);
+}
 .pg__brand-name {
   overflow: hidden;
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-font-tracking-tight);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.pg__version {
-  margin-inline-start: auto;
+.pg__brand-meta {
+  overflow: hidden;
   color: var(--ds-color-text-muted);
-  font-size: var(--ds-font-size-xs);
-  font-weight: var(--ds-font-weight-regular);
-  letter-spacing: var(--ds-font-tracking-normal);
+  font-size: var(--ds-font-size-2xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 /* Drawer controls only exist on phones. */
 .pg__close,
@@ -97,17 +107,51 @@ code {
 .pg__scrim {
   display: none;
 }
+
+/* Search: a control-style field with a leading icon and the shortcut on the right. */
 .pg__search {
   position: relative;
+  display: flex;
+  align-items: center;
+}
+.pg__search-icon {
+  position: absolute;
+  inset-inline-start: var(--ds-space-2);
+  color: var(--ds-color-text-muted);
+  pointer-events: none;
+}
+.pg__search-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--ds-size-button-md);
+  padding-inline: var(--ds-space-8) var(--ds-space-2);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-control);
+  color: var(--ds-color-text);
+  font: inherit;
+  font-size: var(--ds-font-size-sm);
+  transition: box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.pg__search-input::placeholder {
+  color: var(--ds-color-text-muted);
+}
+.pg__search-input:hover {
+  box-shadow: var(--ds-shadow-control-hover);
+}
+.pg__search-input:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-color-border-focus);
+  box-shadow: var(--ds-shadow-focus);
 }
 .pg__search-key {
   position: absolute;
-  inset-block: 0;
   inset-inline-end: var(--ds-space-2);
-  margin-block: auto;
-  height: fit-content;
   pointer-events: none;
 }
+
+/* Page list */
 .pg__nav {
   flex: 1;
   min-height: 0;
@@ -115,7 +159,7 @@ code {
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-1);
-  padding: var(--ds-space-2) var(--ds-space-3);
+  padding: var(--ds-space-1) var(--ds-space-3) var(--ds-space-3);
   overscroll-behavior: contain;
 }
 .pg__nav-empty {
@@ -124,57 +168,77 @@ code {
   color: var(--ds-color-text-muted);
   font-size: var(--ds-font-size-sm);
 }
-/* Group header: a full-width button that folds its list. */
+/* Favorites sit above the rest, set apart by a hairline. */
+.pg__nav-group[data-favorites] {
+  margin-bottom: var(--ds-space-1);
+  padding-bottom: var(--ds-space-2);
+  border-bottom: var(--ds-border-width-thin) solid var(--ds-color-border);
+}
+/* Group row: icon, name, page count, chevron. The whole row folds its pages. */
 .pg__nav-toggle {
   display: flex;
   align-items: center;
-  gap: var(--ds-space-1);
+  gap: var(--ds-space-2);
   width: 100%;
   height: var(--ds-size-button-sm);
-  padding-inline: var(--ds-space-1) var(--ds-space-2);
+  padding-inline: var(--ds-space-2);
   border: 0;
   border-radius: var(--ds-radius-md);
   background: transparent;
-  color: var(--ds-color-text-muted);
+  color: var(--ds-color-text);
   font: inherit;
-  font-size: var(--ds-font-size-xs);
+  font-size: var(--ds-font-size-sm);
   font-weight: var(--ds-font-weight-medium);
   text-align: start;
   cursor: pointer;
+  transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
 }
 .pg__nav-toggle:hover:not(:disabled) {
   background: var(--ds-color-bg-neutral-hover);
-  color: var(--ds-color-text);
 }
 .pg__nav-toggle:disabled {
   cursor: default;
 }
-.pg__nav-toggle:focus-visible {
+.pg__nav-toggle:focus-visible,
+.pg__nav-link:focus-visible,
+.pg__nav-star:focus-visible {
   outline: var(--ds-border-width-thick) solid var(--ds-color-border-focus);
   outline-offset: calc(var(--ds-border-width-thick) * -1);
+}
+.pg__nav-icon {
+  color: var(--ds-color-text-muted);
+}
+.pg__nav-group[data-favorites] .pg__nav-icon {
+  color: var(--ds-color-text-warn);
+}
+.pg__nav-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pg__nav-count {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-regular);
+  font-variant-numeric: tabular-nums;
 }
 .pg__nav-chevron {
   width: var(--ds-size-icon-xs);
   height: var(--ds-size-icon-xs);
+  color: var(--ds-color-text-muted);
   transition: transform var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
 }
 .pg__nav-toggle[aria-expanded='false'] .pg__nav-chevron {
   transform: rotate(-0.25turn);
 }
-.pg__nav-title {
-  flex: 1;
-  min-width: 0;
-}
-.pg__nav-count {
-  color: var(--ds-color-text-muted);
-  font-weight: var(--ds-font-weight-regular);
-  font-variant-numeric: tabular-nums;
-}
+/* Pages hang off a tree line that drops from the centre of the group icon. */
 .pg__nav-list {
   list-style: none;
-  margin: 0;
-  /* Indented under the chevron so groups read as a tree. */
-  padding: var(--ds-border-width-thick) 0 var(--ds-space-1) var(--ds-space-4);
+  margin: var(--ds-border-width-thick) 0 var(--ds-space-1) calc(var(--ds-space-4) - var(--ds-border-width-thin));
+  padding: 0 0 0 var(--ds-space-2);
+  border-inline-start: var(--ds-border-width-thin) solid var(--ds-color-border);
   display: flex;
   flex-direction: column;
   gap: var(--ds-border-width-thin);
@@ -182,11 +246,19 @@ code {
 .pg__nav-list[hidden] {
   display: none;
 }
+.pg__nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 .pg__nav-link {
+  position: relative;
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   min-height: var(--ds-size-button-sm);
-  padding-inline: var(--ds-space-2);
+  padding-inline: var(--ds-space-2) var(--ds-space-6);
   border-radius: var(--ds-radius-md);
   color: var(--ds-color-text-muted);
   font-size: var(--ds-font-size-sm);
@@ -195,20 +267,111 @@ code {
     background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
     color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
 }
-.pg__nav-link:hover {
+.pg__nav-item:hover .pg__nav-link {
   background: var(--ds-color-bg-neutral-hover);
   color: var(--ds-color-text);
 }
-.pg__nav-link:focus-visible {
-  outline: var(--ds-border-width-thick) solid var(--ds-color-border-focus);
-  outline-offset: calc(var(--ds-border-width-thick) * -1);
-}
-/* Current page: a quiet raised pill, like a selected macOS sidebar row. */
-.pg__nav-link[aria-current] {
+/* Current page: a quiet raised row, with its stretch of the tree line in the accent colour. */
+.pg__nav-item .pg__nav-link[aria-current] {
   background: var(--ds-color-bg-surface);
   box-shadow: var(--ds-shadow-flat);
   color: var(--ds-color-text);
   font-weight: var(--ds-font-weight-medium);
+}
+.pg__nav-link[aria-current]::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--ds-space-1);
+  inset-inline-start: calc(var(--ds-space-2) * -1 - var(--ds-border-width-thin));
+  width: var(--ds-border-width-thick);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-color-bg-accent);
+}
+/* Pin to Favorites: appears on hover or focus, stays visible once pinned. */
+.pg__nav-star {
+  position: absolute;
+  inset-inline-end: var(--ds-space-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  color: var(--ds-color-text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.pg__nav-star .ds-icon {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.pg__nav-item:hover .pg__nav-star,
+.pg__nav-star:focus-visible,
+.pg__nav-star[aria-pressed='true'] {
+  opacity: 1;
+}
+.pg__nav-star:hover {
+  color: var(--ds-color-text);
+}
+.pg__nav-star[aria-pressed='true'] {
+  color: var(--ds-color-text-warn);
+}
+/* Touch screens have no hover, so the pin is always shown, faintly. */
+@media (hover: none) {
+  .pg__nav-star {
+    opacity: var(--ds-opacity-40);
+  }
+}
+
+/* Footer: keyboard shortcuts. */
+.pg__sidebar-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-1) var(--ds-space-3);
+  padding: var(--ds-space-2) var(--ds-space-4);
+  border-top: var(--ds-border-width-thin) solid var(--ds-color-border);
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+}
+.pg__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+}
+
+/* Collapsed: a rail of group icons; each opens a fly-out of its pages. */
+.pg[data-rail] {
+  grid-template-columns: var(--ds-space-12) minmax(0, 1fr);
+}
+.pg__sidebar--rail {
+  z-index: var(--ds-layer-sticky);
+  align-items: center;
+  gap: var(--ds-space-1);
+  padding-block: var(--ds-space-3);
+}
+.pg__rail-sep {
+  width: var(--ds-space-6);
+  height: var(--ds-border-width-thin);
+  margin-block: var(--ds-space-1);
+  background: var(--ds-color-border);
+}
+.pg__rail-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ds-space-1);
+}
+.pg__sidebar--rail .pg__rail-item--active {
+  background: var(--ds-color-bg-accent-subtle);
+  color: var(--ds-color-text-accent);
+}
+.pg__sidebar--rail .ds-menu > .ds-menu__list {
+  top: 0;
+  left: calc(100% + var(--ds-space-3));
 }
 
 /* Content column */
@@ -373,7 +536,8 @@ code {
 
 /* Matches breakpoint.md — var() can't be used in media queries. */
 @media (max-width: 768px) {
-  .pg {
+  .pg,
+  .pg[data-rail] {
     grid-template-columns: minmax(0, 1fr);
   }
   /* The left panel becomes a drawer opened from the top bar. */
@@ -406,21 +570,20 @@ code {
   .pg__close {
     display: inline-flex;
   }
-  .pg__version {
-    margin-inline-start: 0;
-  }
-  .pg__close {
-    margin-inline-start: auto;
+  .pg__collapse,
+  .pg__sidebar-foot {
+    display: none;
   }
   .pg__search-key {
     display: none;
   }
   /* Larger touch targets. */
+  .pg__search-input,
   .pg__nav-toggle {
-    height: var(--ds-size-button-md);
+    height: var(--ds-size-button-lg);
   }
   .pg__nav-link {
-    min-height: var(--ds-size-control-md);
+    min-height: var(--ds-size-button-lg);
   }
   .pg__topbar {
     gap: var(--ds-space-2);
@@ -1373,4 +1536,193 @@ ul.ly-stack li {
 .tk-chip--shadow {
   border-color: transparent;
   background: var(--ds-color-bg-surface);
+}
+
+/* Sample app frame (Sidebar and Vertical navigation docs) */
+.demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  width: 100%;
+}
+.demo__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ds-space-4);
+}
+.demo-app {
+  display: flex;
+  width: 100%;
+  height: calc(var(--ds-size-panel-xl) + var(--ds-size-panel-xs));
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-bg-page);
+  box-shadow: var(--ds-shadow-surface);
+}
+.demo-app > .ds-sidebar--default {
+  border-start-start-radius: var(--ds-radius-lg);
+  border-end-start-radius: var(--ds-radius-lg);
+}
+.demo-app[data-variant='floating'] {
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2);
+}
+.demo-app__main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.demo-app__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-size-control-lg);
+  padding-inline: var(--ds-space-3);
+  border-bottom: var(--ds-border-width-thin) solid var(--ds-color-border);
+}
+.demo-app__crumbs {
+  flex: 1;
+  min-width: 0;
+}
+.demo-app__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-6);
+  overflow-y: auto;
+}
+.demo-app__title {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+.demo-app__title h4 {
+  margin: 0;
+  color: var(--ds-color-text);
+  font-size: var(--ds-font-size-xl);
+  font-weight: var(--ds-font-weight-semibold);
+}
+.demo-app__title-icon {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+  color: var(--ds-color-text-accent);
+}
+.demo-app__meta {
+  margin: 0;
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-sm);
+}
+.demo-app__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ds-size-panel-xs), 1fr));
+  gap: var(--ds-space-3);
+  margin-top: var(--ds-space-4);
+}
+.demo-app__stat {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: var(--ds-space-2);
+  padding: var(--ds-space-3);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-surface);
+}
+.demo-app__stat-icon {
+  grid-row: span 2;
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+  color: var(--ds-color-text-accent);
+}
+.demo-app__stat-value {
+  color: var(--ds-color-text);
+  font-size: var(--ds-font-size-xl);
+  font-weight: var(--ds-font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--ds-font-line-height-tight);
+}
+.demo-app__stat-label {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+}
+.sb-usage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  margin-bottom: var(--ds-space-1);
+  padding: var(--ds-space-2);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-bg-subtle);
+}
+.sb-usage__meta {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+}
+.demo-frame {
+  display: flex;
+  height: var(--ds-size-panel-lg);
+  padding: var(--ds-space-2);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-bg-page);
+}
+.demo-app__stat:not(:has(.demo-app__stat-icon)) {
+  grid-template-columns: 1fr;
+}
+.demo-frame--column {
+  width: var(--ds-size-panel-sm);
+  height: auto;
+  padding: var(--ds-space-3) var(--ds-space-2);
+}
+/* A plain sidebar panel holding a VerticalNavigation */
+.demo-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  box-sizing: border-box;
+  width: var(--ds-size-panel-sm);
+  flex-shrink: 0;
+  padding: var(--ds-space-3) var(--ds-space-2);
+  overflow-y: auto;
+  border-inline-end: var(--ds-border-width-thin) solid var(--ds-color-border);
+  border-start-start-radius: var(--ds-radius-lg);
+  border-end-start-radius: var(--ds-radius-lg);
+  background: var(--ds-color-bg-sidebar);
+}
+.demo-panel__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-size-control-md);
+  padding-inline: var(--ds-space-2);
+}
+.demo-panel__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-size-button-sm);
+  height: var(--ds-size-button-sm);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-bg-success);
+  color: var(--ds-color-text-on-success);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-semibold);
+}
+.demo-panel__name {
+  color: var(--ds-color-text);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-semibold);
+}
+@media (max-width: 640px) {
+  .demo-app:not(:has(.ds-sidebar--collapsed)) .demo-app__main {
+    display: none;
+  }
+  .demo-panel {
+    flex: 1;
+  }
+  .demo-app > .ds-sidebar:not(.ds-sidebar--collapsed) {
+    flex: 1;
+  }
 }

@@ -43,6 +43,20 @@
   right: 0;
   transform-origin: top right;
 }
+/* Opens upward, for triggers near the bottom of the screen (sidebar account buttons). */
+.ds-menu--top-start > .ds-menu__list,
+.ds-menu--top-end > .ds-menu__list {
+  top: auto;
+  bottom: calc(100% + var(--menu-offset));
+}
+.ds-menu--top-start > .ds-menu__list {
+  left: 0;
+  transform-origin: bottom left;
+}
+.ds-menu--top-end > .ds-menu__list {
+  right: 0;
+  transform-origin: bottom right;
+}
 
 .ds-menu__item {
   display: flex;

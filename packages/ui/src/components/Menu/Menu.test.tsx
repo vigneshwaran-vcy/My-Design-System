@@ -162,6 +162,11 @@ describe('Menu', () => {
     expect(screen.getByRole('menu', { hidden: true })).not.toBeVisible();
   });
 
+  it('can open above the trigger', () => {
+    renderMenu({ placement: 'top-end' });
+    expect(screen.getByRole('menu', { hidden: true }).parentElement).toHaveClass('ds-menu--top-end');
+  });
+
   it('applies the placement modifier and forwards ref, className and rest props to the menu', () => {
     const ref = createRef<HTMLDivElement>();
     renderMenu({ ref, placement: 'bottom-end', className: 'extra', 'aria-label': 'Row actions' } as never);

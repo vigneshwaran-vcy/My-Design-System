@@ -37,6 +37,7 @@ export * from './components/Radio';
 export * from './components/RadioButtonGroup';
 export * from './components/ScopedTabs';
 export * from './components/Separator';
+export * from './components/Sidebar';
 export * from './components/Skeleton';
 export * from './components/Slider';
 export * from './components/Spinner';

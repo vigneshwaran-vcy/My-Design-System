@@ -15,7 +15,7 @@ import { cx } from '../../utils/cx';
 import { useControllableState } from '../../utils/useControllableState';
 import './Menu.css';
 
-export type MenuPlacement = 'bottom-start' | 'bottom-end';
+export type MenuPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
 
 export interface MenuActionItem {
   type?: 'item';

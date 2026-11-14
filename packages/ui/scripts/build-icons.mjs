@@ -96,6 +96,16 @@ const LINEAR = {
   'wallet': 'wallet',
   'case': 'case',
   'crown': 'crown',
+  checklist: 'checklist-minimalistic',
+  notebook: 'notebook',
+  target: 'target',
+  rocket: 'rocket',
+  archive: 'archive',
+  logout: 'logout-2',
+  'pen-new-square': 'pen-new-square',
+  hashtag: 'hashtag',
+  code: 'code',
+  layers: 'layers',
   palette: 'pallete-2',
 };
 
