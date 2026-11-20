@@ -38,7 +38,7 @@ export const WithForm: Story = {
       <div style={{ display: 'grid', gap: 'var(--ds-space-3)' }}>
         <Input label="Title" defaultValue="Roadmap 2025" size="sm" />
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--ds-space-2)' }}>
-          <Button size="sm" variant="ghost">Cancel</Button>
+          <Button size="sm" variant="secondary">Cancel</Button>
           <Button size="sm">Save</Button>
         </div>
       </div>

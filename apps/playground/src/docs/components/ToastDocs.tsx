@@ -46,7 +46,7 @@ function ActionButtons() {
       <Button variant="soft" onClick={() => toast({ title: 'Sticky until dismissed', description: 'duration: 0', duration: 0 })}>
         Sticky
       </Button>
-      <Button variant="ghost" onClick={dismissAll}>Dismiss all</Button>
+      <Button variant="secondary" onClick={dismissAll}>Dismiss all</Button>
     </>
   );
 }
@@ -105,7 +105,7 @@ dismissAll();`}
             rows={[
               { name: 'title', type: 'ReactNode', description: 'Required headline.' },
               { name: 'description', type: 'ReactNode', description: 'Supporting copy in text-muted.' },
-              { name: 'variant', type: "'neutral' | 'success' | 'warn' | 'danger' | 'info'", default: "'neutral'", description: 'Colours the leading accent bar and icon. danger is announced assertively.' },
+              { name: 'variant', type: "'neutral' | 'success' | 'warn' | 'danger' | 'info'", default: "'neutral'", description: 'Colours the status disc and the countdown line. danger is announced assertively.' },
               { name: 'duration', type: 'number', default: 'provider duration', description: 'Auto-dismiss in ms; 0 keeps the toast until dismissed. The timer pauses on hover and focus.' },
               { name: 'action', type: '{ label: ReactNode; onClick: () => void }', description: 'One optional action button; selecting it also dismisses the toast.' },
               { name: 'id', type: 'string', description: 'Stable id to update a toast in place. toast() returns the id for dismiss(id).' },
@@ -120,7 +120,7 @@ dismissAll();`}
               'Each toast is role="status" (polite live region); the danger variant is role="alert".',
               'Auto-dismiss pauses while hovered or focused, so keyboard users can reach the action and close buttons.',
               'Close button is a ghost Button with aria-label="Dismiss"; decorative icons are aria-hidden.',
-              'Solid surface, ring edge and a 3px variant accent bar; slide-in respects prefers-reduced-motion.',
+              'Dark inverse card (light in dark mode) with a countdown line that pauses on hover and focus; slide-in and countdown respect prefers-reduced-motion.',
             ]}
           />
         </SubSection>

@@ -1,16 +1,26 @@
+import { tokens } from '@my-ds/tokens';
 import { ColorPicker } from '@my-ds/ui';
 import { useState } from 'react';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
+/* Demo swatches come from the palette tokens, never typed-in hex values. */
+const { palette } = tokens;
+const SWATCHES = [
+  { value: palette.primary['600'], label: 'Blue' },
+  { value: palette.success['600'], label: 'Green' },
+  { value: palette.warn['600'], label: 'Amber' },
+  { value: palette.danger['600'], label: 'Red' },
+];
+
 export function ColorPickerDocs() {
-  const [color, setColor] = useState('#8B5CF6');
+  const [color, setColor] = useState<string>(palette.violet['500']);
 
   return (
     <DocSection
       id="color-picker"
       eyebrow="Components"
       title="Color picker"
-      description="Choose a colour from preset swatches (the token palette by default), a hex value, or the browser's native picker. The trigger shows the current colour and opens a popover."
+      description="Choose a colour from preset swatches (the token palette by default) or the code field below them: click the colour square to fine-tune it in the colour panel, type a hex value, or use the pipette to pick any colour on screen. The trigger shows the current colour and opens a popover."
     >
       <CodeBlock label="ColorPicker import" code={`import { ColorPicker } from '@my-ds/ui';`} />
 
@@ -28,10 +38,10 @@ export function ColorPickerDocs() {
   columns={4}
   showNativePicker={false}
   swatches={[
-    { value: '#0260FF', label: 'Blue' },
-    { value: '#16A34A', label: 'Green' },
-    { value: '#D97706', label: 'Amber' },
-    { value: '#DC2626', label: 'Red' },
+    { value: tokens.palette.primary['600'], label: 'Blue' },
+    { value: tokens.palette.success['600'], label: 'Green' },
+    { value: tokens.palette.warn['600'], label: 'Amber' },
+    { value: tokens.palette.danger['600'], label: 'Red' },
   ]}
 />`}
         >
@@ -40,13 +50,8 @@ export function ColorPickerDocs() {
               label="Label colour"
               columns={4}
               showNativePicker={false}
-              defaultValue="#16A34A"
-              swatches={[
-                { value: '#0260FF', label: 'Blue' },
-                { value: '#16A34A', label: 'Green' },
-                { value: '#D97706', label: 'Amber' },
-                { value: '#DC2626', label: 'Red' },
-              ]}
+              defaultValue={palette.success['600']}
+              swatches={SWATCHES}
             />
           </div>
         </Example>
@@ -87,10 +92,10 @@ export function ColorPickerDocs() {
             { name: 'swatches', type: 'Array<string | { value, label? }>', default: 'defaultColorSwatches', description: '300 / 500 / 700 of every palette hue (24).' },
             { name: 'columns', type: 'number', default: '8', description: 'Swatch grid columns (also the ↑/↓ stride).' },
             { name: 'showCustom', type: 'boolean', default: 'true', description: 'Hex text field with a preview.' },
-            { name: 'showNativePicker', type: 'boolean', default: 'true', description: 'Pipette button opening the native colour input.' },
+            { name: 'showNativePicker', type: 'boolean', default: 'true', description: 'Makes the colour square in the code field open the colour panel. The pipette (screen picker) shows wherever the browser supports EyeDropper.' },
             { name: 'name', type: 'string', description: 'Hidden input so the value submits with a form.' },
             { name: 'variant', type: "'outline' | 'filled'", default: "'outline'", description: 'Matches Dropdown.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Trigger height 26 / 32 / 40.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Trigger height 26 / 32 / 36.' },
             { name: 'hint / error / required / disabled', type: '—', description: 'Same as Input.' },
           ]}
         />
@@ -112,7 +117,7 @@ export function ColorPickerDocs() {
                 ['← / →', 'Previous / next swatch, and select it'],
                 ['↑ / ↓', 'Swatch above / below'],
                 ['Home / End', 'First / last swatch'],
-                ['Tab', 'Swatches → hex field → native picker'],
+                ['Tab', 'Swatches → colour square → hex field → pipette'],
                 ['Enter (hex field)', 'Apply the typed hex'],
                 ['Esc', 'Close and return focus to the trigger'],
               ].map(([key, action]) => (

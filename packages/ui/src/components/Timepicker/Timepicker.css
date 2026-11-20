@@ -12,7 +12,7 @@
   padding-inline-end: calc(var(--ds-size-button-xs) + var(--ds-space-2));
 }
 .ds-timepicker__control .ds-timepicker__input--lg {
-  padding-inline-end: calc(var(--ds-size-button-md) + var(--ds-space-2));
+  padding-inline-end: var(--ds-size-control-lg);
 }
 
 /* Toggle button: a quiet icon button inside the field's end edge. */
@@ -48,8 +48,9 @@
   border-radius: var(--ds-radius-sm);
 }
 .ds-timepicker__button--lg {
-  width: var(--ds-size-button-md);
-  height: var(--ds-size-button-md);
+  /* Field height minus a 4px inset on each side. */
+  width: calc(var(--ds-size-control-lg) - var(--ds-space-2));
+  height: calc(var(--ds-size-control-lg) - var(--ds-space-2));
   border-radius: var(--ds-radius-md);
 }
 .ds-timepicker__button--lg .ds-icon {

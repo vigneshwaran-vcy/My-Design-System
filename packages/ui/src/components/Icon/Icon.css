@@ -22,3 +22,18 @@
   width: var(--ds-size-icon-lg);
   height: var(--ds-size-icon-lg);
 }
+
+/*
+ * Stroke weight: Solar draws 1.5 units on a 24 grid, which renders 1px at 16px. Every stroke is drawn
+ * at a fixed --ds-border-width-icon (1.5px) at any icon size instead.
+ */
+.ds-icon * {
+  stroke-width: var(--ds-border-width-icon);
+  vector-effect: non-scaling-stroke;
+}
+/* A few Solar Linear icons are filled outlines (no strokes): a thin outline brings them to the same weight at 16px. */
+.ds-icon [fill='currentColor'] {
+  stroke: currentColor;
+  stroke-width: calc(var(--ds-border-width-icon) - var(--ds-border-width-thin));
+  stroke-linejoin: round;
+}

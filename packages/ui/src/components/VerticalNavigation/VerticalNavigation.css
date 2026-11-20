@@ -5,8 +5,10 @@
  *   framed   tinted frame (bg-frame, padding space-3, radius xl)
  */
 .ds-vertical-navigation {
-  --vnav-row-height: var(--ds-size-button-sm);
+  --vnav-row-height: var(--ds-size-button-md);
+  --vnav-row-gap: var(--ds-border-width-thick);
   --vnav-font-size: var(--ds-font-size-sm);
+  --vnav-heading-font-size: var(--ds-font-size-xs);
   --vnav-padding-x: var(--ds-space-2);
   --vnav-icon-size: var(--ds-size-icon-sm);
   --vnav-section-gap: var(--ds-space-3);
@@ -14,11 +16,16 @@
   flex-direction: column;
   gap: var(--vnav-section-gap);
   font-family: var(--ds-font-family-sans);
+  /* Own type scale, so nothing inherits the page's body size. */
+  font-size: var(--vnav-font-size);
+  line-height: var(--ds-font-line-height-tight);
   color: var(--ds-vertical-navigation-text);
 }
 .ds-vertical-navigation--sm {
-  --vnav-row-height: var(--ds-size-button-xs);
+  --vnav-row-height: var(--ds-size-button-sm);
+  --vnav-row-gap: var(--ds-border-width-thin);
   --vnav-font-size: var(--ds-font-size-xs);
+  --vnav-heading-font-size: var(--ds-font-size-2xs);
   --vnav-padding-x: var(--ds-space-2);
   --vnav-icon-size: var(--ds-size-icon-xs);
   --vnav-section-gap: var(--ds-space-2);
@@ -56,8 +63,10 @@
   width: 100%;
   min-height: var(--ds-size-button-xs);
   padding-inline: var(--vnav-padding-x);
+  /* Same transparent edge as the rows, so titles line up with the item icons. */
+  border: var(--ds-border-width-thin) solid transparent;
   color: var(--ds-vertical-navigation-heading-section-title-text);
-  font-size: var(--ds-font-size-xs);
+  font-size: var(--vnav-heading-font-size);
   font-weight: var(--ds-font-weight-medium);
   line-height: var(--ds-font-line-height-tight);
 }
@@ -115,7 +124,7 @@
 .ds-vertical-navigation__list {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-border-width-thin);
+  gap: var(--vnav-row-gap);
   margin: 0;
   padding: 0;
   list-style: none;

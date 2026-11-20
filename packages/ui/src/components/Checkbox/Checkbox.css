@@ -85,6 +85,7 @@
 /* Hover */
 .ds-checkbox__label:hover .ds-checkbox__input:not(:disabled, :checked, :indeterminate) + .ds-checkbox__box {
   background-color: var(--ds-checkbox-label-input-box-bg-hover);
+  border-color: var(--ds-checkbox-label-input-box-border-hover);
 }
 .ds-checkbox__label:hover .ds-checkbox__input:not(:disabled):is(:checked, :indeterminate) + .ds-checkbox__box {
   background-color: var(--ds-checkbox-label-input-box-bg-hover-checked);

@@ -11,7 +11,7 @@ export function FileSelectorDocs() {
       id="file-selector"
       eyebrow="Components"
       title="File selector"
-      description="Pick files with a button or drop them onto the zone. Selected files are listed with their size and a remove button."
+      description="Click anywhere in the zone (or press Enter or Space on it) to pick files, or drop them onto it. The inline variant keeps a compact button. Selected files are listed with their size and a remove button."
     >
       <CodeBlock label="FileSelector import" code={`import { FileSelector } from '@my-ds/ui';`} />
 

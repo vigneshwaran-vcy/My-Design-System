@@ -1,4 +1,4 @@
-import { Button, Input, Modal, type ModalSize } from '@my-ds/ui';
+import { Button, Dropdown, Input, Modal, Textarea, type ModalSize } from '@my-ds/ui';
 import { useState } from 'react';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
@@ -7,6 +7,7 @@ export function ModalDocs() {
   const [size, setSize] = useState<ModalSize | null>(null);
   const [invite, setInvite] = useState(false);
   const [terms, setTerms] = useState(false);
+  const [info, setInfo] = useState(false);
 
   return (
     <DocSection id="modal" eyebrow="Components" title="Modal" description="A blocking dialog rendered in a portal over a scrim. Use it for confirmations and short focused tasks; keep anything longer on its own page.">
@@ -23,7 +24,7 @@ export function ModalDocs() {
   title="Delete project?"
   description="This permanently removes the project and all of its pages."
   footer={<>
-    <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+    <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
     <Button variant="danger" onClick={() => setOpen(false)}>Delete</Button>
   </>}
 />`}
@@ -36,7 +37,7 @@ export function ModalDocs() {
             description='This permanently removes "Roadmap 2025" and all of its pages. This cannot be undone.'
             footer={
               <>
-                <Button variant="ghost" onClick={() => setConfirm(false)}>Cancel</Button>
+                <Button variant="secondary" onClick={() => setConfirm(false)}>Cancel</Button>
                 <Button variant="danger" onClick={() => setConfirm(false)}>Delete</Button>
               </>
             }
@@ -65,28 +66,62 @@ export function ModalDocs() {
         </Example>
 
         <Example
-          title="With a form — focus lands on the first field"
-          code={`<Modal open={open} onClose={close} title="Invite a teammate" footer={…}>
-  <Input label="Email" type="email" />
+          title="Invite form — focus lands on the first field"
+          code={`<Modal
+  open={open}
+  onClose={close}
+  title="Invite a teammate"
+  description="They'll get an email with a link to join Acme."
+  footer={<>
+    <Button variant="secondary" onClick={close}>Cancel</Button>
+    <Button onClick={send}>Send invite</Button>
+  </>}
+>
+  <Input label="Email address" type="email" />
+  <Dropdown label="Role" options={roles} defaultValue="member" />
+  <Textarea label="Message" hint="Optional" rows={3} />
 </Modal>`}
         >
-          <Button variant="secondary" onClick={() => setInvite(true)}>Invite</Button>
+          <Button variant="secondary" onClick={() => setInvite(true)}>Invite teammate</Button>
           <Modal
             open={invite}
             onClose={() => setInvite(false)}
             title="Invite a teammate"
-            description="They will get an email with a link to join this workspace."
+            description="They'll get an email with a link to join Acme."
             footer={
               <>
-                <Button variant="ghost" onClick={() => setInvite(false)}>Cancel</Button>
+                <Button variant="secondary" onClick={() => setInvite(false)}>Cancel</Button>
                 <Button onClick={() => setInvite(false)}>Send invite</Button>
               </>
             }
           >
-            <div style={{ display: 'grid', gap: 'var(--ds-space-4)' }}>
-              <Input label="Email" type="email" placeholder="name@company.com" />
-              <Input label="Message" placeholder="Optional note" />
+            <div className="doc-form">
+              <Input label="Email address" type="email" placeholder="name@company.com" />
+              <Dropdown
+                label="Role"
+                defaultValue="member"
+                options={[
+                  { value: 'member', label: 'Member', description: 'Can view and edit projects' },
+                  { value: 'admin', label: 'Admin', description: 'Can also manage people and billing' },
+                  { value: 'guest', label: 'Guest', description: 'Can only see what is shared with them' },
+                ]}
+              />
+              <Textarea label="Message" hint="Optional — added to the invite email." placeholder="Hey! Join us on Acme…" rows={3} />
             </div>
+          </Modal>
+        </Example>
+
+        <Example
+          title="No footer — the close button shows"
+          code={`<Modal open={open} onClose={close} title="Keyboard shortcuts">…</Modal>`}
+        >
+          <Button variant="secondary" onClick={() => setInfo(true)}>Show shortcuts</Button>
+          <Modal open={info} onClose={() => setInfo(false)} size="sm" title="Keyboard shortcuts" description="Work faster in Acme.">
+            <ul style={{ margin: 0, paddingInlineStart: 'var(--ds-space-4)', display: 'grid', gap: 'var(--ds-space-2)' }}>
+              <li>⌘K — search</li>
+              <li>⌘\ — collapse the sidebar</li>
+              <li>/ — focus search</li>
+            </ul>
           </Modal>
         </Example>
 
@@ -116,8 +151,9 @@ export function ModalDocs() {
             { name: 'description', type: 'ReactNode', description: 'Supporting copy under the title; wired as aria-describedby.' },
             { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Max width 384 / 512 / 768 (space-16 × 6 / 8 / 12).' },
             { name: 'children', type: 'ReactNode', description: 'Body content; scrolls internally when taller than the viewport.' },
-            { name: 'footer', type: 'ReactNode', description: 'Right-aligned actions slot.' },
+            { name: 'footer', type: 'ReactNode', description: 'Actions under a divider, right-aligned: secondary (Cancel) first, then the primary action.' },
             { name: 'dismissible', type: 'boolean', default: 'true', description: 'When false: no close button, and Escape / scrim do nothing.' },
+            { name: 'showClose', type: 'boolean', default: 'true without footer, false with one', description: 'The filled × button in the header. A footer usually has Cancel, so the × is hidden then; set it to force either way.' },
           ]}
         />
       </SubSection>

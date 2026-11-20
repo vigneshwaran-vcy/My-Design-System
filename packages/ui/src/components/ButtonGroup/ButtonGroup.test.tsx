@@ -13,7 +13,7 @@ const items = [
 ];
 
 describe('ButtonGroup', () => {
-  it('renders a labelled group with variant and size classes', () => {
+  it('renders a labelled group with its size class', () => {
     render(
       <ButtonGroup label="Text style">
         <Button variant="secondary">Bold</Button>
@@ -21,13 +21,8 @@ describe('ButtonGroup', () => {
       </ButtonGroup>,
     );
     const group = screen.getByRole('group', { name: 'Text style' });
-    expect(group).toHaveClass('ds-button-group', 'ds-button-group--attached', 'ds-button-group--md');
+    expect(group).toHaveClass('ds-button-group', 'ds-button-group--md');
     expect(screen.getAllByRole('button')).toHaveLength(2);
-  });
-
-  it('applies the spaced variant', () => {
-    render(<ButtonGroup variant="spaced" label="g"><Button>One</Button></ButtonGroup>);
-    expect(screen.getByRole('group')).toHaveClass('ds-button-group--spaced');
   });
 
   it('passes size to children that do not set their own', () => {

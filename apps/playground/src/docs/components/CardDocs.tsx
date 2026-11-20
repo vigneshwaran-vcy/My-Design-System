@@ -38,7 +38,7 @@ export function CardDocs() {
   <CardHeader title="Join the beta" titleId="beta-title" description="…" />
   <CardBody><Input label="Email" type="email" required /></CardBody>
   <CardFooter>
-    <Button variant="ghost" type="reset">Clear</Button>
+    <Button variant="secondary" type="reset">Clear</Button>
     <Button type="submit">Request access</Button>
   </CardFooter>
 </Card>`}
@@ -48,14 +48,14 @@ export function CardDocs() {
               title="Join the beta"
               titleId="beta-title"
               description="We'll email you when your seat is ready."
-              action={<Button variant="ghost" size="sm">Learn more</Button>}
+              action={<Button variant="secondary" size="sm">Learn more</Button>}
             />
             <CardBody className="doc-stack">
               <Input label="Name" placeholder="Ada Lovelace" />
               <Input label="Email" type="email" required hint="Work email preferred." />
             </CardBody>
             <CardFooter>
-              <Button variant="ghost" type="reset">Clear</Button>
+              <Button variant="secondary" type="reset">Clear</Button>
               <Button type="submit">Request access</Button>
             </CardFooter>
           </Card>

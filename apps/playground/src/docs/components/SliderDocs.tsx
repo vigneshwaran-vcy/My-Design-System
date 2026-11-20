@@ -10,7 +10,7 @@ export function SliderDocs() {
       id="slider"
       eyebrow="Components"
       title="Slider"
-      description="Pick a single value from a range. A fully themed native range input: the filled track follows the value and the thumb is the Switch knob."
+      description="Pick a single value from a range. A fully themed native range input: the filled track follows the value and the thumb is a white knob with a coloured rim."
     >
       <CodeBlock label="Slider import" code={`import { Slider } from '@my-ds/ui';`} />
 
@@ -48,12 +48,10 @@ export function SliderDocs() {
         </Example>
 
         <Example title="Sizes" code={`<Slider size="sm" … />
-<Slider size="md" … />
-<Slider size="lg" … />`}>
+<Slider size="md" … />`}>
           <div className="doc-stack">
             <Slider label="Small" size="sm" defaultValue={30} />
             <Slider label="Medium" size="md" defaultValue={50} />
-            <Slider label="Large" size="lg" defaultValue={70} />
           </div>
         </Example>
 
@@ -79,7 +77,7 @@ export function SliderDocs() {
             { name: 'showRange', type: 'boolean', default: 'false', description: 'Shows min and max under the track.' },
             { name: 'formatValue', type: '(value: number) => string', default: 'String', description: 'Formats the visible value and aria-valuetext.' },
             { name: 'variant', type: "'accent' | 'neutral'", default: "'accent'", description: 'Fill colour of the selected range.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Track 4 / 5 / 8 and thumb 14 / 16 / 20.' },
+            { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Track 4 / 5 and thumb 16 / 20 (white knob with a 2px fill-coloured rim).' },
             { name: 'hint / error', type: 'ReactNode', description: 'Linked via aria-describedby; error sets aria-invalid.' },
             { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Keeps the label for screen readers only.' },
           ]}

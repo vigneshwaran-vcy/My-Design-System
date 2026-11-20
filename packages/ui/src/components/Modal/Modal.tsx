@@ -10,9 +10,8 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { cx } from '../../utils/cx';
-import { Icon } from '../Icon';
 import { getFocusable } from '../../utils/focus';
-import { Button } from '../Button';
+import { ButtonIcon } from '../ButtonIcon';
 import './Modal.css';
 
 export type ModalSize = 'sm' | 'md' | 'lg';
@@ -31,6 +30,11 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'
   footer?: ReactNode;
   /** When false, Escape and the scrim do nothing and the close button is hidden; closing must come from `footer`. */
   dismissible?: boolean;
+  /**
+   * Show the × button in the header. Defaults to true only when there is no `footer`: a footer normally has
+   * its own Cancel, so a second way out is noise. Escape and the scrim still close a dismissible modal.
+   */
+  showClose?: boolean;
   children?: ReactNode;
 }
 
@@ -39,7 +43,7 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'
  * restores focus on close and locks body scroll while open. Rest props, `className` and the ref go to the panel.
  */
 export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
-  { open, onClose, title, description, size = 'md', footer, dismissible = true, children, id, className, ...rest },
+  { open, onClose, title, description, size = 'md', footer, dismissible = true, showClose, children, id, className, ...rest },
   ref,
 ) {
   const autoId = useId();
@@ -159,10 +163,16 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
                 </p>
               )}
             </div>
-            {dismissible && (
-              <Button ref={closeRef} variant="ghost" size="xs" aria-label="Close" className="ds-modal__close" onClick={onClose}>
-                <Icon name="close" className="ds-modal__close-icon" />
-              </Button>
+            {dismissible && (showClose ?? !footer) && (
+              <ButtonIcon
+                ref={closeRef}
+                icon="close"
+                label="Close"
+                variant="container"
+                size="sm"
+                className="ds-modal__close"
+                onClick={onClose}
+              />
             )}
           </div>
           {children !== undefined && children !== null && <div className="ds-modal__body">{children}</div>}

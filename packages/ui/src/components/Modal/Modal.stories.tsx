@@ -40,7 +40,7 @@ function Demo(args: ModalProps & { label?: string }) {
         footer={
           rest.footer ?? (
             <>
-              <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+              <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
               <Button variant="danger" onClick={() => setOpen(false)}>Delete</Button>
             </>
           )
@@ -70,7 +70,7 @@ export const WithForm: Story = {
       label="Invite"
       footer={
         <>
-          <Button variant="ghost">Cancel</Button>
+          <Button variant="secondary">Cancel</Button>
           <Button>Send invite</Button>
         </>
       }

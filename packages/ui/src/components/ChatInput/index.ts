@@ -1,2 +1,2 @@
-export { ChatInput } from './ChatInput';
-export type { ChatInputProps, ChatInputSize, ChatInputVariant } from './ChatInput';
+export { ChatInput, ChatInputAction } from './ChatInput';
+export type { ChatInputActionProps, ChatInputAttachment, ChatInputProps, ChatInputSize, ChatInputVariant } from './ChatInput';

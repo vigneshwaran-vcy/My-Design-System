@@ -3,8 +3,10 @@ import {
   forwardRef,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type HTMLAttributes,
   type KeyboardEvent,
   type MouseEvent,
@@ -13,6 +15,8 @@ import {
 } from 'react';
 import { cx } from '../../utils/cx';
 import { useControllableState } from '../../utils/useControllableState';
+import { Icon } from '../Icon';
+import { Kbd } from '../Kbd';
 import './Menu.css';
 
 export type MenuPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
@@ -24,8 +28,13 @@ export interface MenuActionItem {
   /** Plain-text label used for typeahead when `label` is not a string. */
   textValue?: string;
   icon?: ReactNode;
-  /** Shown right-aligned in mono, e.g. "⌘K". Display only; wire the shortcut yourself. */
-  shortcut?: string;
+  /**
+   * Keyboard shortcut shown as small keycaps, e.g. "⌘K", "⌘⇧D", "Ctrl+S" or ['⌘', 'K'].
+   * Display only; wire the shortcut yourself.
+   */
+  shortcut?: string | string[];
+  /** Child items: the item opens a submenu beside the menu instead of selecting (one level deep). */
+  items?: MenuItem[];
   danger?: boolean;
   disabled?: boolean;
   onSelect?: () => void;
@@ -60,6 +69,23 @@ export interface MenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelec
 }
 
 const isAction = (item: MenuItem): item is MenuActionItem => !item.type || item.type === 'item';
+const hasSubmenu = (item: MenuItem | undefined): item is MenuActionItem & { items: MenuItem[] } =>
+  !!item && isAction(item) && !!item.items && item.items.length > 0;
+const enabledIn = (list: MenuItem[]) => list.flatMap((item, i) => (isAction(item) && !item.disabled ? [i] : []));
+
+/** "⌘⇧D" → ⌘ ⇧ D, "Ctrl+S" → Ctrl S; arrays pass through. */
+const MODIFIERS = '⌘⇧⌥⌃';
+function shortcutKeys(shortcut: string | string[]): string[] {
+  if (Array.isArray(shortcut)) return shortcut;
+  if (shortcut.includes('+')) return shortcut.split('+').map((k) => k.trim()).filter(Boolean);
+  const keys: string[] = [];
+  let rest = shortcut;
+  while (rest.length > 1 && MODIFIERS.includes(rest[0])) {
+    keys.push(rest[0]);
+    rest = rest.slice(1);
+  }
+  return [...keys, rest];
+}
 const textOf = (item: MenuActionItem) => item.textValue ?? (typeof item.label === 'string' ? item.label : item.id);
 
 /**
@@ -93,6 +119,12 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
   const wasOpen = useRef(false);
   const restoreFocus = useRef(true);
   const typeahead = useRef({ query: '', timer: 0 });
+  // Open submenu: the parent's index and the focused child (-1 = opened by hover, focus stays on the parent).
+  const [sub, setSub] = useState<{ index: number; active: number } | null>(null);
+  const subRef = useRef<HTMLDivElement | null>(null);
+  const [subPos, setSubPos] = useState<CSSProperties>({});
+  const subItems: MenuItem[] = sub && hasSubmenu(items[sub.index]) ? (items[sub.index] as MenuActionItem).items! : [];
+  const subEnabled = enabledIn(subItems);
 
   const enabled = items.flatMap((item, i) => (isAction(item) && !item.disabled ? [i] : []));
   const first = enabled[0] ?? -1;
@@ -110,16 +142,58 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
   };
   const closeMenu = (reason: 'escape' | 'outside' | 'select' | 'toggle' | 'tab') => {
     restoreFocus.current = reason !== 'outside' && reason !== 'tab';
+    setSub(null);
     setOpen(false);
+  };
+
+  const openSub = (index: number, focusFirst: boolean) => {
+    const parent = items[index];
+    if (!hasSubmenu(parent) || parent.disabled) return;
+    setActiveIndex(index);
+    setSub({ index, active: focusFirst ? (enabledIn(parent.items)[0] ?? -1) : -1 });
+  };
+
+  const fire = (item: MenuActionItem) => {
+    item.onSelect?.();
+    onSelect?.(item.id);
+    closeMenu('select');
   };
 
   const select = (index: number) => {
     const item = items[index];
     if (!item || !isAction(item) || item.disabled) return;
-    item.onSelect?.();
-    onSelect?.(item.id);
-    closeMenu('select');
+    if (hasSubmenu(item)) {
+      openSub(index, true);
+      return;
+    }
+    fire(item);
   };
+
+  const selectSub = (index: number) => {
+    const item = subItems[index];
+    if (!item || !isAction(item) || item.disabled) return;
+    fire(item);
+  };
+
+  // Place the submenu beside its parent row, on the side the menu opens towards.
+  useLayoutEffect(() => {
+    if (!open || !sub) return;
+    const root = rootRef.current;
+    const list = menuRef.current;
+    const parent = list?.querySelector<HTMLElement>(`[data-index="${sub.index}"]`);
+    if (!root || !list || !parent) return;
+    const rootBox = root.getBoundingClientRect();
+    const listBox = list.getBoundingClientRect();
+    const rowBox = parent.getBoundingClientRect();
+    const pad = parseFloat(getComputedStyle(list).paddingTop) + parseFloat(getComputedStyle(list).borderTopWidth);
+    const gap = parseFloat(getComputedStyle(root).getPropertyValue('--menu-sub-gap')) || 0;
+    const top = rowBox.top - rootBox.top - pad;
+    setSubPos(
+      placement.endsWith('end')
+        ? { top, bottom: 'auto', left: 'auto', right: rootBox.right - listBox.left + gap }
+        : { top, bottom: 'auto', right: 'auto', left: listBox.right - rootBox.left + gap },
+    );
+  }, [open, sub, placement]);
 
   // Outside pointer down closes.
   useEffect(() => {
@@ -140,6 +214,10 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
         setActiveIndex(first);
         return;
       }
+      if (sub && sub.active >= 0) {
+        subRef.current?.querySelector<HTMLElement>(`[data-sub-index="${sub.active}"]`)?.focus();
+        return;
+      }
       const el = menuRef.current?.querySelector<HTMLElement>(`[data-index="${activeIndex}"]`);
       (el ?? menuRef.current)?.focus();
     } else {
@@ -147,7 +225,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
       if (activeIndex !== -1) setActiveIndex(-1);
     }
     wasOpen.current = open;
-  }, [open, activeIndex, triggerId, first]);
+  }, [open, activeIndex, triggerId, first, sub]);
 
   useEffect(() => () => window.clearTimeout(typeahead.current.timer), []);
 
@@ -173,11 +251,19 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
+        setSub(null);
         setActiveIndex((i) => step(i, 1));
         break;
       case 'ArrowUp':
         event.preventDefault();
+        setSub(null);
         setActiveIndex((i) => step(i, -1));
+        break;
+      case 'ArrowRight':
+        if (hasSubmenu(items[activeIndex])) {
+          event.preventDefault();
+          openSub(activeIndex, true);
+        }
         break;
       case 'Home':
         event.preventDefault();
@@ -207,6 +293,111 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
         }
     }
   };
+
+  const stepSub = (from: number, delta: 1 | -1) => {
+    if (subEnabled.length === 0) return -1;
+    const pos = subEnabled.indexOf(from);
+    if (pos === -1) return delta === 1 ? subEnabled[0] : subEnabled[subEnabled.length - 1];
+    return subEnabled[(pos + delta + subEnabled.length) % subEnabled.length];
+  };
+  const backToParent = () => {
+    setSub(null);
+    menuRef.current?.querySelector<HTMLElement>(`[data-index="${activeIndex}"]`)?.focus();
+  };
+  const handleSubKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!sub) return;
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        setSub({ ...sub, active: stepSub(sub.active, 1) });
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        setSub({ ...sub, active: stepSub(sub.active, -1) });
+        break;
+      case 'Home':
+        event.preventDefault();
+        setSub({ ...sub, active: subEnabled[0] ?? -1 });
+        break;
+      case 'End':
+        event.preventDefault();
+        setSub({ ...sub, active: subEnabled[subEnabled.length - 1] ?? -1 });
+        break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        selectSub(sub.active);
+        break;
+      case 'ArrowLeft':
+      case 'Escape':
+        event.preventDefault();
+        event.stopPropagation();
+        backToParent();
+        break;
+      case 'Tab':
+        closeMenu('tab');
+        break;
+      default:
+    }
+  };
+
+  const renderItems = (list: MenuItem[], level: 'main' | 'sub') =>
+    list.map((item, index) => {
+      if (item.type === 'separator') {
+        return <div key={item.id} role="separator" className="ds-menu__separator" />;
+      }
+      if (item.type === 'label') {
+        return (
+          <div key={item.id} role="presentation" className="ds-menu__label">
+            {item.label}
+          </div>
+        );
+      }
+      const isParent = level === 'main' && hasSubmenu(item);
+      const active = level === 'main' ? index === activeIndex : index === sub?.active;
+      const expanded = isParent && sub?.index === index;
+      return (
+        <div
+          key={item.id}
+          role="menuitem"
+          {...(level === 'main' ? { 'data-index': index } : { 'data-sub-index': index })}
+          tabIndex={active ? 0 : -1}
+          aria-disabled={item.disabled || undefined}
+          aria-haspopup={isParent ? 'menu' : undefined}
+          aria-expanded={isParent ? expanded : undefined}
+          className={cx(
+            'ds-menu__item',
+            (active || expanded) && 'ds-menu__item--active',
+            item.danger && 'ds-menu__item--danger',
+          )}
+          onPointerMove={() => {
+            if (item.disabled) return;
+            if (level === 'sub') {
+              if (sub && sub.active !== index) setSub({ ...sub, active: index });
+              return;
+            }
+            if (!active) setActiveIndex(index);
+            if (isParent) {
+              if (sub?.index !== index) openSub(index, false);
+            } else if (sub) setSub(null);
+          }}
+          onClick={() => (level === 'main' ? select(index) : selectSub(index))}
+        >
+          {item.icon && (
+            <span className="ds-menu__icon" aria-hidden="true">
+              {item.icon}
+            </span>
+          )}
+          <span className="ds-menu__item-label">{item.label}</span>
+          {item.shortcut && !isParent && (
+            <Kbd size="sm" keys={shortcutKeys(item.shortcut)} className="ds-menu__shortcut" aria-hidden="true" />
+          )}
+          {isParent && <Icon name="alt-arrow-right" className="ds-menu__chevron" />}
+        </div>
+      );
+    });
+
+  const parentItem = sub ? items[sub.index] : undefined;
 
   const triggerEl = cloneElement(trigger, {
     id: triggerId,
@@ -253,48 +444,21 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
         onKeyDown={handleMenuKeyDown}
         {...rest}
       >
-        {items.map((item, index) => {
-          if (item.type === 'separator') {
-            return <div key={item.id} role="separator" className="ds-menu__separator" />;
-          }
-          if (item.type === 'label') {
-            return (
-              <div key={item.id} role="presentation" className="ds-menu__label">
-                {item.label}
-              </div>
-            );
-          }
-          const active = index === activeIndex;
-          return (
-            <div
-              key={item.id}
-              role="menuitem"
-              data-index={index}
-              tabIndex={active ? 0 : -1}
-              aria-disabled={item.disabled || undefined}
-              className={cx(
-                'ds-menu__item',
-                active && 'ds-menu__item--active',
-                item.danger && 'ds-menu__item--danger',
-              )}
-              onPointerMove={() => !item.disabled && !active && setActiveIndex(index)}
-              onClick={() => select(index)}
-            >
-              {item.icon && (
-                <span className="ds-menu__icon" aria-hidden="true">
-                  {item.icon}
-                </span>
-              )}
-              <span className="ds-menu__item-label">{item.label}</span>
-              {item.shortcut && (
-                <kbd className="ds-menu__shortcut" aria-hidden="true">
-                  {item.shortcut}
-                </kbd>
-              )}
-            </div>
-          );
-        })}
+        {renderItems(items, 'main')}
       </div>
+      {open && sub && parentItem && isAction(parentItem) && (
+        <div
+          ref={subRef}
+          role="menu"
+          aria-label={textOf(parentItem)}
+          tabIndex={-1}
+          className="ds-menu__list ds-menu__list--sub"
+          style={subPos}
+          onKeyDown={handleSubKeyDown}
+        >
+          {renderItems(subItems, 'sub')}
+        </div>
+      )}
     </div>
   );
 });

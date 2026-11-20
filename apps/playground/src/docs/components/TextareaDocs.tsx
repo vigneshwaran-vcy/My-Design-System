@@ -85,7 +85,7 @@ export function TextareaDocs() {
             { name: 'hint', type: 'ReactNode', description: 'Helper text, linked via aria-describedby.' },
             { name: 'error', type: 'ReactNode', description: 'Sets aria-invalid, red border, and announces the message.' },
             { name: 'variant', type: "'outline' | 'filled'", default: "'outline'", description: 'Ring edge or tinted background.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Padding and type match Input sizes 26 / 32 / 40.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Padding and type match Input sizes 26 / 32 / 36.' },
             { name: 'rows', type: 'number', default: '3', description: 'Initial height in rows (also the minimum when autoResize is on).' },
             { name: 'autoResize', type: 'boolean', default: 'false', description: 'Grows with content; disables manual resize.' },
             { name: 'maxRows', type: 'number', description: 'Upper bound for autoResize; scrolls beyond it.' },

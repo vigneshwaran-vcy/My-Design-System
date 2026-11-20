@@ -2,18 +2,18 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { RadioButtonGroup, type RadioButtonOption } from './RadioButtonGroup';
+import { SegmentedControl, type SegmentedControlOption } from './SegmentedControl';
 
-const options: RadioButtonOption[] = [
+const options: SegmentedControlOption[] = [
   { value: 'day', label: 'Day' },
   { value: 'week', label: 'Week', disabled: true },
   { value: 'month', label: 'Month' },
   { value: 'year', label: 'Year' },
 ];
 
-describe('RadioButtonGroup', () => {
+describe('SegmentedControl', () => {
   it('renders a labelled radiogroup with radios', () => {
-    render(<RadioButtonGroup label="Period" options={options} defaultValue="month" />);
+    render(<SegmentedControl label="Period" options={options} defaultValue="month" />);
     expect(screen.getByRole('radiogroup', { name: 'Period' })).toBeInTheDocument();
     expect(screen.getAllByRole('radio')).toHaveLength(4);
     expect(screen.getByRole('radio', { name: 'Month' })).toHaveAttribute('aria-checked', 'true');
@@ -23,7 +23,7 @@ describe('RadioButtonGroup', () => {
   it('uses a roving tabindex and arrow keys select, skipping disabled options and wrapping', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
-    render(<RadioButtonGroup label="Period" options={options} defaultValue="day" onChange={onChange} />);
+    render(<SegmentedControl label="Period" options={options} defaultValue="day" onChange={onChange} />);
     await user.tab();
     expect(screen.getByRole('radio', { name: 'Day' })).toHaveFocus();
     await user.keyboard('{ArrowRight}');
@@ -44,7 +44,7 @@ describe('RadioButtonGroup', () => {
   it('selects on click and ignores disabled options', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
-    render(<RadioButtonGroup label="Period" options={options} onChange={onChange} />);
+    render(<SegmentedControl label="Period" options={options} onChange={onChange} />);
     await user.click(screen.getByRole('radio', { name: 'Week' }));
     expect(onChange).not.toHaveBeenCalled();
     await user.click(screen.getByRole('radio', { name: 'Year' }));
@@ -54,7 +54,7 @@ describe('RadioButtonGroup', () => {
   it('stays controlled', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
-    render(<RadioButtonGroup label="Period" options={options} value="day" onChange={onChange} />);
+    render(<SegmentedControl label="Period" options={options} value="day" onChange={onChange} />);
     await user.click(screen.getByRole('radio', { name: 'Month' }));
     expect(onChange).toHaveBeenCalledWith('month');
     expect(screen.getByRole('radio', { name: 'Day' })).toHaveAttribute('aria-checked', 'true');
@@ -63,18 +63,18 @@ describe('RadioButtonGroup', () => {
   it('disables the whole group, wires errors, submits a name and forwards the ref', () => {
     const ref = createRef<HTMLDivElement>();
     const { container } = render(
-      <RadioButtonGroup ref={ref} label="Period" options={options} defaultValue="day" disabled error="Pick one" name="period" size="sm" />,
+      <SegmentedControl ref={ref} label="Period" options={options} defaultValue="day" disabled error="Pick one" name="period" size="sm" />,
     );
     screen.getAllByRole('radio').forEach((radio) => expect(radio).toBeDisabled());
     expect(screen.getByRole('radiogroup')).toHaveAttribute('aria-invalid', 'true');
     expect(screen.getByRole('radiogroup')).toHaveAccessibleDescription('Pick one');
     expect(container.querySelector('input[name="period"]')).toHaveValue('day');
-    expect(ref.current).toHaveClass('ds-radio-button-group--sm');
+    expect(ref.current).toHaveClass('ds-segmented-control--sm');
   });
 
   it('names icon-only options by their label', () => {
     render(
-      <RadioButtonGroup
+      <SegmentedControl
         label="View"
         options={[
           { value: 'list', label: 'List view', icon: 'list', iconOnly: true },

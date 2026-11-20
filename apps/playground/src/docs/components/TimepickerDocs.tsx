@@ -69,7 +69,7 @@ export function TimepickerDocs() {
             { name: 'hint / error / required / disabled / hideLabel', type: '—', description: 'Same as Input.' },
             { name: 'invalid', type: 'boolean', description: 'Invalid styling without a message.' },
             { name: 'variant', type: "'outline' | 'filled'", default: "'outline'", description: 'Matches Input.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 26 / 32 / 40.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 26 / 32 / 36.' },
           ]}
         />
       </SubSection>

@@ -104,6 +104,8 @@ export const Prompt = forwardRef<HTMLDivElement, PromptProps>(function Prompt(
       open={open}
       onClose={close ?? (() => {})}
       dismissible={dismissible}
+      // A dismissible prompt asks for the ×, unless it already has a Cancel button.
+      showClose={dismissible && !onCancel}
       size={size}
       title={
         <span className="ds-prompt__heading">

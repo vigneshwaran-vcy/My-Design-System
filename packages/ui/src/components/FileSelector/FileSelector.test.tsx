@@ -14,7 +14,7 @@ describe('FileSelector', () => {
   it('renders a labelled browse button and a hidden file input', () => {
     const ref = createRef<HTMLInputElement>();
     render(<FileSelector ref={ref} label="Attachments" multiple />);
-    expect(screen.getByRole('button', { name: 'Upload files Attachments' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Upload files or drop files here Attachments' })).toBeInTheDocument();
     expect(ref.current).toHaveAttribute('type', 'file');
     expect(ref.current).toHaveAttribute('multiple');
     expect(ref.current).toHaveAccessibleName('Attachments');

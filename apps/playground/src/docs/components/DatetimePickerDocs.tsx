@@ -73,7 +73,7 @@ export function DatetimePickerDocs() {
             { name: 'name', type: 'string', description: 'Submits a local "YYYY-MM-DDTHH:mm" through a hidden input.' },
             { name: 'hint / error / required / disabled / hideLabel', type: '—', description: 'Shared by both fields.' },
             { name: 'variant', type: "'outline' | 'filled'", default: "'outline'", description: 'Matches Input.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 26 / 32 / 40.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 26 / 32 / 36.' },
           ]}
         />
       </SubSection>

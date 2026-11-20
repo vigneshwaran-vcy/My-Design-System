@@ -26,13 +26,19 @@ type ChildProps = {
   onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
 };
 
-export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, 'content' | 'children'> {
+export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, 'content' | 'children' | 'title'> {
   /** Short, plain-text help. Tooltips are supplementary: never put essential actions in them. */
   content: ReactNode;
   /** Side of the child the tooltip appears on. */
   placement?: TooltipPlacement;
   /** Hover delay in milliseconds before the tooltip shows. Keyboard focus shows it immediately. */
   delay?: number;
+  /** Small pointer towards the trigger. */
+  arrow?: boolean;
+  /** Bold first line. With `title` or `media` the tooltip becomes a wider "rich" tip. */
+  title?: ReactNode;
+  /** Picture above the text (an <img alt=""> or a preview), for feature tips and how-tos. */
+  media?: ReactNode;
   /**
    * A single focusable element. It is cloned to receive `aria-describedby` and the hover/focus handlers.
    * A disabled button fires no mouse or focus events, so wrap it in a `<span tabIndex={0}>` first.
@@ -42,12 +48,13 @@ export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, 'cont
 
 /** Text hint shown on hover and keyboard focus. Rest props, `className` and the ref go to the tooltip bubble. */
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
-  { content, placement = 'top', delay = 300, children, id, className, ...rest },
+  { content, placement = 'top', delay = 300, arrow = true, title, media, children, id, className, ...rest },
   ref,
 ) {
   const autoId = useId();
   const tooltipId = id ?? `ds-tooltip-${autoId}`;
   const [open, setOpen] = useState(false);
+  const rich = Boolean(title || media);
   const timer = useRef<number>();
 
   const clearTimer = () => {
@@ -104,10 +111,18 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
         id={tooltipId}
         role="tooltip"
         hidden={!open}
-        className={cx('ds-tooltip__bubble', className)}
+        className={cx('ds-tooltip__bubble', rich && 'ds-tooltip__bubble--rich', arrow && 'ds-tooltip__bubble--arrow', className)}
         {...rest}
       >
-        {content}
+        {media && <div className="ds-tooltip__media">{media}</div>}
+        {rich ? (
+          <div className="ds-tooltip__text">
+            {title && <p className="ds-tooltip__title">{title}</p>}
+            <div className="ds-tooltip__body">{content}</div>
+          </div>
+        ) : (
+          content
+        )}
       </div>
     </span>
   );

@@ -7,11 +7,38 @@ const pageActions: MenuItem[] = [
   { id: 'duplicate', label: 'Duplicate', icon: <Icon name="copy" />, shortcut: '⌘D' },
   { id: 'move', label: 'Move to…', icon: <Icon name="arrow-right" /> },
   { id: 'sep-1', type: 'separator' },
-  { id: 'share-label', type: 'label', label: 'Sharing' },
-  { id: 'copy-link', label: 'Copy link', icon: <Icon name="link" /> },
+  { id: 'copy-link', label: 'Copy link', icon: <Icon name="link" />, shortcut: '⌘L' },
   { id: 'publish', label: 'Publish to web', icon: <Icon name="arrow-right-up" />, disabled: true },
   { id: 'sep-2', type: 'separator' },
   { id: 'delete', label: 'Delete', icon: <Icon name="trash" />, shortcut: '⌫', danger: true },
+];
+
+const fileActions: MenuItem[] = [
+  { id: 'open', label: 'Open', icon: <Icon name="folder-open" />, shortcut: '⌘O' },
+  { id: 'duplicate', label: 'Duplicate', icon: <Icon name="copy" />, shortcut: '⌘D' },
+  {
+    id: 'share',
+    label: 'Share',
+    icon: <Icon name="share" />,
+    items: [
+      { id: 'share-email', label: 'Email', icon: <Icon name="letter" /> },
+      { id: 'share-link', label: 'Copy link', icon: <Icon name="link" />, shortcut: '⌘L' },
+      { id: 'share-sep', type: 'separator' },
+      { id: 'share-web', label: 'Publish to web', icon: <Icon name="global" /> },
+    ],
+  },
+  {
+    id: 'export',
+    label: 'Export as',
+    icon: <Icon name="export" />,
+    items: [
+      { id: 'export-pdf', label: 'PDF' },
+      { id: 'export-png', label: 'PNG' },
+      { id: 'export-csv', label: 'CSV' },
+    ],
+  },
+  { id: 'sep', type: 'separator' },
+  { id: 'delete', label: 'Delete', icon: <Icon name="trash" />, shortcut: '⌘⌫', danger: true },
 ];
 
 const rowActions: MenuItem[] = [
@@ -34,13 +61,36 @@ export function MenuDocs() {
   { id: 'rename', label: 'Rename', icon: <Icon name="pen" />, shortcut: '⌘R' },
   { id: 'duplicate', label: 'Duplicate', icon: <Icon name="copy" />, shortcut: '⌘D' },
   { id: 'sep', type: 'separator' },
-  { id: 'share', type: 'label', label: 'Sharing' },
   { id: 'publish', label: 'Publish to web', disabled: true },
   { id: 'delete', label: 'Delete', shortcut: '⌫', danger: true },
 ];
 <Menu trigger={<Button variant="secondary">Actions</Button>} items={items} onSelect={(id) => …} />`}
         >
           <Menu trigger={<Button variant="secondary">Actions</Button>} items={pageActions} onSelect={setLast} />
+          <span style={{ color: 'var(--ds-color-text-muted)', fontSize: 'var(--ds-font-size-sm)' }}>
+            {last ? `Selected: ${last}` : 'Nothing selected yet'}
+          </span>
+        </Example>
+
+        <Example
+          title="Submenus — hover, click, Enter or → opens; ← or Escape goes back"
+          code={`const items: MenuItem[] = [
+  { id: 'open', label: 'Open', shortcut: '⌘O' },
+  {
+    id: 'share',
+    label: 'Share',
+    items: [
+      { id: 'share-email', label: 'Email' },
+      { id: 'share-link', label: 'Copy link', shortcut: '⌘L' },
+    ],
+  },
+  { id: 'export', label: 'Export as', items: [{ id: 'pdf', label: 'PDF' }, { id: 'png', label: 'PNG' }] },
+  { id: 'sep', type: 'separator' },
+  { id: 'delete', label: 'Delete', shortcut: '⌘⌫', danger: true },
+];
+<Menu trigger={<Button variant="secondary">File</Button>} items={items} onSelect={(id) => …} />`}
+        >
+          <Menu trigger={<Button variant="secondary">File</Button>} items={fileActions} onSelect={setLast} />
           <span style={{ color: 'var(--ds-color-text-muted)', fontSize: 'var(--ds-font-size-sm)' }}>
             {last ? `Selected: ${last}` : 'Nothing selected yet'}
           </span>
@@ -74,7 +124,7 @@ export function MenuDocs() {
           caption="Menu props (rest props, className and ref go to the role=&quot;menu&quot; list)"
           rows={[
             { name: 'trigger', type: 'ReactElement', description: 'Cloned with aria-haspopup="menu", aria-expanded, aria-controls, a toggling onClick and ArrowDown/ArrowUp to open.' },
-            { name: 'items', type: 'MenuItem[]', description: "Action items { id, label, icon?, shortcut?, danger?, disabled?, onSelect?, textValue? }, plus { type: 'separator' } and { type: 'label', label }." },
+            { name: 'items', type: 'MenuItem[]', description: "Action items { id, label, icon?, shortcut?, danger?, disabled?, onSelect?, textValue?, items? }, plus { type: 'separator' } and { type: 'label', label }. `shortcut` is a string (\"⌘⇧D\", \"Ctrl+S\") or key array, shown as small keycaps. `items` turns the item into a submenu (one level). Use a label only when a long menu needs named groups." },
             { name: 'placement', type: "'bottom-start' | 'bottom-end' | 'top-start' | 'top-end'", default: "'bottom-start'", description: 'Opens below or above the trigger (top for triggers near the bottom, like a sidebar account button), aligned to its start or end edge.' },
             { name: 'open / defaultOpen', type: 'boolean', description: 'Controlled or initial open state.' },
             { name: 'onOpenChange', type: '(open: boolean) => void', description: 'Fires on every open and close.' },

@@ -62,6 +62,108 @@
   transform-origin: center left;
 }
 
+/*
+ * Arrow: a small triangle (clip-path) in the bubble's colour, centred on the side facing the trigger.
+ * --tooltip-arrow is its depth; the offset grows by the same amount so the tip keeps the same gap.
+ */
+.ds-tooltip {
+  --tooltip-arrow: calc(var(--ds-space-1) + var(--ds-border-width-thin));
+}
+.ds-tooltip__bubble--arrow {
+  --tooltip-arrow-bg: var(--ds-tooltip-bubble-bg);
+}
+.ds-tooltip--top > .ds-tooltip__bubble--arrow {
+  bottom: calc(100% + var(--tooltip-offset) + var(--tooltip-arrow) / 2);
+}
+.ds-tooltip--bottom > .ds-tooltip__bubble--arrow {
+  top: calc(100% + var(--tooltip-offset) + var(--tooltip-arrow) / 2);
+}
+.ds-tooltip--left > .ds-tooltip__bubble--arrow {
+  right: calc(100% + var(--tooltip-offset) + var(--tooltip-arrow) / 2);
+}
+.ds-tooltip--right > .ds-tooltip__bubble--arrow {
+  left: calc(100% + var(--tooltip-offset) + var(--tooltip-arrow) / 2);
+}
+.ds-tooltip__bubble--arrow::after {
+  content: '';
+  position: absolute;
+  background-color: var(--tooltip-arrow-bg);
+}
+.ds-tooltip--top > .ds-tooltip__bubble--arrow::after,
+.ds-tooltip--bottom > .ds-tooltip__bubble--arrow::after {
+  left: 50%;
+  width: calc(var(--tooltip-arrow) * 2);
+  height: var(--tooltip-arrow);
+  translate: -50% 0;
+}
+.ds-tooltip--top > .ds-tooltip__bubble--arrow::after {
+  top: 100%;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+.ds-tooltip--bottom > .ds-tooltip__bubble--arrow::after {
+  bottom: 100%;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.ds-tooltip--left > .ds-tooltip__bubble--arrow::after,
+.ds-tooltip--right > .ds-tooltip__bubble--arrow::after {
+  top: 50%;
+  width: var(--tooltip-arrow);
+  height: calc(var(--tooltip-arrow) * 2);
+  translate: 0 -50%;
+}
+.ds-tooltip--left > .ds-tooltip__bubble--arrow::after {
+  left: 100%;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.ds-tooltip--right > .ds-tooltip__bubble--arrow::after {
+  right: 100%;
+  clip-path: polygon(100% 0, 100% 100%, 0 50%);
+}
+
+/* Rich: the same dark bubble, wider, with an optional picture, a title and the instruction text. */
+.ds-tooltip__bubble--rich {
+  --tooltip-arrow-bg: var(--ds-tooltip-rich-bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  width: calc(var(--ds-size-panel-xs) + var(--ds-space-8));
+  max-width: var(--ds-size-panel-sm);
+  padding: var(--ds-space-2);
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-tooltip-rich-bg);
+  box-shadow: var(--ds-tooltip-rich-shadow);
+  color: var(--ds-tooltip-rich-text);
+  font-weight: var(--ds-font-weight-regular);
+}
+.ds-tooltip__media {
+  overflow: hidden;
+  border-radius: var(--ds-radius-md);
+}
+.ds-tooltip__media > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ds-tooltip__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  padding: 0 var(--ds-space-1) var(--ds-space-1);
+}
+.ds-tooltip__title {
+  margin: 0;
+  color: var(--ds-tooltip-rich-title-text);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-font-line-height-tight);
+}
+.ds-tooltip__body {
+  color: var(--ds-tooltip-rich-text);
+  opacity: var(--ds-opacity-80);
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-normal);
+}
+
 @keyframes ds-tooltip-in {
   from {
     opacity: 0;

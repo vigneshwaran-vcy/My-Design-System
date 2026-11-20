@@ -1,31 +1,31 @@
-import { RadioButtonGroup, type RadioButtonOption } from '@my-ds/ui';
+import { SegmentedControl, type SegmentedControlOption } from '@my-ds/ui';
 import { useState } from 'react';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
-const periods: RadioButtonOption[] = [
+const periods: SegmentedControlOption[] = [
   { value: 'day', label: 'Day' },
   { value: 'week', label: 'Week' },
   { value: 'month', label: 'Month' },
   { value: 'year', label: 'Year', disabled: true },
 ];
 
-const views: RadioButtonOption[] = [
+const views: SegmentedControlOption[] = [
   { value: 'list', label: 'List view', icon: 'list', iconOnly: true },
   { value: 'grid', label: 'Grid view', icon: 'widget', iconOnly: true },
   { value: 'chart', label: 'Chart view', icon: 'chart-2', iconOnly: true },
 ];
 
-export function RadioButtonGroupDocs() {
+export function SegmentedControlDocs() {
   const [period, setPeriod] = useState('week');
 
   return (
     <DocSection
-      id="radio-button-group"
+      id="segmented-control"
       eyebrow="Components"
-      title="Radio button group"
+      title="Segmented control"
       description="A segmented control: mutually exclusive options in a recessed track, with a raised thumb that slides under the selection. Same look as the docs theme toggle; radio-group semantics underneath."
     >
-      <CodeBlock label="RadioButtonGroup import" code={`import { RadioButtonGroup, type RadioButtonOption } from '@my-ds/ui';`} />
+      <CodeBlock label="SegmentedControl import" code={`import { SegmentedControl, type SegmentedControlOption } from '@my-ds/ui';`} />
 
       <SubSection title="Examples">
         <Example
@@ -37,12 +37,12 @@ export function RadioButtonGroupDocs() {
   { value: 'year', label: 'Year', disabled: true },
 ];
 
-<RadioButtonGroup label="Period" options={periods} value={period} onChange={setPeriod} />`}
+<SegmentedControl label="Period" options={periods} value={period} onChange={setPeriod} />`}
         >
-          <RadioButtonGroup label="Period" options={periods} value={period} onChange={setPeriod} hint={`Showing: ${period}`} />
+          <SegmentedControl label="Period" options={periods} value={period} onChange={setPeriod} hint={`Showing: ${period}`} />
         </Example>
 
-        <Example title="Icons" code={`<RadioButtonGroup
+        <Example title="Icons" code={`<SegmentedControl
   label="View"
   options={[
     { value: 'list', label: 'List view', icon: 'list', iconOnly: true },
@@ -50,8 +50,8 @@ export function RadioButtonGroupDocs() {
   ]}
 />`}>
           <div className="doc-stack">
-            <RadioButtonGroup label="View" options={views} defaultValue="grid" />
-            <RadioButtonGroup
+            <SegmentedControl label="View" options={views} defaultValue="grid" />
+            <SegmentedControl
               label="Theme"
               defaultValue="light"
               options={[
@@ -62,27 +62,27 @@ export function RadioButtonGroupDocs() {
           </div>
         </Example>
 
-        <Example title="Variants" code={`<RadioButtonGroup variant="neutral" … />
-<RadioButtonGroup variant="accent" … />`}>
+        <Example title="Variants" code={`<SegmentedControl variant="neutral" … />
+<SegmentedControl variant="accent" … />`}>
           <div className="doc-stack">
-            <RadioButtonGroup label="Neutral" options={periods} defaultValue="month" />
-            <RadioButtonGroup label="Accent" variant="accent" options={periods} defaultValue="month" />
+            <SegmentedControl label="Neutral" options={periods} defaultValue="month" />
+            <SegmentedControl label="Accent" variant="accent" options={periods} defaultValue="month" />
           </div>
         </Example>
 
-        <Example title="Sizes & full width" code={`<RadioButtonGroup size="sm" … />
-<RadioButtonGroup size="lg" fullWidth … />`}>
+        <Example title="Sizes & full width" code={`<SegmentedControl size="sm" … />
+<SegmentedControl size="lg" fullWidth … />`}>
           <div className="doc-stack">
-            <RadioButtonGroup label="Small" size="sm" options={periods} defaultValue="day" />
-            <RadioButtonGroup label="Medium" size="md" options={periods} defaultValue="day" />
-            <RadioButtonGroup label="Large, full width" size="lg" fullWidth options={periods} defaultValue="day" />
+            <SegmentedControl label="Small" size="sm" options={periods} defaultValue="day" />
+            <SegmentedControl label="Medium" size="md" options={periods} defaultValue="day" />
+            <SegmentedControl label="Large, full width" size="lg" fullWidth options={periods} defaultValue="day" />
           </div>
         </Example>
 
-        <Example title="States" code={`<RadioButtonGroup label="Billing" required error="Choose a billing cycle." … />
-<RadioButtonGroup label="Locked" disabled … />`}>
+        <Example title="States" code={`<SegmentedControl label="Billing" required error="Choose a billing cycle." … />
+<SegmentedControl label="Locked" disabled … />`}>
           <div className="doc-stack">
-            <RadioButtonGroup
+            <SegmentedControl
               label="Billing"
               required
               error="Choose a billing cycle."
@@ -91,22 +91,22 @@ export function RadioButtonGroupDocs() {
                 { value: 'yearly', label: 'Yearly' },
               ]}
             />
-            <RadioButtonGroup label="Locked" disabled options={periods} defaultValue="week" />
+            <SegmentedControl label="Locked" disabled options={periods} defaultValue="week" />
           </div>
         </Example>
       </SubSection>
 
       <SubSection title="Props">
         <PropsTable
-          caption="RadioButtonGroup props (plus native <div> attributes on the wrapper)"
+          caption="SegmentedControl props (plus native <div> attributes on the wrapper)"
           rows={[
             { name: 'label', type: 'ReactNode', description: 'Required. Labels the radiogroup.' },
-            { name: 'options', type: 'RadioButtonOption[]', description: '{ value, label, icon?, iconOnly?, disabled? }' },
+            { name: 'options', type: 'SegmentedControlOption[]', description: '{ value, label, icon?, iconOnly?, disabled? }' },
             { name: 'value', type: 'string | null', description: 'Controlled selected value.' },
             { name: 'defaultValue', type: 'string | null', default: 'null', description: 'Initial value when uncontrolled.' },
             { name: 'onChange', type: '(value: string) => void', description: 'Called when the selection changes.' },
             { name: 'variant', type: "'neutral' | 'accent'", default: "'neutral'", description: 'Raised white thumb, or solid blue thumb.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 26 / 32 / 40, matching inputs.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 26 / 32 / 36, matching inputs.' },
             { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Stretch; segments share the width equally.' },
             { name: 'name', type: 'string', description: 'Adds a hidden input so the value submits with a form.' },
             { name: 'required', type: 'boolean', description: 'Sets aria-required and shows *.' },

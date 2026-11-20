@@ -17,7 +17,7 @@ export function EmptyStateDocs() {
   title="No projects yet"
   description="Projects group your environments, deployments and team members in one place."
   action={<Button>New project</Button>}
-  secondaryAction={<Button variant="ghost">Import from GitHub</Button>}
+  secondaryAction={<Button variant="secondary">Import from GitHub</Button>}
 />`}
         >
           <div style={panel}>
@@ -26,7 +26,7 @@ export function EmptyStateDocs() {
               title="No projects yet"
               description="Projects group your environments, deployments and team members in one place."
               action={<Button>New project</Button>}
-              secondaryAction={<Button variant="ghost">Import from GitHub</Button>}
+              secondaryAction={<Button variant="secondary">Import from GitHub</Button>}
             />
           </div>
         </Example>

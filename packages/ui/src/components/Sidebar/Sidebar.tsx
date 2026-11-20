@@ -79,7 +79,7 @@ export interface SidebarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'defa
   defaultExpanded?: string[];
   /** `default` = sidebar fill with an edge; `floating` = a raised surface card. */
   variant?: SidebarVariant;
-  /** `sm` is the compact density (rows 22). */
+  /** `sm` is the compact density (rows 26; default 32). */
   size?: SidebarSize;
   /** Heading element for section titles. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;

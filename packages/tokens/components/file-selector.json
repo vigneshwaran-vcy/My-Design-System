@@ -11,14 +11,16 @@
   "zone-disabled-bg": "{color.bg.disabled}",
   "zone-disabled-border": "{color.border.default}",
   "zone-disabled-text": "{color.text.disabled}",
-  "tile-bg": "{color.bg.surface}",
-  "tile-shadow": "{shadow.surface}",
-  "tile-text": "{color.text.muted}",
   "zone-dragging-tile-text": "{color.text.accent}",
   "file-bg": "{color.bg.surface}",
   "file-shadow": "{shadow.surface}",
   "file-icon-bg": "{color.bg.accent.subtle}",
   "file-icon-text": "{color.text.accent}",
   "file-name-text": "{color.text.default}",
-  "file-size-text": "{color.text.muted}"
+  "file-size-text": "{color.text.muted}",
+  "zone-bg-hover": "{color.bg.neutral.hover}",
+  "zone-border-focus": "{color.border.focus}",
+  "zone-halo-focus": "{shadow.focus}",
+  "zone-icon-text": "{color.text.disabled}",
+  "zone-action-text": "{color.text.accent}"
 }

@@ -8,7 +8,6 @@
   "track-shadow": "{shadow.track}",
   "option-text": "{color.text.muted}",
   "option-text-hover": "{color.text.default}",
-  "option-bg-hover": "{color.bg.neutral.hover}",
   "option-border-focus": "{color.border.focus}",
   "option-shadow-focus": "{shadow.focus}",
   "invalid-track-border": "{color.border.danger}",

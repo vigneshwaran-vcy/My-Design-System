@@ -1,55 +1,64 @@
 /*
- * A row of buttons. Attached segments overlap by one border width so their 1px ring edges
- * merge into a single divider; inner corners are squared. Segments are direct Button / ButtonIcon
- * children, or the Button inside the trailing menu's wrapper.
+ * A segmented row of buttons. The group paints the shared look so nothing shifts on hover or press:
+ * one ring + soft shadow around the whole group, and 1px dividers that are the group's own fill
+ * showing through a 1px gap between segments. Segments drop their own shadows and only change fill.
+ * Segments are direct Button / ButtonIcon children, or the Button inside the trailing menu's wrapper.
  */
 .ds-button-group {
   --button-group-segment: var(--ds-size-button-md);
+  --button-group-radius: var(--ds-radius-md);
 
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
+  gap: var(--ds-border-width-thin);
   vertical-align: middle;
-}
-
-.ds-button-group--spaced {
-  gap: var(--ds-space-1);
-}
-
-.ds-button-group--attached > :not(:first-child) {
-  margin-inline-start: calc(var(--ds-border-width-thin) * -1);
-}
-
-.ds-button-group--attached > :is(.ds-button, .ds-button-icon),
-.ds-button-group--attached > .ds-menu > .ds-button {
-  position: relative;
-}
-.ds-button-group--attached > :not(:first-child):is(.ds-button, .ds-button-icon),
-.ds-button-group--attached > :not(:first-child) > .ds-button {
-  border-start-start-radius: 0;
-  border-end-start-radius: 0;
-}
-.ds-button-group--attached > :not(:last-child):is(.ds-button, .ds-button-icon),
-.ds-button-group--attached > :not(:last-child) > .ds-button {
-  border-start-end-radius: 0;
-  border-end-end-radius: 0;
-}
-
-/* Lift the hovered, focused or selected segment's edge above its neighbours (stacking only, no movement). */
-.ds-button-group--attached > :is(.ds-button, .ds-button-icon):is(:hover, :focus-visible, [aria-pressed='true']),
-.ds-button-group--attached > .ds-menu > .ds-button:is(:hover, :focus-visible, [aria-expanded='true']) {
-  z-index: 1;
-}
-
-/* The split / overflow menu button is square, matching the group's button height. */
-.ds-button-group--xs {
-  --button-group-segment: var(--ds-size-button-xs);
+  border-radius: var(--button-group-radius);
+  background-color: var(--ds-button-group-divider);
+  box-shadow: var(--ds-button-group-shadow);
+  isolation: isolate;
 }
 .ds-button-group--sm {
   --button-group-segment: var(--ds-size-button-sm);
 }
 .ds-button-group--lg {
   --button-group-segment: var(--ds-size-button-lg);
+  --button-group-radius: var(--ds-radius-control);
 }
+
+/* Segments: no shadow of their own in any state, so edges never flicker; fill changes still show. */
+.ds-button-group > :is(.ds-button, .ds-button-icon),
+.ds-button-group > .ds-menu > .ds-button {
+  --button-shadow: 0 0 transparent;
+  --button-shadow-hover: 0 0 transparent;
+  --button-shadow-active: 0 0 transparent;
+  --button-icon-shadow: 0 0 transparent;
+  --button-icon-shadow-hover: 0 0 transparent;
+  --button-icon-shadow-active: 0 0 transparent;
+  position: relative;
+}
+.ds-button-group > .ds-menu {
+  display: flex;
+}
+
+/* Inner corners are square; the outer ones follow the group. */
+.ds-button-group > :not(:first-child):is(.ds-button, .ds-button-icon),
+.ds-button-group > :not(:first-child) > .ds-button {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+.ds-button-group > :not(:last-child):is(.ds-button, .ds-button-icon),
+.ds-button-group > :not(:last-child) > .ds-button {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* Only a focused segment rises, so its ring sits above the neighbours. */
+.ds-button-group > :is(.ds-button, .ds-button-icon):focus-visible,
+.ds-button-group > .ds-menu > .ds-button:focus-visible {
+  z-index: 1;
+}
+
+/* The split / overflow menu button is square, matching the group's button height. */
 .ds-button-group__menu-trigger.ds-button {
   width: var(--button-group-segment);
   padding-inline: 0;
@@ -58,16 +67,10 @@
   display: block;
   width: var(--ds-size-icon-sm);
   height: var(--ds-size-icon-sm);
-}
-.ds-button-group--xs .ds-button-group__menu-icon {
-  width: var(--ds-size-icon-xs);
-  height: var(--ds-size-icon-xs);
+  transition: rotate var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 .ds-button-group__menu-trigger[aria-expanded='true'] .ds-button-group__menu-icon[data-icon='alt-arrow-down'] {
   rotate: 0.5turn;
-}
-.ds-button-group__menu-icon {
-  transition: rotate var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 
 @media (prefers-reduced-motion: reduce) {

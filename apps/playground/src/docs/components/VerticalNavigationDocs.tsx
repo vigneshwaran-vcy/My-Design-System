@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import {
-  Breadcrumb,
-  Button,
-  Icon,
-  RadioButtonGroup,
+  SegmentedControl,
   VerticalNavigation,
   VerticalNavigationItem,
   VerticalNavigationSection,
@@ -21,8 +18,6 @@ interface Page {
   icon: IconName;
   badge?: number;
   disabled?: boolean;
-  summary: string;
-  stats: [string, number][];
 }
 
 interface Group {
@@ -36,30 +31,30 @@ const GROUPS: Group[] = [
   {
     title: 'Workspace',
     pages: [
-      { id: 'home', label: 'Home', icon: 'home', summary: 'Your day at a glance: due tasks, mentions and recent pages.', stats: [['Due today', 4], ['Mentions', 2], ['Recent pages', 9]] },
-      { id: 'inbox', label: 'Inbox', icon: 'inbox', badge: 12, summary: 'Updates from the projects and people you follow.', stats: [['Unread', 12], ['Assigned to you', 5], ['Archived this week', 31]] },
-      { id: 'my-tasks', label: 'My tasks', icon: 'checklist', badge: 3, summary: 'Everything assigned to you, across all projects.', stats: [['Overdue', 3], ['This week', 8], ['Done', 21]] },
-      { id: 'calendar', label: 'Calendar', icon: 'calendar', summary: 'Deadlines, milestones and meetings in one place.', stats: [['Today', 3], ['This week', 11], ['Milestones', 2]] },
-      { id: 'reports', label: 'Reports', icon: 'chart-2', summary: 'Velocity, workload and progress across teams.', stats: [['Dashboards', 6], ['Shared', 3], ['Scheduled', 2]] },
+      { id: 'home', label: 'Home', icon: 'home' },
+      { id: 'inbox', label: 'Inbox', icon: 'inbox', badge: 12 },
+      { id: 'my-tasks', label: 'My tasks', icon: 'checklist', badge: 3 },
+      { id: 'calendar', label: 'Calendar', icon: 'calendar' },
+      { id: 'reports', label: 'Reports', icon: 'chart-2' },
     ],
   },
   {
     title: 'Projects',
     collapsible: true,
     pages: [
-      { id: 'website', label: 'Website redesign', icon: 'widget', badge: 8, summary: 'New marketing site: IA, visual design and CMS migration.', stats: [['Open', 8], ['In review', 3], ['Done', 42]] },
-      { id: 'mobile', label: 'Mobile app v2', icon: 'phone', summary: 'Offline mode, push notifications and the new onboarding.', stats: [['Open', 14], ['In review', 2], ['Done', 27]] },
-      { id: 'launch', label: 'Q1 launch', icon: 'rocket', badge: 5, summary: 'Launch checklist, press kit and campaign timeline.', stats: [['Open', 5], ['Blocked', 1], ['Done', 18]] },
-      { id: 'brand', label: 'Brand refresh', icon: 'palette', summary: 'Logo, colour, type and illustration guidelines.', stats: [['Open', 6], ['In review', 4], ['Done', 12]] },
+      { id: 'website', label: 'Website redesign', icon: 'widget', badge: 8 },
+      { id: 'mobile', label: 'Mobile app v2', icon: 'phone' },
+      { id: 'launch', label: 'Q1 launch', icon: 'rocket', badge: 5 },
+      { id: 'brand', label: 'Brand refresh', icon: 'palette' },
     ],
   },
   {
     title: 'Team',
     collapsible: true,
     pages: [
-      { id: 'members', label: 'Members', icon: 'users-group-rounded', badge: 24, summary: '24 people across design, engineering and marketing.', stats: [['Members', 24], ['Guests', 6], ['Pending invites', 2]] },
-      { id: 'roles', label: 'Roles & access', icon: 'shield-check', summary: 'Who can view, edit and manage each space.', stats: [['Roles', 4], ['Admins', 3], ['Custom rules', 5]] },
-      { id: 'billing', label: 'Billing', icon: 'wallet', disabled: true, summary: 'Only workspace owners can see billing.', stats: [] },
+      { id: 'members', label: 'Members', icon: 'users-group-rounded', badge: 24 },
+      { id: 'roles', label: 'Roles & access', icon: 'shield-check' },
+      { id: 'billing', label: 'Billing', icon: 'wallet', disabled: true },
     ],
   },
   {
@@ -67,13 +62,11 @@ const GROUPS: Group[] = [
     collapsible: true,
     defaultOpen: false,
     pages: [
-      { id: 'archive-2025', label: '2025 projects', icon: 'folder', summary: 'Projects closed in 2025.', stats: [['Projects', 9], ['Pages', 214], ['Files', 87]] },
-      { id: 'archive-2024', label: '2024 projects', icon: 'folder', summary: 'Projects closed in 2024.', stats: [['Projects', 12], ['Pages', 301], ['Files', 140]] },
+      { id: 'archive-2025', label: '2025 projects', icon: 'folder' },
+      { id: 'archive-2024', label: '2024 projects', icon: 'folder' },
     ],
   },
 ];
-
-const PAGES = GROUPS.flatMap((group) => group.pages.map((page) => ({ ...page, group: group.title })));
 
 function SampleNav({ headingLevel = 4, ...props }: VerticalNavigationProps & { headingLevel?: 2 | 3 | 4 | 5 | 6 }) {
   return (
@@ -98,15 +91,13 @@ function SampleNav({ headingLevel = 4, ...props }: VerticalNavigationProps & { h
 }
 
 function AppDemo() {
-  const [current, setCurrent] = useState('website');
   const [variant, setVariant] = useState<VerticalNavigationVariant>('default');
   const [size, setSize] = useState<VerticalNavigationSize>('md');
-  const page = PAGES.find((p) => p.id === current) ?? PAGES[0];
 
   return (
-    <div className="demo">
+    <div className="demo demo--side">
       <div className="demo__controls">
-        <RadioButtonGroup
+        <SegmentedControl
           label="Variant"
           size="sm"
           options={[
@@ -116,7 +107,7 @@ function AppDemo() {
           value={variant}
           onChange={(v) => setVariant(v as VerticalNavigationVariant)}
         />
-        <RadioButtonGroup
+        <SegmentedControl
           label="Density"
           size="sm"
           options={[
@@ -128,35 +119,12 @@ function AppDemo() {
         />
       </div>
 
-      <div className="demo-app">
-        <div className="demo-panel">
-          <div className="demo-panel__brand">
-            <span className="demo-panel__logo" aria-hidden="true">N</span>
-            <span className="demo-panel__name">Northwind</span>
-          </div>
-          <SampleNav aria-label="Northwind" value={current} onValueChange={setCurrent} variant={variant} size={size} />
+      <div className="demo-panel">
+        <div className="demo-panel__brand">
+          <span className="demo-panel__logo" aria-hidden="true">N</span>
+          <span className="demo-panel__name">Northwind</span>
         </div>
-        <div className="demo-app__main">
-          <div className="demo-app__bar">
-            <Breadcrumb className="demo-app__crumbs" items={[{ label: 'Northwind' }, { label: page.group }, { label: page.label }]} />
-            <Button size="sm" variant="secondary">Share</Button>
-          </div>
-          <div className="demo-app__body">
-            <div className="demo-app__title">
-              <Icon name={page.icon} className="demo-app__title-icon" />
-              <h4>{page.label}</h4>
-            </div>
-            <p className="demo-app__meta">{page.summary}</p>
-            <div className="demo-app__stats">
-              {page.stats.map(([label, value]) => (
-                <div key={label} className="demo-app__stat">
-                  <span className="demo-app__stat-value">{value}</span>
-                  <span className="demo-app__stat-label">{label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <SampleNav aria-label="Northwind" defaultValue="website" variant={variant} size={size} />
       </div>
     </div>
   );
@@ -211,8 +179,8 @@ export function VerticalNavigationDocs() {
         code={`import { VerticalNavigation, VerticalNavigationSection, VerticalNavigationItem } from '@my-ds/ui';`}
       />
 
-      <SubSection title="Sample app">
-        <Example title="Project-management app (click a page, fold Projects or Team, open Archive)" code={DATA_CODE}>
+      <SubSection title="Sample data">
+        <Example title="Project-management app navigation (click a page, fold Projects or Team, open Archive)" code={DATA_CODE}>
           <AppDemo />
         </Example>
       </SubSection>
@@ -264,7 +232,7 @@ export function VerticalNavigationDocs() {
             { name: 'defaultValue', type: 'string', description: 'Initially current item (uncontrolled).' },
             { name: 'onValueChange', type: '(value: string) => void', description: 'Called when an item is activated.' },
             { name: 'variant', type: "'default' | 'framed'", default: "'default'", description: 'Transparent, or in a tinted frame.' },
-            { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Row height 22 (compact) / 26.' },
+            { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Row height 26 (compact) / 32.' },
             { name: 'aria-label', type: 'string', default: "'Navigation'", description: 'Landmark label for the <nav>.' },
           ]}
         />

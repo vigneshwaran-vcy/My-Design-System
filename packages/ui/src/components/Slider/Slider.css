@@ -1,10 +1,11 @@
 /*
  * Themed native range input. The filled part of the track is a hard-stop gradient driven by
- * --slider-progress (set inline from the value); the thumb is the Switch's raised white knob.
+ * --slider-progress (set inline from the value). The thumb is a raised white knob with a 2px rim in the
+ * fill colour, so it stays visible on any background.
  */
 .ds-slider {
   --slider-track: calc(var(--ds-space-1) + var(--ds-border-width-thin));
-  --slider-thumb: var(--ds-size-icon-sm);
+  --slider-thumb: var(--ds-size-icon-md);
   --slider-fill: var(--ds-slider-fill);
   --slider-fill-hover: var(--ds-slider-fill-hover);
   --slider-rest: var(--ds-slider-rest);
@@ -13,11 +14,7 @@
 
 .ds-slider--sm {
   --slider-track: var(--ds-space-1);
-  --slider-thumb: var(--ds-size-checkbox-sm);
-}
-.ds-slider--lg {
-  --slider-track: var(--ds-space-2);
-  --slider-thumb: var(--ds-size-icon-md);
+  --slider-thumb: var(--ds-size-icon-sm);
 }
 
 .ds-slider--neutral {
@@ -96,7 +93,7 @@
   background-color: var(--slider-fill);
 }
 
-/* Thumb: raised white knob, never moves or grows on hover/press. */
+/* Thumb: raised white knob with a fill-coloured rim; never moves or grows on hover/press. */
 .ds-slider__input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -104,7 +101,7 @@
   width: var(--slider-thumb);
   height: var(--slider-thumb);
   margin-top: calc((var(--slider-track) - var(--slider-thumb)) / 2);
-  border: var(--ds-border-width-thin) solid transparent;
+  border: var(--ds-border-width-thick) solid var(--slider-fill);
   border-radius: var(--ds-radius-full);
   background-color: var(--ds-slider-input-thumb-bg);
   box-shadow: var(--ds-slider-input-thumb-shadow);
@@ -114,14 +111,20 @@
   box-sizing: border-box;
   width: var(--slider-thumb);
   height: var(--slider-thumb);
-  border: var(--ds-border-width-thin) solid transparent;
+  border: var(--ds-border-width-thick) solid var(--slider-fill);
   border-radius: var(--ds-radius-full);
   background-color: var(--ds-slider-input-thumb-bg);
   box-shadow: var(--ds-slider-input-thumb-shadow);
   transition: box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
 }
 
-/* Hover: the fill deepens one step. */
+/* Hover: the fill and the thumb rim deepen one step. */
+.ds-slider__input:hover:not(:disabled)::-webkit-slider-thumb {
+  border-color: var(--slider-fill-hover);
+}
+.ds-slider__input:hover:not(:disabled)::-moz-range-thumb {
+  border-color: var(--slider-fill-hover);
+}
 .ds-slider__input:hover:not(:disabled)::-webkit-slider-runnable-track {
   background: linear-gradient(
     to right,

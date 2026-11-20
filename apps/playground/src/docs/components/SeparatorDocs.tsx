@@ -37,16 +37,16 @@ export function SeparatorDocs() {
 
         <Example
           title="Vertical (toolbar)"
-          code={`<Button variant="ghost" size="sm">Edit</Button>
+          code={`<Button variant="secondary" size="sm">Edit</Button>
 <Separator orientation="vertical" spacing="sm" />
-<Button variant="ghost" size="sm">Duplicate</Button>`}
+<Button variant="secondary" size="sm">Duplicate</Button>`}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Button variant="ghost" size="sm">Edit</Button>
+            <Button variant="secondary" size="sm">Edit</Button>
             <Separator orientation="vertical" spacing="sm" />
-            <Button variant="ghost" size="sm">Duplicate</Button>
+            <Button variant="secondary" size="sm">Duplicate</Button>
             <Separator orientation="vertical" spacing="sm" />
-            <Button variant="ghost" size="sm">Archive</Button>
+            <Button variant="secondary" size="sm">Archive</Button>
           </div>
         </Example>
 

@@ -131,4 +131,34 @@ describe('Tooltip', () => {
     unmount();
     expect(() => act(() => vi.advanceTimersByTime(1000))).not.toThrow();
   });
+
+  it('draws an arrow by default and can turn it off', () => {
+    const { rerender } = render(
+      <Tooltip content="Save">
+        <button>Save</button>
+      </Tooltip>,
+    );
+    expect(screen.getByRole('tooltip', { hidden: true })).toHaveClass('ds-tooltip__bubble--arrow');
+    rerender(
+      <Tooltip content="Save" arrow={false}>
+        <button>Save</button>
+      </Tooltip>,
+    );
+    expect(screen.getByRole('tooltip', { hidden: true })).not.toHaveClass('ds-tooltip__bubble--arrow');
+  });
+
+  it('renders a rich card with media, title and instruction text', () => {
+    render(
+      <Tooltip title="Quick search" media={<img src="tip.png" alt="" />} content="Press ⌘K anywhere to jump to a page.">
+        <button>Search</button>
+      </Tooltip>,
+    );
+    act(() => screen.getByRole('button', { name: 'Search' }).focus());
+    const tip = screen.getByRole('tooltip');
+    expect(tip).toHaveClass('ds-tooltip__bubble--rich');
+    expect(tip).toHaveTextContent('Quick search');
+    expect(tip).toHaveTextContent('Press ⌘K anywhere to jump to a page.');
+    expect(tip.querySelector('img')).toHaveAttribute('alt', '');
+    expect(screen.getByRole('button', { name: 'Search' })).toHaveAccessibleDescription(/Quick search/);
+  });
 });

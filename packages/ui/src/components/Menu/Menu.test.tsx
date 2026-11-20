@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef, useState, type ComponentProps } from 'react';
 import { describe, expect, it, vi } from 'vitest';
@@ -177,5 +177,81 @@ describe('Menu', () => {
     expect(menu).toHaveAttribute('aria-label', 'Row actions');
     expect(menu).not.toHaveAttribute('aria-labelledby');
     expect(menu.parentElement).toHaveClass('ds-menu', 'ds-menu--bottom-end');
+  });
+
+  it('renders shortcuts as keycaps', async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger={<button>Edit</button>}
+        items={[
+          { id: 'dup', label: 'Duplicate', shortcut: '⌘⇧D' },
+          { id: 'save', label: 'Save', shortcut: 'Ctrl+S' },
+        ]}
+      />,
+    );
+    await user.click(screen.getByRole('button', { name: 'Edit' }));
+    const dup = screen.getByRole('menuitem', { name: 'Duplicate' });
+    expect(dup.querySelectorAll('.ds-kbd__key, kbd kbd, .ds-kbd').length).toBeGreaterThan(0);
+    expect(dup.textContent).toContain('⇧');
+    expect(screen.getByRole('menuitem', { name: 'Save' }).textContent).toContain('⌃');
+  });
+
+  describe('submenus', () => {
+    const subItems = [
+      { id: 'copy', label: 'Copy' },
+      {
+        id: 'share',
+        label: 'Share',
+        items: [
+          { id: 'email', label: 'Email' },
+          { id: 'link', label: 'Copy link' },
+        ],
+      },
+      { id: 'delete', label: 'Delete', danger: true },
+    ];
+
+    it('opens with ArrowRight, moves inside, and returns with ArrowLeft', async () => {
+      const user = userEvent.setup();
+      render(<Menu trigger={<button>Actions</button>} items={subItems} />);
+      await user.click(screen.getByRole('button', { name: 'Actions' }));
+      await user.keyboard('{ArrowDown}');
+      const share = screen.getByRole('menuitem', { name: 'Share' });
+      expect(share).toHaveFocus();
+      expect(share).toHaveAttribute('aria-haspopup', 'menu');
+      expect(share).toHaveAttribute('aria-expanded', 'false');
+      await user.keyboard('{ArrowRight}');
+      expect(share).toHaveAttribute('aria-expanded', 'true');
+      const sub = screen.getByRole('menu', { name: 'Share' });
+      expect(within(sub).getByRole('menuitem', { name: 'Email' })).toHaveFocus();
+      await user.keyboard('{ArrowDown}');
+      expect(within(sub).getByRole('menuitem', { name: 'Copy link' })).toHaveFocus();
+      await user.keyboard('{ArrowLeft}');
+      expect(screen.queryByRole('menu', { name: 'Share' })).not.toBeInTheDocument();
+      expect(share).toHaveFocus();
+    });
+
+    it('selects a submenu item and closes everything', async () => {
+      const user = userEvent.setup();
+      const onSelect = vi.fn();
+      render(<Menu trigger={<button>Actions</button>} items={subItems} onSelect={onSelect} />);
+      await user.click(screen.getByRole('button', { name: 'Actions' }));
+      await user.click(screen.getByRole('menuitem', { name: 'Share' }));
+      await user.click(screen.getByRole('menuitem', { name: 'Copy link' }));
+      expect(onSelect).toHaveBeenCalledWith('link');
+      expect(onSelect).not.toHaveBeenCalledWith('share');
+      expect(screen.getByRole('menu', { hidden: true })).not.toBeVisible();
+    });
+
+    it('opens on hover without stealing focus from the parent', async () => {
+      const user = userEvent.setup();
+      render(<Menu trigger={<button>Actions</button>} items={subItems} />);
+      await user.click(screen.getByRole('button', { name: 'Actions' }));
+      await user.hover(screen.getByRole('menuitem', { name: 'Share' }));
+      expect(screen.getByRole('menu', { name: 'Share' })).toBeInTheDocument();
+      expect(screen.getByRole('menuitem', { name: 'Share' })).toHaveFocus();
+      await user.hover(screen.getByRole('menuitem', { name: 'Delete' }));
+      expect(screen.queryByRole('menu', { name: 'Share' })).not.toBeInTheDocument();
+    });
   });
 });

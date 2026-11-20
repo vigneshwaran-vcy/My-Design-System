@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@my-ds/ui';
+import { Button, ButtonIcon, Icon, Kbd, Tooltip } from '@my-ds/ui';
 import { Checklist, CodeBlock, DocSection, Example, PropsTable, SubSection } from '../DocBlocks';
 
 export function TooltipDocs() {
@@ -33,13 +33,62 @@ export function TooltipDocs() {
         </Example>
 
         <Example
+          title="Rich tip — picture, title and instruction"
+          code={`<Tooltip
+  title="Quick search"
+  media={<img src="/tips/search.png" alt="" />}
+  content="Press ⌘K anywhere to jump to any page, person or file."
+  placement="bottom"
+>
+  <ButtonIcon icon="search" label="Search" variant="border" />
+</Tooltip>`}
+        >
+          <Tooltip
+            title="Quick search"
+            placement="bottom"
+            delay={0}
+            media={
+              <div className="doc-tip-media" aria-hidden="true">
+                <span className="doc-tip-media__bar">
+                  <Icon name="search" />
+                  <span>Search Acme…</span>
+                  <Kbd size="sm" keys={['cmd', 'K']} />
+                </span>
+              </div>
+            }
+            content="Press ⌘K anywhere to jump to any page, person or file."
+          >
+            <ButtonIcon icon="search" label="Search" variant="border" />
+          </Tooltip>
+          <Tooltip
+            title="Pin to sidebar"
+            placement="right"
+            delay={0}
+            media={
+              <div className="doc-tip-media doc-tip-media--pin" aria-hidden="true">
+                <Icon name="star" />
+              </div>
+            }
+            content="Pinned pages stay at the top of the sidebar, for everyone in the workspace."
+          >
+            <ButtonIcon icon="star" label="Pin page" variant="border" />
+          </Tooltip>
+        </Example>
+
+        <Example title="Without the arrow" code={`<Tooltip content="No pointer" arrow={false}>…</Tooltip>`}>
+          <Tooltip content="No pointer" arrow={false}>
+            <Button variant="secondary">No arrow</Button>
+          </Tooltip>
+        </Example>
+
+        <Example
           title="No delay"
           code={`<Tooltip content="Shows immediately" delay={0}>
-  <Button variant="ghost">Instant</Button>
+  <Button variant="secondary">Instant</Button>
 </Tooltip>`}
         >
           <Tooltip content="Shows immediately" delay={0}>
-            <Button variant="ghost">Instant</Button>
+            <Button variant="secondary">Instant</Button>
           </Tooltip>
         </Example>
 
@@ -66,6 +115,9 @@ export function TooltipDocs() {
             { name: 'content', type: 'ReactNode', description: 'The hint text. Keep it short and plain.' },
             { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'top'", description: 'Side of the child the bubble appears on (space-2 away, layer-tooltip).' },
             { name: 'delay', type: 'number', default: '300', description: 'Hover delay in ms. Keyboard focus always shows the tooltip immediately.' },
+            { name: 'arrow', type: 'boolean', default: 'true', description: 'Small pointer towards the trigger, in the bubble colour.' },
+            { name: 'title', type: 'ReactNode', description: 'Bold first line; turns the tooltip into a wider rich tip.' },
+            { name: 'media', type: 'ReactNode', description: 'Picture above the text (<img alt=""> or a preview); also makes it a rich tip. Use for feature tips and how-tos, still nothing essential.' },
             { name: 'children', type: 'ReactElement', description: 'A single focusable element. It is cloned with aria-describedby and hover/focus/key handlers; its own handlers still run.' },
           ]}
         />

@@ -5,15 +5,12 @@
  */
 .ds-file-selector {
   --file-selector-pad: var(--ds-space-4);
-  --file-selector-tile: var(--ds-size-tile-sm);
 }
 .ds-file-selector--sm {
   --file-selector-pad: var(--ds-space-3);
-  --file-selector-tile: var(--ds-size-control-md);
 }
 .ds-file-selector--lg {
   --file-selector-pad: var(--ds-space-6);
-  --file-selector-tile: var(--ds-size-tile-md);
 }
 
 .ds-file-selector__zone {
@@ -84,28 +81,50 @@
   cursor: not-allowed;
 }
 
-/* Icon tile: an inset white surface, like the EmptyState tile. */
-.ds-file-selector__tile {
-  display: grid;
-  place-items: center;
-  width: var(--file-selector-tile);
-  height: var(--file-selector-tile);
-  border: var(--ds-border-width-thin) solid transparent;
-  border-radius: var(--ds-radius-control);
-  background-color: var(--ds-file-selector-tile-bg);
-  box-shadow: var(--ds-file-selector-tile-shadow);
-  color: var(--ds-file-selector-tile-text);
+/*
+ * Dropzone as one button: the whole area is the click target. The icon is plain and muted (no tile),
+ * so it reads as decoration, not as a separate control; the action text is the only accent.
+ */
+.ds-file-selector__zone--button {
+  width: 100%;
+  margin: 0;
+  font: inherit;
+  font-size: var(--ds-font-size-sm);
+  cursor: pointer;
 }
-.ds-file-selector__tile > svg {
+.ds-file-selector--sm .ds-file-selector__zone--button {
+  font-size: var(--ds-font-size-xs);
+}
+.ds-file-selector__zone--button:hover:not(:disabled) {
+  background-color: var(--ds-file-selector-zone-bg-hover);
+}
+.ds-file-selector__zone--button:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-style: solid;
+  border-color: var(--ds-file-selector-zone-border-focus);
+  box-shadow: var(--ds-file-selector-zone-halo-focus);
+}
+.ds-file-selector__zone--button:disabled {
+  cursor: not-allowed;
+}
+.ds-file-selector__zone-icon {
   width: var(--ds-size-icon-lg);
   height: var(--ds-size-icon-lg);
+  color: var(--ds-file-selector-zone-icon-text);
 }
-.ds-file-selector--sm .ds-file-selector__tile > svg {
+.ds-file-selector--sm .ds-file-selector__zone-icon {
   width: var(--ds-size-icon-md);
   height: var(--ds-size-icon-md);
 }
-.ds-file-selector__zone--dragging .ds-file-selector__tile {
+.ds-file-selector__zone--dragging .ds-file-selector__zone-icon {
   color: var(--ds-file-selector-zone-dragging-tile-text);
+}
+.ds-file-selector__zone-action {
+  color: var(--ds-file-selector-zone-action-text);
+  font-weight: var(--ds-font-weight-medium);
+}
+.ds-file-selector__zone--disabled .ds-file-selector__zone-action {
+  color: inherit;
 }
 
 .ds-file-selector__drop-label {

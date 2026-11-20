@@ -37,6 +37,11 @@
   --toast-enter-y: calc(var(--ds-space-4) * -1);
 }
 
+/*
+ * Toast, after Linear / Vercel: a dark inverse card (light in dark mode, like Tooltip) so it stands
+ * apart from the page. A solid status disc, a bright title, softer description, a light pill action,
+ * and a thin countdown line in the status colour that pauses while the toast is hovered or focused.
+ */
 .ds-toast {
   --toast-accent: var(--ds-toast-accent);
 
@@ -45,13 +50,12 @@
   align-items: flex-start;
   gap: var(--ds-space-3);
   box-sizing: border-box;
-  width: var(--ds-size-panel-lg);
+  width: calc(var(--ds-size-panel-md) + var(--ds-space-8));
   max-width: 100%;
-  padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-4);
+  padding: var(--ds-space-3);
   overflow: hidden;
-  /* Solid surface with a 1px ring edge in the shadow; the transparent border shows in forced-colors mode. */
   border: var(--ds-border-width-thin) solid transparent;
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--ds-radius-control);
   background-color: var(--ds-toast-bg);
   box-shadow: var(--ds-toast-shadow);
   color: var(--ds-toast-text);
@@ -61,15 +65,8 @@
   pointer-events: auto;
   animation: ds-toast-in var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
-
-/* 3px (thick + thin) accent bar on the leading edge, coloured per variant. */
-.ds-toast::before {
-  content: '';
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
-  width: calc(var(--ds-border-width-thick) + var(--ds-border-width-thin));
-  background-color: var(--toast-accent);
+.ds-toast--plain {
+  padding-inline-start: var(--ds-space-4);
 }
 
 .ds-toast--neutral {
@@ -88,6 +85,7 @@
   --toast-accent: var(--ds-toast-danger-accent);
 }
 
+/* Status disc: solid status colour with its on-colour glyph. */
 .ds-toast__icon {
   display: inline-flex;
   flex-shrink: 0;
@@ -95,16 +93,13 @@
   justify-content: center;
   width: var(--ds-size-icon-md);
   height: var(--ds-size-icon-md);
-  margin-block-start: calc(var(--ds-border-width-thin) * -1);
   border-radius: var(--ds-radius-full);
-  color: var(--ds-toast-icon-text);
   background-color: var(--toast-accent);
 }
 .ds-toast__icon svg {
-  width: var(--ds-size-icon-sm);
-  height: var(--ds-size-icon-sm);
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
 }
-/* Icon glyphs sit on their solid status fill, so they use the matching on-colour. */
 .ds-toast--info .ds-toast__icon {
   color: var(--ds-toast-info-icon-text);
 }
@@ -124,12 +119,14 @@
   flex-direction: column;
   gap: var(--ds-space-1);
   min-width: 0;
-  padding-block: calc(var(--ds-space-1) / 2);
 }
 .ds-toast__title {
-  font-weight: var(--ds-font-weight-semibold);
-  line-height: var(--ds-font-line-height-tight);
+  min-height: var(--ds-size-icon-md);
+  display: flex;
+  align-items: center;
   color: var(--ds-toast-title-text);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
   overflow-wrap: anywhere;
 }
 .ds-toast__description {
@@ -140,21 +137,88 @@
 .ds-toast__actions {
   display: flex;
   gap: var(--ds-space-2);
-  margin-block-start: var(--ds-space-1);
+  margin-block-start: var(--ds-space-2);
 }
 
-.ds-toast__close {
-  flex-shrink: 0;
-  width: var(--ds-size-button-sm);
+/* Action: a light pill on the dark card. */
+.ds-toast__action {
+  display: inline-flex;
+  align-items: center;
   height: var(--ds-size-button-sm);
-  margin: calc(var(--ds-space-1) * -1) calc(var(--ds-space-1) * -1) 0 0;
-  padding-inline: 0;
+  margin: 0;
+  padding-inline: var(--ds-space-3);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-toast-action-bg);
+  color: var(--ds-toast-action-text);
+  font: inherit;
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-toast__action:hover {
+  background-color: var(--ds-toast-action-bg-hover);
+}
+
+/* Close: quiet on the card, a soft lighter fill on hover. */
+.ds-toast__close {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-size-button-xs);
+  height: var(--ds-size-button-xs);
+  margin: 0;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-sm);
+  background-color: transparent;
   color: var(--ds-toast-close-text);
+  cursor: pointer;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-toast__close:hover {
+  background-color: var(--ds-toast-close-bg-hover);
+  color: var(--ds-toast-close-text-hover);
 }
 .ds-toast__close-icon {
   display: block;
   width: var(--ds-size-icon-sm);
   height: var(--ds-size-icon-sm);
+}
+.ds-toast__action:focus-visible,
+.ds-toast__close:focus-visible {
+  outline: var(--ds-border-width-thick) solid var(--ds-toast-ring-focus);
+  outline-offset: var(--ds-border-width-thin);
+}
+
+/* Countdown: a 2px line along the bottom that drains over the toast's duration. */
+.ds-toast__timer {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: var(--ds-border-width-thick);
+  background-color: var(--ds-toast-timer-track);
+}
+.ds-toast__timer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--toast-accent);
+  transform-origin: left center;
+  animation: ds-toast-timer var(--toast-duration) linear forwards;
+}
+.ds-toast:is(:hover, :focus-within) .ds-toast__timer::after {
+  animation-play-state: paused;
+}
+
+@keyframes ds-toast-timer {
+  to {
+    transform: scaleX(0);
+  }
 }
 
 @keyframes ds-toast-in {
@@ -167,5 +231,8 @@
 @media (prefers-reduced-motion: reduce) {
   .ds-toast {
     animation: none;
+  }
+  .ds-toast__timer {
+    display: none;
   }
 }

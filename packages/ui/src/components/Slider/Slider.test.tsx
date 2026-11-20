@@ -75,8 +75,8 @@ describe('Slider', () => {
 
   it('forwards the ref to the input', () => {
     const ref = createRef<HTMLInputElement>();
-    render(<Slider ref={ref} label="Volume" size="lg" variant="neutral" />);
+    render(<Slider ref={ref} label="Volume" size="sm" variant="neutral" />);
     expect(ref.current).toBe(screen.getByRole('slider'));
-    expect(ref.current?.closest('.ds-slider')).toHaveClass('ds-slider--lg', 'ds-slider--neutral');
+    expect(ref.current?.closest('.ds-slider')).toHaveClass('ds-slider--sm', 'ds-slider--neutral');
   });
 });

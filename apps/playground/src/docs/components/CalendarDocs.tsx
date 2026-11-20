@@ -98,7 +98,7 @@ export function CalendarDocs() {
             { name: 'showTodayButton', type: 'boolean', default: 'false', description: 'Footer button that jumps to and selects today.' },
             { name: 'labels', type: 'Partial<CalendarLabels>', description: 'previousMonth, nextMonth, previousYear, nextYear, today.' },
             { name: 'autoFocus', type: 'boolean', default: 'false', description: 'Focus the active day on mount.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Day cells 26 / 32 / 40.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Day cells 26 / 32 / 36.' },
             { name: 'variant', type: "'outline' | 'plain'", default: "'outline'", description: 'Framed surface, or no frame for use inside popovers.' },
           ]}
         />

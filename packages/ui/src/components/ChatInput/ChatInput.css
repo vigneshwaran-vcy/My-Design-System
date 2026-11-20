@@ -1,5 +1,18 @@
+/*
+ * Message composer, after ChatGPT / Claude / Gemini: a rounded box with file chips on top, the text,
+ * and a toolbar of round tool buttons (attach, tools, voice) with the send button at the end.
+ */
 .ds-chat-input {
+  --chat-input-tool-size: var(--ds-size-control-md);
+  --chat-input-tool-icon: var(--ds-size-icon-md);
   margin: 0;
+}
+.ds-chat-input--sm {
+  --chat-input-tool-size: var(--ds-size-control-sm);
+  --chat-input-tool-icon: var(--ds-size-icon-sm);
+}
+.ds-chat-input--lg {
+  --chat-input-tool-size: var(--ds-size-control-lg);
 }
 
 /*
@@ -10,12 +23,13 @@
   --chat-input-fill: var(--ds-chat-input-box-fill);
   /* At rest the edge is the 1px ring in shadow-surface, so the fill runs under the border. */
   --chat-input-edge: linear-gradient(var(--chat-input-fill), var(--chat-input-fill));
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-2);
   padding: var(--ds-space-3);
   border: var(--ds-border-width-thin) solid transparent;
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--ds-radius-xl);
   background:
     linear-gradient(var(--chat-input-fill), var(--chat-input-fill)) padding-box,
     var(--chat-input-edge) border-box;
@@ -59,12 +73,13 @@
   cursor: not-allowed;
 }
 
+/* Text */
 .ds-chat-input__textarea {
   display: block;
   width: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding: 0 var(--ds-space-1);
+  padding: var(--ds-space-1) var(--ds-space-1) 0;
   border: 0;
   background: transparent;
   color: var(--ds-chat-input-textarea-text);
@@ -85,6 +100,113 @@
   cursor: not-allowed;
 }
 
+/* Attachments: file chips above the text */
+.ds-chat-input__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+  margin: 0;
+  padding: var(--ds-space-1) 0 0;
+  list-style: none;
+}
+.ds-chat-input__attachment {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  box-sizing: border-box;
+  max-width: var(--ds-size-panel-xs);
+  min-height: calc(var(--ds-size-button-md) + var(--ds-space-2));
+  padding: var(--ds-space-1) var(--ds-space-3) var(--ds-space-1) var(--ds-space-1);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background-color: var(--ds-chat-input-attachment-bg);
+  box-shadow: 0 0 0 var(--ds-border-width-thin) var(--ds-chat-input-attachment-ring);
+  cursor: default;
+}
+.ds-chat-input__attachment--error {
+  box-shadow: 0 0 0 var(--ds-border-width-thin) var(--ds-chat-input-attachment-error-ring);
+}
+.ds-chat-input__attachment-icon,
+.ds-chat-input__attachment-thumb {
+  flex-shrink: 0;
+  width: var(--ds-size-button-md);
+  height: var(--ds-size-button-md);
+  border-radius: var(--ds-radius-md);
+}
+.ds-chat-input__attachment-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--ds-chat-input-attachment-icon-bg);
+  color: var(--ds-chat-input-attachment-icon-text);
+}
+.ds-chat-input__attachment-icon .ds-icon {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+}
+.ds-chat-input__attachment-thumb {
+  object-fit: cover;
+}
+.ds-chat-input__attachment-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: var(--ds-font-line-height-tight);
+}
+.ds-chat-input__attachment-name,
+.ds-chat-input__attachment-meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-chat-input__attachment-name {
+  color: var(--ds-chat-input-attachment-name-text);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-medium);
+}
+.ds-chat-input__attachment-meta {
+  color: var(--ds-chat-input-attachment-meta-text);
+  font-size: var(--ds-font-size-xs);
+}
+.ds-chat-input__attachment--error .ds-chat-input__attachment-meta {
+  color: var(--ds-chat-input-attachment-error-meta-text);
+}
+/* Remove: small dark disc on the chip's corner, shown on hover and focus (always on touch). */
+.ds-chat-input__attachment-remove {
+  position: absolute;
+  top: calc(var(--ds-space-2) * -1);
+  inset-inline-end: calc(var(--ds-space-2) * -1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-chat-input-attachment-remove-bg);
+  box-shadow: 0 0 0 var(--ds-border-width-thick) var(--ds-chat-input-attachment-remove-ring);
+  color: var(--ds-chat-input-attachment-remove-text);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-chat-input__attachment-remove .ds-icon {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-chat-input__attachment:hover .ds-chat-input__attachment-remove,
+.ds-chat-input__attachment-remove:focus-visible {
+  opacity: 1;
+}
+@media (hover: none) {
+  .ds-chat-input__attachment-remove {
+    opacity: 1;
+  }
+}
+
+/* Toolbar */
 .ds-chat-input__toolbar {
   display: flex;
   align-items: center;
@@ -95,23 +217,104 @@
 .ds-chat-input__trailing {
   display: flex;
   align-items: center;
-  gap: var(--ds-space-2);
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+.ds-chat-input__actions {
+  flex-wrap: wrap;
 }
 
 .ds-chat-input__count {
+  margin-inline-end: var(--ds-space-1);
   color: var(--ds-chat-input-count-text);
   font-size: var(--ds-font-size-xs);
   font-variant-numeric: tabular-nums;
 }
 
+/* Tool buttons: round and bare; labelled tools are pills with a ring edge; toggles tint when on. */
+.ds-chat-input__tool {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-1);
+  box-sizing: border-box;
+  min-width: var(--chat-input-tool-size);
+  height: var(--chat-input-tool-size);
+  margin: 0;
+  padding: 0;
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-full);
+  background-color: transparent;
+  color: var(--ds-chat-input-tool-text);
+  font-family: inherit;
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
+}
+.ds-chat-input__tool--labelled {
+  padding-inline: var(--ds-space-3);
+  box-shadow: inset 0 0 0 var(--ds-border-width-thin) var(--ds-chat-input-tool-ring);
+}
+.ds-chat-input--sm .ds-chat-input__tool--labelled {
+  padding-inline: var(--ds-space-2);
+  font-size: var(--ds-font-size-xs);
+}
+.ds-chat-input__tool-icon {
+  width: var(--chat-input-tool-icon);
+  height: var(--chat-input-tool-icon);
+}
+.ds-chat-input__tool--labelled .ds-chat-input__tool-icon {
+  width: var(--ds-size-icon-sm);
+  height: var(--ds-size-icon-sm);
+}
+.ds-chat-input__tool-chevron {
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+}
+.ds-chat-input__tool:hover:not(:disabled) {
+  background-color: var(--ds-chat-input-tool-bg-hover);
+  color: var(--ds-chat-input-tool-text-hover);
+}
+.ds-chat-input__tool:active:not(:disabled) {
+  background-color: var(--ds-chat-input-tool-bg-active);
+}
+.ds-chat-input__tool[aria-pressed='true'],
+.ds-chat-input__tool[aria-pressed='true']:hover:not(:disabled) {
+  background-color: var(--ds-chat-input-tool-bg-selected);
+  color: var(--ds-chat-input-tool-text-selected);
+}
+.ds-chat-input__tool--labelled[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 var(--ds-border-width-thin) var(--ds-chat-input-tool-ring-selected);
+}
+.ds-chat-input__tool:disabled {
+  color: var(--ds-chat-input-tool-text-disabled);
+  cursor: not-allowed;
+}
+.ds-chat-input__tool:focus-visible,
+.ds-chat-input__attachment-remove:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--ds-border-width-thin) var(--ds-chat-input-ring-focus),
+    var(--ds-chat-input-halo-focus);
+}
+
+/* Send: the premium accent button (faint sheen + raised shadow), round, same size as the tools. */
 .ds-chat-input__send {
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: var(--ds-size-control-md);
-  height: var(--ds-size-control-md);
+  width: var(--chat-input-tool-size);
+  height: var(--chat-input-tool-size);
+  margin-inline-start: var(--ds-space-1);
   padding: 0;
   border: var(--ds-border-width-thin) solid transparent;
   border-radius: var(--ds-radius-full);
@@ -119,13 +322,11 @@
   box-shadow: var(--ds-chat-input-send-shadow);
   color: var(--ds-chat-input-send-text);
   cursor: pointer;
-  transition:
-    box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out),
-    transform var(--ds-motion-duration-base) var(--ds-motion-easing-spring);
+  transition: box-shadow var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
-.ds-chat-input__send svg {
-  width: var(--ds-size-icon-md);
-  height: var(--ds-size-icon-md);
+.ds-chat-input__send .ds-icon {
+  width: var(--chat-input-tool-icon);
+  height: var(--chat-input-tool-icon);
 }
 .ds-chat-input__send:hover:not(:disabled) {
   background-image: var(--ds-chat-input-send-bg-hover);
@@ -184,37 +385,51 @@
   }
 }
 
+/* Drag a file over the box: tinted fill, accent edge and a "Drop files" label. */
+.ds-chat-input__box[data-dragging] {
+  --chat-input-edge: linear-gradient(var(--ds-chat-input-drop-ring), var(--ds-chat-input-drop-ring));
+}
+.ds-chat-input__drop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  border-radius: inherit;
+  background-color: var(--ds-chat-input-drop-bg);
+  color: var(--ds-chat-input-drop-text);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-medium);
+  pointer-events: none;
+}
+.ds-chat-input__drop .ds-icon {
+  width: var(--ds-size-icon-md);
+  height: var(--ds-size-icon-md);
+}
+
 /* Sizes */
 .ds-chat-input--sm .ds-chat-input__box {
-  gap: var(--ds-space-2);
+  gap: var(--ds-space-1);
   padding: var(--ds-space-2);
-  border-radius: var(--ds-radius-control);
+  border-radius: var(--ds-radius-lg);
 }
 .ds-chat-input--sm .ds-chat-input__textarea {
   font-size: var(--ds-font-size-sm);
 }
-.ds-chat-input--sm .ds-chat-input__send {
-  width: var(--ds-size-control-sm);
-  height: var(--ds-size-control-sm);
-}
-.ds-chat-input--sm .ds-chat-input__send svg {
-  width: var(--ds-size-icon-sm);
-  height: var(--ds-size-icon-sm);
-}
 .ds-chat-input--lg .ds-chat-input__box {
+  gap: var(--ds-space-3);
   padding: var(--ds-space-4);
 }
 .ds-chat-input--lg .ds-chat-input__textarea {
   font-size: var(--ds-font-size-lg);
 }
-.ds-chat-input--lg .ds-chat-input__send {
-  width: var(--ds-size-control-lg);
-  height: var(--ds-size-control-lg);
-}
 
 @media (prefers-reduced-motion: reduce) {
   .ds-chat-input__box,
-  .ds-chat-input__send {
+  .ds-chat-input__tool,
+  .ds-chat-input__send,
+  .ds-chat-input__attachment-remove {
     transition: none;
   }
   .ds-chat-input__send--stop::after {

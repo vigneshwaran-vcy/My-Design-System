@@ -43,27 +43,54 @@ describe('ColorPicker', () => {
     expect(screen.getByRole('button', { name: /Brand/ })).toHaveFocus();
   });
 
-  it('accepts a custom hex and flags invalid input', async () => {
+  it('accepts a custom hex (with or without #) and flags invalid input', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
     render(<ColorPicker label="Brand" swatches={swatches} onChange={onChange} />);
     await user.click(screen.getByRole('button', { name: /Brand/ }));
-    const hex = screen.getByRole('textbox', { name: 'Hex' });
+    const hex = screen.getByRole('textbox', { name: 'Hex colour' });
     await user.clear(hex);
+    // A pasted or typed "#RRGGBB" keeps all six digits.
     await user.type(hex, '#abcdef');
+    expect(hex).toHaveValue('ABCDEF');
     expect(onChange).toHaveBeenLastCalledWith('#ABCDEF');
     await user.clear(hex);
     await user.type(hex, 'zz{Enter}');
+    expect(hex).toHaveValue('');
     expect(hex).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByRole('alert')).toHaveTextContent('Use 3 or 6 hex digits');
   });
 
-  it('supports the native colour input', async () => {
+  it('opens the native colour panel from the colour square', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
     render(<ColorPicker label="Brand" onChange={onChange} />);
     await user.click(screen.getByRole('button', { name: /Brand/ }));
-    fireEvent.change(screen.getByLabelText('Pick a custom colour'), { target: { value: '#123456' } });
+    fireEvent.change(screen.getByLabelText('Adjust colour'), { target: { value: '#123456' } });
     expect(onChange).toHaveBeenLastCalledWith('#123456');
+  });
+
+  it('picks a colour from the screen with the EyeDropper where supported', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    const open = vi.fn().mockResolvedValue({ sRGBHex: '#ff8800' });
+    (window as unknown as { EyeDropper: unknown }).EyeDropper = vi.fn(() => ({ open }));
+    try {
+      render(<ColorPicker label="Brand" onChange={onChange} />);
+      await user.click(screen.getByRole('button', { name: /Brand/ }));
+      await user.click(screen.getByRole('button', { name: 'Pick a colour from the screen' }));
+      expect(open).toHaveBeenCalled();
+      expect(onChange).toHaveBeenLastCalledWith('#FF8800');
+    } finally {
+      delete (window as unknown as { EyeDropper?: unknown }).EyeDropper;
+    }
+  });
+
+  it('hides the eyedropper where the browser has no EyeDropper', async () => {
+    const user = userEvent.setup();
+    render(<ColorPicker label="Brand" />);
+    await user.click(screen.getByRole('button', { name: /Brand/ }));
+    expect(screen.queryByRole('button', { name: 'Pick a colour from the screen' })).not.toBeInTheDocument();
   });
 
   it('is disabled and announces errors', () => {

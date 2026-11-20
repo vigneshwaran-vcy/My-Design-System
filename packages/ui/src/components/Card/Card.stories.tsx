@@ -16,7 +16,7 @@ const meta = {
       <CardHeader
         title="Team plan"
         description="Billed monthly. Cancel any time."
-        action={<Button variant="ghost" size="sm">Edit</Button>}
+        action={<Button variant="secondary" size="sm">Edit</Button>}
       />
       <CardBody>Up to 10 seats, shared component libraries and Storybook hosting.</CardBody>
       <CardFooter>

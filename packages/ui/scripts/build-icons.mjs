@@ -97,6 +97,8 @@ const LINEAR = {
   'case': 'case',
   'crown': 'crown',
   checklist: 'checklist-minimalistic',
+  microphone: 'microphone',
+  'document-text': 'document-text',
   notebook: 'notebook',
   target: 'target',
   rocket: 'rocket',

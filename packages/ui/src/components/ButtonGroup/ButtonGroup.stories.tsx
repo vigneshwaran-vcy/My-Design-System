@@ -9,10 +9,9 @@ const meta = {
   title: 'Components/ButtonGroup',
   component: ButtonGroup,
   tags: ['autodocs'],
-  args: { variant: 'attached', size: 'md', label: 'Record actions' },
+  args: { size: 'md', label: 'Record actions' },
   argTypes: {
-    variant: { control: 'inline-radio', options: ['attached', 'spaced'] },
-    size: { control: 'inline-radio', options: ['xs', 'sm', 'md', 'lg'] },
+    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
   },
 } satisfies Meta<typeof ButtonGroup>;
 
@@ -37,24 +36,10 @@ export const Playground: Story = {
   ),
 };
 
-export const Variants: Story = {
-  render: (args) => (
-    <div style={stack}>
-      {(['attached', 'spaced'] as const).map((variant) => (
-        <ButtonGroup key={variant} {...args} variant={variant} label={variant}>
-          <Button variant="secondary">Refresh</Button>
-          <Button variant="secondary">Edit</Button>
-          <Button variant="secondary">Save</Button>
-        </ButtonGroup>
-      ))}
-    </div>
-  ),
-};
-
 export const Sizes: Story = {
   render: (args) => (
     <div style={stack}>
-      {(['xs', 'sm', 'md', 'lg'] as const).map((size) => (
+      {(['sm', 'md', 'lg'] as const).map((size) => (
         <ButtonGroup key={size} {...args} size={size} label={`Size ${size}`} menuItems={moreItems}>
           <Button variant="secondary">Edit</Button>
           <Button variant="secondary">Follow</Button>
@@ -64,17 +49,12 @@ export const Sizes: Story = {
   ),
 };
 
-/** Split button: a primary action plus a menu of related actions. */
+/** Split button: an action plus a menu of related actions. */
 export const SplitButton: Story = {
   render: (args) => (
-    <div style={stack}>
-      <ButtonGroup {...args} label="Save" menuItems={moreItems.slice(0, 2)} menuLabel="More save options">
-        <Button variant="secondary">Save</Button>
-      </ButtonGroup>
-      <ButtonGroup {...args} label="Publish" menuItems={moreItems.slice(0, 2)} menuLabel="More publish options" menuVariant="primary">
-        <Button>Publish</Button>
-      </ButtonGroup>
-    </div>
+    <ButtonGroup {...args} label="Save" menuItems={moreItems.slice(0, 2)} menuLabel="More save options">
+      <Button variant="secondary">Save</Button>
+    </ButtonGroup>
   ),
 };
 

@@ -27,7 +27,7 @@ export const Playground: Story = {
     <EmptyState
       {...args}
       action={<Button>New project</Button>}
-      secondaryAction={<Button variant="ghost">Import from GitHub</Button>}
+      secondaryAction={<Button variant="secondary">Import from GitHub</Button>}
     />
   ),
 };

@@ -13,7 +13,6 @@ import {
 import { cx } from '../../utils/cx';
 import { useControllableState } from '../../utils/useControllableState';
 import { Icon } from '../Icon';
-import { Input } from '../Input';
 import { Popover } from '../Popover';
 import '../Input/Input.css';
 import '../Dropdown/Dropdown.css';
@@ -87,7 +86,8 @@ export function normalizeHex(input: string): string | null {
 
 /**
  * Colour picker: a trigger showing the current colour opens a popover with a preset swatch grid
- * (a radio group with 2-D arrow keys), a custom hex field and an optional native picker.
+ * (a radio group with 2-D arrow keys) and a code field: the colour square opens the full colour panel, the
+ * hex input takes 3 or 6 digits, and the pipette samples any colour on screen (EyeDropper, where supported).
  * The ref and rest props go to the trigger button.
  */
 export const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function ColorPicker(
@@ -153,6 +153,20 @@ export const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(funct
   }, [open]);
 
   const pick = (hex: string) => setValue(hex);
+
+  // EyeDropper (Chromium) samples any pixel on screen, outside the panel or even the window.
+  const errorTextId = `${triggerId}-code-error`;
+  const canEyedrop = typeof window !== 'undefined' && 'EyeDropper' in window;
+  const pickFromScreen = async () => {
+    const Dropper = (window as unknown as { EyeDropper: new () => { open: () => Promise<{ sRGBHex: string }> } }).EyeDropper;
+    try {
+      const { sRGBHex } = await new Dropper().open();
+      const hex = normalizeHex(sRGBHex);
+      if (hex) pick(hex);
+    } catch {
+      // Cancelled with Escape: keep the current colour.
+    }
+  };
 
   const handleGridKey = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     const last = items.length - 1;
@@ -245,52 +259,79 @@ export const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(funct
           ))}
         </div>
 
-        {(showCustom || showNativePicker) && (
+        {(showCustom || showNativePicker || canEyedrop) && (
           <div className="ds-color-picker__custom">
-            <span
-              className="ds-color-picker__preview"
-              style={{ '--color-picker-color': value } as CSSProperties}
-              aria-hidden="true"
-            />
-            {showCustom && (
-              <Input
-                className="ds-color-picker__hex-field"
-                label="Hex"
-                hideLabel
-                size="sm"
-                value={draft}
-                spellCheck={false}
-                autoComplete="off"
-                maxLength={7}
-                error={draftError ? 'Use a hex colour like #0260FF.' : undefined}
-                onChange={(event) => {
-                  setDraft(event.target.value);
-                  const hex = normalizeHex(event.target.value);
-                  if (hex && event.target.value.replace('#', '').length === 6) {
-                    setDraftError(false);
-                    pick(hex);
-                  }
-                }}
-                onBlur={(event) => commitDraft(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter') {
-                    event.preventDefault();
-                    commitDraft(event.currentTarget.value);
-                  }
-                }}
-              />
-            )}
-            {showNativePicker && (
-              <label className="ds-color-picker__native" title="Pick a custom colour">
-                <input
-                  type="color"
-                  className="ds-visually-hidden"
-                  aria-label="Pick a custom colour"
-                  value={value.toLowerCase()}
-                  onChange={(event) => pick(normalizeHex(event.target.value) ?? event.target.value)}
+            <div className={cx('ds-color-picker__code', draftError && 'ds-color-picker__code--invalid')}>
+              {showNativePicker ? (
+                /* The colour square opens the full colour panel to fine-tune the colour. */
+                <label
+                  className="ds-color-picker__preview ds-color-picker__preview--button"
+                  style={{ '--color-picker-color': value } as CSSProperties}
+                  title="Adjust colour"
+                >
+                  <input
+                    type="color"
+                    className="ds-visually-hidden"
+                    aria-label="Adjust colour"
+                    value={value.toLowerCase()}
+                    onChange={(event) => pick(normalizeHex(event.target.value) ?? event.target.value)}
+                  />
+                </label>
+              ) : (
+                <span
+                  className="ds-color-picker__preview"
+                  style={{ '--color-picker-color': value } as CSSProperties}
+                  aria-hidden="true"
                 />
-                <Icon name="pipette" />
-              </label>
+              )}
+              {showCustom && (
+                <>
+                  <span className="ds-color-picker__hash" aria-hidden="true">
+                    #
+                  </span>
+                  <input
+                    className="ds-color-picker__code-input"
+                    aria-label="Hex colour"
+                    aria-invalid={draftError || undefined}
+                    aria-describedby={draftError ? errorTextId : undefined}
+                    value={draft.replace('#', '')}
+                    spellCheck={false}
+                    autoComplete="off"
+                    autoCapitalize="characters"
+                    onChange={(event) => {
+                      const digits = event.target.value.replace(/[^0-9a-f]/gi, '').toUpperCase().slice(0, 6);
+                      setDraft(`#${digits}`);
+                      if (digits.length === 6) {
+                        setDraftError(false);
+                        pick(`#${digits}`);
+                      }
+                    }}
+                    onBlur={(event) => commitDraft(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
+                        event.preventDefault();
+                        commitDraft(event.currentTarget.value);
+                      }
+                    }}
+                  />
+                </>
+              )}
+              {canEyedrop && (
+                <button
+                  type="button"
+                  className="ds-color-picker__eyedropper"
+                  aria-label="Pick a colour from the screen"
+                  title="Pick a colour from the screen"
+                  onClick={pickFromScreen}
+                >
+                  <Icon name="pipette" />
+                </button>
+              )}
+            </div>
+            {draftError && (
+              <p id={errorTextId} className="ds-color-picker__code-error" role="alert">
+                Use 3 or 6 hex digits, like 0260FF.
+              </p>
             )}
           </div>
         )}

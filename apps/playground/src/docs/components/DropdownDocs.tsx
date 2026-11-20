@@ -141,7 +141,7 @@ export function DropdownDocs() {
             { name: 'hint', type: 'ReactNode', description: 'Helper text, linked via aria-describedby.' },
             { name: 'error', type: 'ReactNode', description: 'Sets aria-invalid and announces the message.' },
             { name: 'variant', type: "'outline' | 'filled'", default: "'outline'", description: 'Matches Input.' },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 26 / 32 / 40.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 26 / 32 / 36.' },
           ]}
         />
       </SubSection>

@@ -12,6 +12,7 @@ function Harness(props: Partial<ModalProps>) {
       <Modal
         title="Delete project?"
         description="This cannot be undone."
+        showClose
         {...props}
         open={open}
         onClose={() => {
@@ -140,5 +141,20 @@ describe('Modal', () => {
     expect(panel).toHaveClass('ds-modal__panel', 'extra');
     expect(panel.parentElement).toHaveClass('ds-modal', 'ds-modal--lg');
     expect(panel).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('hides the close button by default when a footer is present, and shows it without one', () => {
+    const { rerender } = render(
+      <Modal open onClose={() => {}} title="With footer" footer={<button>Cancel</button>}>
+        <p>Body</p>
+      </Modal>,
+    );
+    expect(screen.queryByRole('button', { name: 'Close' })).not.toBeInTheDocument();
+    rerender(
+      <Modal open onClose={() => {}} title="No footer">
+        <p>Body</p>
+      </Modal>,
+    );
+    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
   });
 });

@@ -87,6 +87,7 @@
 /* Hover */
 .ds-radio__label:hover .ds-radio__input:not(:disabled, :checked) + .ds-radio__circle {
   background-color: var(--ds-radio-label-input-circle-bg-hover);
+  border-color: var(--ds-radio-label-input-circle-border-hover);
 }
 .ds-radio__label:hover .ds-radio__input:checked:not(:disabled) + .ds-radio__circle {
   background-color: var(--ds-radio-label-input-circle-bg-hover-checked);

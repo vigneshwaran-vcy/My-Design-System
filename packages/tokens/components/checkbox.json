@@ -6,6 +6,7 @@
   "description-text": "{color.text.muted}",
   "error-text": "{color.text.danger}",
   "label-input-box-bg-hover": "{color.bg.neutral.hover}",
+  "label-input-box-border-hover": "{color.border.controlHover}",
   "label-input-box-bg-hover-checked": "{color.bg.accent.hover}",
   "label-input-box-border-hover-checked": "{color.bg.accent.hover}",
   "input-box-bg-checked": "{color.bg.accent.default}",

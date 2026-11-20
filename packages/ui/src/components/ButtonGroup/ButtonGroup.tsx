@@ -8,17 +8,14 @@ import {
   type ReactNode,
 } from 'react';
 import { cx } from '../../utils/cx';
-import { Button, type ButtonVariant } from '../Button';
+import { Button } from '../Button';
 import { Icon, type IconName } from '../Icon';
 import { Menu, type MenuItem } from '../Menu';
 import './ButtonGroup.css';
 
-export type ButtonGroupVariant = 'attached' | 'spaced';
-export type ButtonGroupSize = 'xs' | 'sm' | 'md' | 'lg';
+export type ButtonGroupSize = 'sm' | 'md' | 'lg';
 
 export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
-  /** attached: buttons share edges in one row (SLDS button group) · spaced: a small gap between them. */
-  variant?: ButtonGroupVariant;
   /** Passed to every child Button / ButtonIcon that doesn't set its own `size`. */
   size?: ButtonGroupSize;
   /** Accessible name for the group (`aria-label`). */
@@ -29,8 +26,6 @@ export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   menuLabel?: string;
   /** Icon of the menu button: `alt-arrow-down` for a split button, `menu-dots` for an overflow menu. */
   menuIcon?: IconName;
-  /** Button variant of the menu button; match the button it splits from. */
-  menuVariant?: ButtonVariant;
   /** Fires with the selected menu item's id. */
   onMenuSelect?: (id: string) => void;
   /** Disables the menu button. */
@@ -41,18 +36,16 @@ export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
 type Sizable = { size?: ButtonGroupSize };
 
 /**
- * A row of related buttons (role="group"), optionally attached with shared edges and ending in a split/overflow menu.
+ * A segmented row of related secondary buttons (role="group"), optionally ending in a split/overflow menu.
  * Each child keeps its own Tab stop; rest props, `className` and the ref go to the group element.
  */
 export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function ButtonGroup(
   {
-    variant = 'attached',
     size,
     label,
     menuItems,
     menuLabel = 'More actions',
     menuIcon = 'alt-arrow-down',
-    menuVariant = 'secondary',
     onMenuSelect,
     menuDisabled = false,
     className,
@@ -75,7 +68,7 @@ export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function
       ref={ref}
       role="group"
       aria-label={label}
-      className={cx('ds-button-group', `ds-button-group--${variant}`, `ds-button-group--${groupSize}`, className)}
+      className={cx('ds-button-group', `ds-button-group--${groupSize}`, className)}
       {...rest}
     >
       {items}
@@ -86,7 +79,7 @@ export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function
           onSelect={onMenuSelect}
           trigger={
             <Button
-              variant={menuVariant}
+              variant="secondary"
               size={groupSize}
               aria-label={menuLabel}
               title={menuLabel}

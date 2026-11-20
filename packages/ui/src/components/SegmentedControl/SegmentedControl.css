@@ -1,0 +1,152 @@
+/*
+ * Segmented control, matching the docs theme toggle: a recessed frame-coloured track (shadow-track)
+ * and a raised thumb (bg-thumb + shadow-thumb) that slides under the selected segment.
+ * Segments share the width equally, so the thumb's offset is just index × its own width.
+ */
+.ds-segmented-control {
+  --seg-pad: var(--ds-border-width-thick);
+  --seg-height: var(--ds-size-control-md);
+  --seg-radius: var(--ds-radius-md);
+  --seg-font: var(--ds-font-size-sm);
+  --seg-icon: var(--ds-size-icon-sm);
+  --seg-inline: var(--ds-space-4);
+  --seg-thumb-bg: var(--ds-segmented-control-thumb-bg);
+  --seg-thumb-shadow: var(--ds-segmented-control-thumb-shadow);
+  --seg-selected-color: var(--ds-segmented-control-selected-color);
+}
+
+.ds-segmented-control--sm {
+  --seg-height: var(--ds-size-control-sm);
+  --seg-radius: var(--ds-radius-md);
+  --seg-font: var(--ds-font-size-xs);
+  --seg-icon: var(--ds-size-icon-xs);
+  --seg-inline: var(--ds-space-3);
+}
+.ds-segmented-control--lg {
+  --seg-height: var(--ds-size-control-lg);
+  --seg-radius: var(--ds-radius-control);
+  --seg-font: var(--ds-font-size-md);
+  --seg-icon: var(--ds-size-icon-md);
+  --seg-inline: var(--ds-space-6);
+}
+
+.ds-segmented-control--accent {
+  --seg-thumb-bg: var(--ds-segmented-control-accent-thumb-bg);
+  --seg-thumb-shadow: 0 0 transparent;
+  --seg-selected-color: var(--ds-segmented-control-accent-selected-color);
+}
+
+.ds-segmented-control__track {
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-self: flex-start;
+  box-sizing: border-box;
+  height: var(--seg-height);
+  padding: var(--seg-pad);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--seg-radius);
+  background-color: var(--ds-segmented-control-track-bg);
+  box-shadow: var(--ds-segmented-control-track-shadow);
+}
+.ds-segmented-control--full-width .ds-segmented-control__track {
+  display: grid;
+  align-self: stretch;
+}
+
+.ds-segmented-control__thumb {
+  position: absolute;
+  z-index: -1;
+  top: var(--seg-pad);
+  bottom: var(--seg-pad);
+  left: var(--seg-pad);
+  width: calc((100% - var(--seg-pad) * 2) / var(--seg-count));
+  border-radius: calc(var(--seg-radius) - var(--seg-pad));
+  background-color: var(--seg-thumb-bg);
+  box-shadow: var(--seg-thumb-shadow);
+  transform: translateX(calc(var(--seg-index) * 100%));
+  transition:
+    transform var(--ds-motion-duration-base) var(--ds-motion-easing-out),
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+
+.ds-segmented-control__option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0 var(--seg-inline);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: calc(var(--seg-radius) - var(--seg-pad));
+  background: transparent;
+  color: var(--ds-segmented-control-option-text);
+  font: inherit;
+  font-size: var(--seg-font);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-out),
+    box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-out);
+}
+.ds-segmented-control__option--icon-only {
+  padding-inline: var(--ds-space-2);
+}
+
+.ds-segmented-control__icon {
+  flex-shrink: 0;
+  width: var(--seg-icon);
+  height: var(--seg-icon);
+}
+
+.ds-segmented-control__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover: unselected segments only darken their text, so no extra box appears inside the track. */
+.ds-segmented-control__option:hover:not(:disabled, [aria-checked='true']) {
+  color: var(--ds-segmented-control-option-text-hover);
+}
+.ds-segmented-control__option[aria-checked='true'] {
+  color: var(--seg-selected-color);
+}
+
+.ds-segmented-control__option:focus-visible {
+  outline: var(--ds-border-width-thick) solid transparent;
+  border-color: var(--ds-segmented-control-option-border-focus);
+  box-shadow: var(--ds-segmented-control-option-shadow-focus);
+}
+
+/* Invalid: the track picks up a danger edge. */
+.ds-segmented-control--invalid .ds-segmented-control__track {
+  border-color: var(--ds-segmented-control-invalid-track-border);
+}
+.ds-segmented-control--invalid .ds-segmented-control__option:focus-visible {
+  border-color: var(--ds-segmented-control-invalid-option-border-focus);
+  box-shadow: var(--ds-segmented-control-invalid-option-shadow-focus);
+}
+
+/* Disabled: a single disabled option dims its text; a disabled group fades as a whole, like Switch. */
+.ds-segmented-control__option:disabled {
+  color: var(--ds-segmented-control-option-text-disabled);
+  cursor: not-allowed;
+}
+.ds-segmented-control__track[aria-disabled='true'] {
+  opacity: var(--ds-opacity-40);
+}
+.ds-segmented-control__track[aria-disabled='true'] .ds-segmented-control__option[aria-checked='true'] {
+  color: var(--seg-selected-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-segmented-control__thumb,
+  .ds-segmented-control__option {
+    transition: none;
+  }
+}

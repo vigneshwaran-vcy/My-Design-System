@@ -136,7 +136,7 @@ export const FileSelector = forwardRef<HTMLInputElement, FileSelectorProps>(func
     event.target.value = '';
   };
 
-  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+  const handleDrop = (event: DragEvent<HTMLElement>) => {
     event.preventDefault();
     dragDepth.current = 0;
     setDragging(false);
@@ -154,6 +154,23 @@ export const FileSelector = forwardRef<HTMLInputElement, FileSelectorProps>(func
   };
 
   const text = buttonLabel ?? (multiple ? 'Upload files' : 'Upload file');
+  const dragProps = {
+    onDragEnter: (event: DragEvent<HTMLElement>) => {
+      event.preventDefault();
+      if (disabled) return;
+      dragDepth.current += 1;
+      setDragging(true);
+    },
+    onDragOver: (event: DragEvent<HTMLElement>) => {
+      event.preventDefault();
+      if (event.dataTransfer) event.dataTransfer.dropEffect = disabled ? 'none' : 'copy';
+    },
+    onDragLeave: () => {
+      dragDepth.current = Math.max(0, dragDepth.current - 1);
+      if (dragDepth.current === 0) setDragging(false);
+    },
+    onDrop: handleDrop,
+  };
 
   return (
     <div
@@ -171,64 +188,71 @@ export const FileSelector = forwardRef<HTMLInputElement, FileSelectorProps>(func
         {label}
         {required && <span className="ds-field__required" aria-hidden="true"> *</span>}
       </span>
-      <div
-        className={cx(
-          'ds-file-selector__zone',
-          dragging && 'ds-file-selector__zone--dragging',
-          disabled && 'ds-file-selector__zone--disabled',
-        )}
-        data-dragging={dragging || undefined}
-        onDragEnter={(event) => {
-          event.preventDefault();
-          if (disabled) return;
-          dragDepth.current += 1;
-          setDragging(true);
-        }}
-        onDragOver={(event) => {
-          event.preventDefault();
-          if (event.dataTransfer) event.dataTransfer.dropEffect = disabled ? 'none' : 'copy';
-        }}
-        onDragLeave={() => {
-          dragDepth.current = Math.max(0, dragDepth.current - 1);
-          if (dragDepth.current === 0) setDragging(false);
-        }}
-        onDrop={handleDrop}
-      >
-        <input
-          ref={setRefs}
-          id={inputId}
-          type="file"
-          className="ds-visually-hidden"
-          tabIndex={-1}
-          accept={accept}
-          multiple={multiple}
-          disabled={disabled}
-          required={required && files.length === 0}
-          aria-labelledby={labelId}
-          aria-invalid={error ? true : undefined}
-          onChange={handleInput}
-          {...rest}
-          aria-describedby={describedBy}
-        />
-        {variant === 'dropzone' && (
-          <span className="ds-file-selector__tile" aria-hidden="true">
-            <Icon name="cloud-upload" />
-          </span>
-        )}
-        <Button
+      <input
+        ref={setRefs}
+        id={inputId}
+        type="file"
+        className="ds-visually-hidden"
+        tabIndex={-1}
+        accept={accept}
+        multiple={multiple}
+        disabled={disabled}
+        required={required && files.length === 0}
+        aria-labelledby={labelId}
+        aria-invalid={error ? true : undefined}
+        onChange={handleInput}
+        {...rest}
+        aria-describedby={describedBy}
+      />
+      {variant === 'dropzone' ? (
+        /* The whole zone is the button: click, Enter or Space opens the picker, and files can be dropped on it. */
+        <button
+          type="button"
           id={buttonId}
-          variant="secondary"
-          size={size === 'lg' ? 'md' : 'sm'}
-          leadingIcon={variant === 'inline' ? <Icon name="upload" /> : undefined}
+          className={cx(
+            'ds-file-selector__zone',
+            'ds-file-selector__zone--button',
+            dragging && 'ds-file-selector__zone--dragging',
+            disabled && 'ds-file-selector__zone--disabled',
+          )}
+          data-dragging={dragging || undefined}
           disabled={disabled}
-          aria-labelledby={`${buttonId} ${labelId}`}
+          aria-labelledby={`${buttonId}-text ${labelId}`}
           aria-describedby={describedBy}
           onClick={() => inputRef.current?.click()}
+          {...dragProps}
         >
-          {text}
-        </Button>
-        <span className="ds-file-selector__drop-label">{dropLabel}</span>
-      </div>
+          <Icon name="cloud-upload" className="ds-file-selector__zone-icon" />
+          <span id={`${buttonId}-text`} className="ds-file-selector__zone-text">
+            <span className="ds-file-selector__zone-action">{text}</span>{' '}
+            <span className="ds-file-selector__drop-label">{dropLabel}</span>
+          </span>
+        </button>
+      ) : (
+        <div
+          className={cx(
+            'ds-file-selector__zone',
+            dragging && 'ds-file-selector__zone--dragging',
+            disabled && 'ds-file-selector__zone--disabled',
+          )}
+          data-dragging={dragging || undefined}
+          {...dragProps}
+        >
+          <Button
+            id={buttonId}
+            variant="secondary"
+            size={size === 'lg' ? 'md' : 'sm'}
+            leadingIcon={<Icon name="upload" />}
+            disabled={disabled}
+            aria-labelledby={`${buttonId} ${labelId}`}
+            aria-describedby={describedBy}
+            onClick={() => inputRef.current?.click()}
+          >
+            {text}
+          </Button>
+          <span className="ds-file-selector__drop-label">{dropLabel}</span>
+        </div>
+      )}
 
       {!hideFileList && files.length > 0 && (
         <ul className="ds-file-selector__list" aria-label="Selected files">

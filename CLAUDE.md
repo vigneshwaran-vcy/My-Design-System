@@ -6,19 +6,19 @@ soft focus rings, solid popovers. No gloss anywhere (no white top highlights, sh
 
 ## Tokens (single source of truth: packages/tokens)
 - Colors (each a 50–950 ramp): primary 600 #0260FF (vivid blue; white text passes AA at 5.1:1), violet, sky + fuchsia (AI gradient only), pink, gray (cool; light theme), neutral (pure grey; dark theme), success/warn/danger
-- Gradients (`--ds-gradient-*`): accent, accentHover, accentActive, accentSubtle(+Hover/Active), danger, dangerHover, dangerActive, surface, surfaceHover, and the AI family: ai, aiHover, aiActive, aiSubtle(+Hover), aiText, aiMesh, aiConic.
+- Gradients (`--ds-gradient-*`): accent, accentHover, accentActive, accentSubtle(+Hover/Active), danger, dangerHover, dangerActive, surface, surfaceHover, neutralHover, neutralActive, and the AI family: ai, aiHover, aiActive, aiSubtle(+Hover), aiText, aiMesh, aiConic.
   Fills are flat (`linear-gradient(c, c)`, kept as gradients so components can layer them), except accent/danger (+Hover) which add a 10% white top sheen for the premium Primary/Delete look. The AI family is the only multi-colour gradient: blue-led, sky 400 → **blue 600 held 28–58%** → violet 500 → fuchsia 500 at 120°.
   Use it only for AI features: fills (ai/aiHover/aiActive), tinted results (aiSubtle), gradient text (aiText — darker stops in light theme for contrast),
   1px AI edges (ai on border-box), panel washes (aiMesh) and thinking rings (aiConic). No coloured glows.
 - Spacing: 4px base scale (4, 8, 12, 16, 24, 32, 48, 64)
 - Radius: sm 4px, md 8px, control 12px (default for controls), lg 16px, xl 24px (large surfaces), full
 - Typography: Inter; sizes xs–4xl; weights 400/500/600 (buttons use 500)
-- Sizes: button xs 22 / sm 26 / md 32 / lg 40 (`size.button`); inputs & dropdowns sm 26 / md 32 / lg 40 (`size.control`, same as buttons so they line up);
+- Sizes: button xs 22 / sm 26 / md 32 / lg 40 (`size.button`); inputs & dropdowns sm 26 / md 32 / lg 36 (`size.control`; sm and md match buttons, lg fields are 36 while lg buttons stay 40);
   icons xs 12 / sm 16 / md 20 / lg 24; avatar xs 24 … xl 64; checkbox 16 (sm 14); switch 36×20 (sm 28×16);
   badge sm 16 / md 20; kbd sm 20 / md 22; tile sm 40 / md 48 (empty-state icon tile);
   panel widths xs 192 / sm 256 / md 320 / lg 384 / xl 512 / 2xl 768 (menus, tooltips, popovers, toasts, modals)
-- Density: compact by default. Control radius follows height (22 → sm 4, 26–32 → md 8, 40 → control 12).
-  List rows (menu items, options) are 30; tabs 32 (sm 26); tree and nav rows 26 (sm 22); table cells pad 8 (sm 4).
+- Density: compact by default. Control radius follows height (22 → sm 4, 26–32 → md 8, 36–40 → control 12).
+  List rows (menu items, options) are 30; tabs 32 (sm 26); tree rows 26 (sm 22); sidebar nav rows 32 (sm 26) with a 2px gap (sm 1px); table cells pad 8 (sm 4).
   Surfaces pad 12–16: Card sm 12 / md 16 / lg 24 (radius control / lg / xl), Modal 16, Popover and Alert 12.
   Field label-to-control gap is 4. Don't add height with padding; pick the next size up instead.
 - Layers (z-index, `--ds-layer-*`): dropdown 10, sticky 20, overlay 30, modal 40, toast 50, tooltip 60 — never write a raw z-index
@@ -37,11 +37,23 @@ soft focus rings, solid popovers. No gloss anywhere (no white top highlights, sh
   - Grouped content sits in a frame: `--ds-color-bg-frame`, padding space-3, radius xl, with inset surfaces at
     radius `calc(xl - space-3)` so corners stay concentric.
 - Never hard-code colors, spacing or sizes. Always use tokens.
+- **Colours come only from tokens, everywhere in this project** (components, playground, Storybook config, stories,
+  demo data, inline styles). No raw hex/rgb/hsl, no named colours (`white`, `black`, `gray`…), no `color-mix()`,
+  no opacity tricks to fake a shade. Components use their own `--ds-<component>-*` tokens; apps and docs use
+  semantic `--ds-color-*` / `--ds-shadow-*` / `--ds-gradient-*`; JS that needs a colour value (e.g. ColorPicker
+  swatches) reads it from `tokens.palette` in `@my-ds/tokens`. Need a colour that does not exist? Add the primitive,
+  then a semantic token (then a component token) first. Only `transparent` and `currentColor` may be written directly.
 - Icons: Solar, Linear style only (https://icones.js.org/collection/solar), via `<Icon name="…" />` from `components/Icon`.
   Never hand-draw an icon SVG. To add one, put its Solar name in `LINEAR` in `packages/ui/scripts/build-icons.mjs` and run
   `pnpm --filter @my-ds/ui icons` (regenerates `icons.generated.ts`; only listed icons are bundled). Bare `check`/`close`/`info`/`alert`
   are Solar's circled glyphs with the circle removed. Icons are decorative (aria-hidden) unless given `label`.
+  Every icon stroke renders at a fixed 1.5px at any size (`--ds-border-width-icon`, set in `Icon.css` with
+  `vector-effect: non-scaling-stroke`); the few Solar icons drawn as filled outlines get a thin matching outline.
+  Never set a stroke width on an icon in component CSS.
   Only non-icon graphics stay as inline SVG: Progress ring, Spinner arc, Checkbox tick/dash.
+- Buttons: Primary for the one main action, **Secondary for every other text action** (Cancel, Back, Learn more, menu
+  triggers with text). Ghost is neutral (grey hover, never blue) and only for small icon-only or toolbar controls;
+  don't use it for text actions. Modal footers: Secondary (Cancel) then Primary; a modal with a Cancel needs no ×.
 - Every component: variants, sizes, disabled/focus/hover states, a11y (keyboard + ARIA)
 - Every component gets a story and a test
 
@@ -85,7 +97,8 @@ apps/playground/   Living docs: every token (rendered from tokenList) + componen
     warn.{default,subtle} → `--ds-color-bg-surface`, `--ds-color-bg-accent-hover`
   - `text`: default, muted, disabled, accent, danger, success, warn, inverse, onAccent, onDanger, onSuccess, onWarn → `--ds-color-text-muted`, `--ds-color-text-on-accent`
   - `border`: default, strong, control, accent, danger, success, warn, focus → `--ds-color-border`, `--ds-color-border-focus`
-    (`control` = gray 500, the 3:1 edge for small selection controls: checkbox, radio).
+    (`control` / `controlHover` = gray 300 / 400 in light, neutral 700 / 600 in dark: the idle and hover edge shared by
+    every form field and the checkbox and radio. `shadow.control*` rings use the same palette steps; keep them in sync).
     Switch: flat solid track (`color.bg.track(-hover)` off, `color.bg.accent(-hover)` on; no stroke or inner shade),
     a raised white knob (`shadow.knob`) that stretches while pressed, `shadow.focus` ring, and disabled = whole control at `opacity-40`.
     The docs theme toggle is a segmented control: recessed `shadow.track` with a sliding `color.bg.thumb` + `shadow.thumb`.

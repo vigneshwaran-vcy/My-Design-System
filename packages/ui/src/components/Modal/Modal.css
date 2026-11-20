@@ -28,12 +28,11 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-3);
   width: 100%;
   max-width: var(--modal-max-width);
   max-height: 100%;
   margin: auto;
-  padding: var(--ds-space-4);
+  padding: 0;
   /* Solid surface with a 1px ring edge in the shadow; the transparent border shows in forced-colors mode. */
   border: var(--ds-border-width-thin) solid transparent;
   border-radius: var(--ds-radius-lg);
@@ -60,11 +59,16 @@
   --modal-max-width: var(--ds-size-panel-2xl);
 }
 
+/* Sections: header, body, then a footer under a divider. Each pads itself so the divider runs edge to edge. */
 .ds-modal__header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--ds-space-3);
+  padding: var(--ds-space-4) var(--ds-space-4) 0;
+}
+.ds-modal__header:last-child {
+  padding-block-end: var(--ds-space-4);
 }
 .ds-modal__heading {
   display: flex;
@@ -86,23 +90,15 @@
   color: var(--ds-modal-description-text);
 }
 
-/* Close "×": a ghost xs Button pinned to the top-right corner, nudged so its hit area aligns with the padding. */
+/* Close ×: a filled (container) icon button in the top-right corner, nudged up to sit level with the title. */
 .ds-modal__close {
   flex-shrink: 0;
-  margin: calc(var(--ds-space-1) * -1) calc(var(--ds-space-2) * -1) 0 0;
-  padding-inline: 0;
-  width: var(--ds-size-button-sm);
-  height: var(--ds-size-button-sm);
-  color: var(--ds-modal-close-text);
-}
-.ds-modal__close-icon {
-  width: var(--ds-size-icon-sm);
-  height: var(--ds-size-icon-sm);
-  display: block;
+  margin-block-start: calc(var(--ds-space-1) * -1);
 }
 
 .ds-modal__body {
   min-height: 0;
+  padding: var(--ds-space-4);
   overflow-y: auto;
   overscroll-behavior: contain;
   color: var(--ds-modal-body-text);
@@ -114,7 +110,12 @@
   align-items: center;
   flex-wrap: wrap;
   gap: var(--ds-space-2);
-  padding-block-start: var(--ds-space-2);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-block-start: var(--ds-border-width-thin) solid var(--ds-modal-footer-border);
+}
+/* Without a body the header is followed straight by the footer. */
+.ds-modal__header + .ds-modal__footer {
+  margin-block-start: var(--ds-space-4);
 }
 
 @keyframes ds-modal-fade-in {

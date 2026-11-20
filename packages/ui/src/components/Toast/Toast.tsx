@@ -1,4 +1,5 @@
 import {
+  type CSSProperties,
   createContext,
   useCallback,
   useContext,
@@ -10,7 +11,6 @@ import {
 } from 'react';
 import { cx } from '../../utils/cx';
 import { Icon, type IconName } from '../Icon';
-import { Button } from '../Button';
 import './Toast.css';
 
 export type ToastVariant = 'neutral' | 'success' | 'warn' | 'danger' | 'info';
@@ -141,7 +141,7 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
   return (
     <div
       role={variant === 'danger' ? 'alert' : 'status'}
-      className={cx('ds-toast', `ds-toast--${variant}`)}
+      className={cx('ds-toast', `ds-toast--${variant}`, !icon && 'ds-toast--plain')}
       onMouseEnter={pause}
       onMouseLeave={resume}
       onFocus={pause}
@@ -159,22 +159,29 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
         {description && <div className="ds-toast__description">{description}</div>}
         {action && (
           <div className="ds-toast__actions">
-            <Button
-              size="xs"
-              variant="soft"
+            <button
+              type="button"
+              className="ds-toast__action"
               onClick={() => {
                 action.onClick();
                 dismiss();
               }}
             >
               {action.label}
-            </Button>
+            </button>
           </div>
         )}
       </div>
-      <Button variant="ghost" size="xs" aria-label="Dismiss" className="ds-toast__close" onClick={dismiss}>
+      <button type="button" aria-label="Dismiss" title="Dismiss" className="ds-toast__close" onClick={dismiss}>
         <Icon name="close" className="ds-toast__close-icon" />
-      </Button>
+      </button>
+      {duration > 0 && Number.isFinite(duration) && (
+        <span
+          className="ds-toast__timer"
+          style={{ '--toast-duration': `${duration}ms` } as CSSProperties}
+          aria-hidden="true"
+        />
+      )}
     </div>
   );
 }

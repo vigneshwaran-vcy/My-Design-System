@@ -7,6 +7,6 @@
   "panel-halo-focus": "{shadow.focus}",
   "title-text": "{color.text.default}",
   "description-text": "{color.text.muted}",
-  "close-text": "{color.text.muted}",
+  "footer-border": "{color.border.default}",
   "body-text": "{color.text.default}"
 }

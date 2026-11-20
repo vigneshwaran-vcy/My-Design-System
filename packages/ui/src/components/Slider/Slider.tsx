@@ -12,7 +12,7 @@ import { useControllableState } from '../../utils/useControllableState';
 import '../Input/Input.css';
 import './Slider.css';
 
-export type SliderSize = 'sm' | 'md' | 'lg';
+export type SliderSize = 'sm' | 'md';
 export type SliderVariant = 'accent' | 'neutral';
 
 export interface SliderProps

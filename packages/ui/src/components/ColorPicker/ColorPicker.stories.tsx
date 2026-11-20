@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { tokens } from '@my-ds/tokens';
 import { useState } from 'react';
 import { ColorPicker } from './ColorPicker';
+
+/* Story swatches come from the palette tokens, never typed-in hex values. */
+const { palette } = tokens;
 
 const meta = {
   title: 'Components/ColorPicker',
@@ -21,7 +25,7 @@ export const Playground: Story = {};
 
 export const Controlled: Story = {
   render: (args) => {
-    const [color, setColor] = useState('#7C3AED');
+    const [color, setColor] = useState<string>(palette.violet['600']);
     return <ColorPicker {...args} value={color} onChange={setColor} hint={`Value: ${color}`} />;
   },
 };
@@ -33,12 +37,12 @@ export const CustomSwatches: Story = {
     label: 'Label colour',
     columns: 4,
     swatches: [
-      { value: '#0260FF', label: 'Blue' },
-      { value: '#16A34A', label: 'Green' },
-      { value: '#D97706', label: 'Amber' },
-      { value: '#DC2626', label: 'Red' },
+      { value: palette.primary['600'], label: 'Blue' },
+      { value: palette.success['600'], label: 'Green' },
+      { value: palette.warn['600'], label: 'Amber' },
+      { value: palette.danger['600'], label: 'Red' },
     ],
-    defaultValue: '#16A34A',
+    defaultValue: palette.success['600'],
   },
 };
 

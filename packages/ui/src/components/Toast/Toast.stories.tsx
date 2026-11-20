@@ -52,7 +52,7 @@ function Triggers() {
       <Button variant="soft" onClick={() => toast({ title: 'Sticky until dismissed', description: 'duration: 0', duration: 0 })}>
         Sticky
       </Button>
-      <Button variant="ghost" onClick={dismissAll}>Dismiss all</Button>
+      <Button variant="secondary" onClick={dismissAll}>Dismiss all</Button>
     </div>
   );
 }

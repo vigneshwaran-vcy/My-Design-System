@@ -363,7 +363,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calen
       {showTodayButton && (
         <div className="ds-calendar__footer">
           <Button
-            variant="ghost"
+            variant="secondary"
             size="sm"
             disabled={isDisabled(today)}
             onClick={() => {

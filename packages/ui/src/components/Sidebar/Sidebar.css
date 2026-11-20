@@ -7,8 +7,10 @@
  *   collapsed icon rail: top-level items only, labels move into tooltips
  */
 .ds-sidebar {
-  --sidebar-row-height: var(--ds-size-button-sm);
+  --sidebar-row-height: var(--ds-size-button-md);
+  --sidebar-row-gap: var(--ds-border-width-thick);
   --sidebar-font-size: var(--ds-font-size-sm);
+  --sidebar-heading-font-size: var(--ds-font-size-xs);
   --sidebar-icon-size: var(--ds-size-icon-sm);
   --sidebar-search-height: var(--ds-size-control-md);
   --sidebar-pad: var(--ds-space-2);
@@ -25,11 +27,15 @@
   background-color: var(--sidebar-fill);
   color: var(--ds-sidebar-text);
   font-family: var(--ds-font-family-sans);
+  font-size: var(--sidebar-font-size);
+  line-height: var(--ds-font-line-height-tight);
   transition: width var(--ds-motion-duration-base) var(--ds-motion-easing-out);
 }
 .ds-sidebar--sm {
-  --sidebar-row-height: var(--ds-size-button-xs);
+  --sidebar-row-height: var(--ds-size-button-sm);
+  --sidebar-row-gap: var(--ds-border-width-thin);
   --sidebar-font-size: var(--ds-font-size-xs);
+  --sidebar-heading-font-size: var(--ds-font-size-2xs);
   --sidebar-icon-size: var(--ds-size-icon-xs);
   --sidebar-search-height: var(--ds-size-control-sm);
   gap: var(--ds-space-2);
@@ -274,7 +280,7 @@
   min-height: var(--ds-size-button-xs);
   padding-inline: var(--ds-space-2);
   color: var(--ds-sidebar-heading-text);
-  font-size: var(--ds-font-size-xs);
+  font-size: var(--sidebar-heading-font-size);
   font-weight: var(--ds-font-weight-medium);
   line-height: var(--ds-font-line-height-tight);
 }
@@ -388,13 +394,13 @@
 .ds-sidebar__list {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-border-width-thin);
+  gap: var(--sidebar-row-gap);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .ds-sidebar__list--nested {
-  margin-top: var(--ds-border-width-thin);
+  margin-top: var(--sidebar-row-gap);
   margin-inline-start: calc(var(--ds-space-2) + var(--sidebar-icon-size) / 2);
   padding-inline-start: var(--ds-space-1);
   border-inline-start: var(--ds-border-width-thin) solid var(--ds-sidebar-tree-line);

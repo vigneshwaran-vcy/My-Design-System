@@ -11,12 +11,12 @@ import { cx } from '../../utils/cx';
 import { useControllableState } from '../../utils/useControllableState';
 import { Icon, type IconName } from '../Icon';
 import '../Input/Input.css';
-import './RadioButtonGroup.css';
+import './SegmentedControl.css';
 
-export type RadioButtonGroupSize = 'sm' | 'md' | 'lg';
-export type RadioButtonGroupVariant = 'neutral' | 'accent';
+export type SegmentedControlSize = 'sm' | 'md' | 'lg';
+export type SegmentedControlVariant = 'neutral' | 'accent';
 
-export interface RadioButtonOption {
+export interface SegmentedControlOption {
   value: string;
   label: ReactNode;
   /** Leading icon. With `iconOnly`, the label becomes the accessible name. */
@@ -26,14 +26,14 @@ export interface RadioButtonOption {
   disabled?: boolean;
 }
 
-export interface RadioButtonGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface SegmentedControlProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Group label. Required for accessibility; use `hideLabel` to keep it screen-reader only. */
   label: ReactNode;
   hideLabel?: boolean;
   hint?: ReactNode;
   /** Error message. When set, the group is marked invalid and the message is announced. */
   error?: ReactNode;
-  options: RadioButtonOption[];
+  options: SegmentedControlOption[];
   value?: string | null;
   defaultValue?: string | null;
   onChange?: (value: string) => void;
@@ -43,16 +43,16 @@ export interface RadioButtonGroupProps extends Omit<HTMLAttributes<HTMLDivElemen
   disabled?: boolean;
   /** Stretch to the container width (segments share it equally). */
   fullWidth?: boolean;
-  size?: RadioButtonGroupSize;
+  size?: SegmentedControlSize;
   /** `neutral` = raised white thumb (like the docs theme toggle); `accent` = solid blue thumb. */
-  variant?: RadioButtonGroupVariant;
+  variant?: SegmentedControlVariant;
 }
 
 /**
  * Segmented control: a recessed track with a sliding thumb under the selected option.
  * Follows the WAI-ARIA radio group pattern (roving tabindex; arrows move and select, skipping disabled options).
  */
-export const RadioButtonGroup = forwardRef<HTMLDivElement, RadioButtonGroupProps>(function RadioButtonGroup(
+export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(function SegmentedControl(
   {
     label,
     hideLabel = false,
@@ -75,7 +75,7 @@ export const RadioButtonGroup = forwardRef<HTMLDivElement, RadioButtonGroupProps
   ref,
 ) {
   const autoId = useId();
-  const groupId = id ?? `ds-radio-button-group-${autoId}`;
+  const groupId = id ?? `ds-segmented-control-${autoId}`;
   const labelId = `${groupId}-label`;
   const hintId = hint ? `${groupId}-hint` : undefined;
   const errorId = error ? `${groupId}-error` : undefined;
@@ -133,8 +133,8 @@ export const RadioButtonGroup = forwardRef<HTMLDivElement, RadioButtonGroupProps
   };
 
   const trackStyle = {
-    '--rbg-count': options.length,
-    '--rbg-index': Math.max(selectedIndex, 0),
+    '--seg-count': options.length,
+    '--seg-index': Math.max(selectedIndex, 0),
   } as CSSProperties;
 
   return (
@@ -143,11 +143,11 @@ export const RadioButtonGroup = forwardRef<HTMLDivElement, RadioButtonGroupProps
       id={groupId}
       className={cx(
         'ds-field',
-        'ds-radio-button-group',
-        `ds-radio-button-group--${size}`,
-        `ds-radio-button-group--${variant}`,
-        fullWidth && 'ds-radio-button-group--full-width',
-        error && 'ds-radio-button-group--invalid',
+        'ds-segmented-control',
+        `ds-segmented-control--${size}`,
+        `ds-segmented-control--${variant}`,
+        fullWidth && 'ds-segmented-control--full-width',
+        error && 'ds-segmented-control--invalid',
         disabled && 'ds-field--disabled',
         className,
       )}
@@ -165,10 +165,10 @@ export const RadioButtonGroup = forwardRef<HTMLDivElement, RadioButtonGroupProps
         aria-required={required || undefined}
         aria-invalid={error ? true : undefined}
         aria-disabled={disabled || undefined}
-        className="ds-radio-button-group__track"
+        className="ds-segmented-control__track"
         style={trackStyle}
       >
-        {selectedIndex >= 0 && <span className="ds-radio-button-group__thumb" aria-hidden="true" />}
+        {selectedIndex >= 0 && <span className="ds-segmented-control__thumb" aria-hidden="true" />}
         {options.map((option, index) => {
           const checked = index === selectedIndex;
           const optionDisabled = disabled || option.disabled;
@@ -183,12 +183,12 @@ export const RadioButtonGroup = forwardRef<HTMLDivElement, RadioButtonGroupProps
               aria-checked={checked}
               disabled={optionDisabled}
               tabIndex={index === tabStop ? 0 : -1}
-              className={cx('ds-radio-button-group__option', option.iconOnly && 'ds-radio-button-group__option--icon-only')}
+              className={cx('ds-segmented-control__option', option.iconOnly && 'ds-segmented-control__option--icon-only')}
               onClick={() => select(index)}
               onKeyDown={(event) => handleKeyDown(event, index)}
             >
-              {option.icon && <Icon name={option.icon} className="ds-radio-button-group__icon" />}
-              <span className={cx('ds-radio-button-group__label', option.iconOnly && 'ds-visually-hidden')}>
+              {option.icon && <Icon name={option.icon} className="ds-segmented-control__icon" />}
+              <span className={cx('ds-segmented-control__label', option.iconOnly && 'ds-visually-hidden')}>
                 {option.label}
               </span>
             </button>

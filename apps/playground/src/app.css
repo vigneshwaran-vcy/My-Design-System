@@ -1395,7 +1395,7 @@ ul.ly-stack li {
   font-size: var(--ds-font-size-sm);
 }
 .tk-ai-subtle {
-  background: var(--ds-gradient-ai-subtle);
+  background: var(--ds-color-bg-accent-subtle);
 }
 .tk-ai-mesh {
   min-height: var(--ds-space-12);
@@ -1551,6 +1551,26 @@ ul.ly-stack li {
   align-items: flex-end;
   gap: var(--ds-space-4);
 }
+/* Controls beside the example instead of above it (narrow examples like a nav panel). */
+.demo--side {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--ds-space-6);
+}
+.demo--side > .demo__controls {
+  flex-direction: column;
+  align-items: flex-start;
+  order: 1;
+}
+@media (max-width: 640px) {
+  .demo--side {
+    flex-direction: column;
+  }
+  .demo--side > .demo__controls {
+    flex-direction: row;
+    order: 0;
+  }
+}
 .demo-app {
   display: flex;
   width: 100%;
@@ -1668,35 +1688,33 @@ ul.ly-stack li {
   border-radius: var(--ds-radius-lg);
   background: var(--ds-color-bg-page);
 }
-.demo-app__stat:not(:has(.demo-app__stat-icon)) {
-  grid-template-columns: 1fr;
-}
 .demo-frame--column {
   width: var(--ds-size-panel-sm);
   height: auto;
   padding: var(--ds-space-3) var(--ds-space-2);
 }
-/* A plain sidebar panel holding a VerticalNavigation */
+/* A standalone sidebar panel holding a VerticalNavigation */
 .demo-panel {
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-3);
   box-sizing: border-box;
-  width: var(--ds-size-panel-sm);
   flex-shrink: 0;
-  padding: var(--ds-space-3) var(--ds-space-2);
-  overflow-y: auto;
-  border-inline-end: var(--ds-border-width-thin) solid var(--ds-color-border);
-  border-start-start-radius: var(--ds-radius-lg);
-  border-end-start-radius: var(--ds-radius-lg);
+  width: var(--ds-size-panel-sm);
+  max-width: 100%;
+  padding: var(--ds-space-3);
+  border: var(--ds-border-width-thin) solid transparent;
+  border-radius: var(--ds-radius-lg);
   background: var(--ds-color-bg-sidebar);
+  box-shadow: var(--ds-shadow-surface);
 }
 .demo-panel__brand {
   display: flex;
   align-items: center;
   gap: var(--ds-space-2);
-  min-height: var(--ds-size-control-md);
-  padding-inline: var(--ds-space-2);
+  min-height: var(--ds-size-button-sm);
+  /* Row padding + row edge, so the logo lines up with the item icons below. */
+  padding-inline: calc(var(--ds-space-2) + var(--ds-border-width-thin));
 }
 .demo-panel__logo {
   display: inline-flex;
@@ -1712,17 +1730,64 @@ ul.ly-stack li {
 }
 .demo-panel__name {
   color: var(--ds-color-text);
-  font-size: var(--ds-font-size-sm);
+  font-size: var(--ds-font-size-md);
   font-weight: var(--ds-font-weight-semibold);
+}
+/* The header follows the nav's density. */
+.demo-panel:has(.ds-vertical-navigation--sm) .demo-panel__brand {
+  min-height: var(--ds-size-button-xs);
+}
+.demo-panel:has(.ds-vertical-navigation--sm) .demo-panel__logo {
+  width: var(--ds-size-button-xs);
+  height: var(--ds-size-button-xs);
+  border-radius: var(--ds-radius-sm);
+  font-size: var(--ds-font-size-xs);
+}
+.demo-panel:has(.ds-vertical-navigation--sm) .demo-panel__name {
+  font-size: var(--ds-font-size-sm);
 }
 @media (max-width: 640px) {
   .demo-app:not(:has(.ds-sidebar--collapsed)) .demo-app__main {
     display: none;
   }
-  .demo-panel {
-    flex: 1;
-  }
   .demo-app > .ds-sidebar:not(.ds-sidebar--collapsed) {
     flex: 1;
   }
+}
+
+/* A stacked form inside docs examples (modals, popovers). */
+.doc-form {
+  display: grid;
+  gap: var(--ds-space-4);
+}
+
+/* Tooltip docs: preview pictures for rich tips, built from tokens. */
+.doc-tip-media {
+  display: grid;
+  place-items: center;
+  height: calc(var(--ds-space-16) + var(--ds-space-4));
+  background: var(--ds-color-bg-accent-subtle);
+  color: var(--ds-color-text-accent);
+}
+.doc-tip-media--pin .ds-icon {
+  width: var(--ds-size-icon-lg);
+  height: var(--ds-size-icon-lg);
+}
+.doc-tip-media__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  width: calc(100% - var(--ds-space-6));
+  box-sizing: border-box;
+  height: var(--ds-size-control-md);
+  padding-inline: var(--ds-space-2) var(--ds-space-1);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-control);
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+}
+.doc-tip-media__bar > span {
+  flex: 1;
+  white-space: nowrap;
 }

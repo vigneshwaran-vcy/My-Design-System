@@ -32,9 +32,7 @@ import { ButtonGroupDocs } from './docs/components/ButtonGroupDocs';
 import { ButtonIconDocs } from './docs/components/ButtonIconDocs';
 import { CalendarDocs } from './docs/components/CalendarDocs';
 import { CarouselDocs } from './docs/components/CarouselDocs';
-import { CheckboxButtonDocs } from './docs/components/CheckboxButtonDocs';
 import { ColorPickerDocs } from './docs/components/ColorPickerDocs';
-import { ComboboxDocs } from './docs/components/ComboboxDocs';
 import { DatepickerDocs } from './docs/components/DatepickerDocs';
 import { DatetimePickerDocs } from './docs/components/DatetimePickerDocs';
 import { DualListboxDocs } from './docs/components/DualListboxDocs';
@@ -44,7 +42,7 @@ import { FormElementDocs } from './docs/components/FormElementDocs';
 import { PillDocs } from './docs/components/PillDocs';
 import { ProgressIndicatorDocs } from './docs/components/ProgressIndicatorDocs';
 import { PromptDocs } from './docs/components/PromptDocs';
-import { RadioButtonGroupDocs } from './docs/components/RadioButtonGroupDocs';
+import { SegmentedControlDocs } from './docs/components/SegmentedControlDocs';
 import { ScopedTabsDocs } from './docs/components/ScopedTabsDocs';
 import { SliderDocs } from './docs/components/SliderDocs';
 import { TileDocs } from './docs/components/TileDocs';
@@ -60,7 +58,7 @@ type Theme = 'light' | 'dark';
 const NAV = [
   { title: 'Getting started', items: [['overview', 'Overview']] },
   { title: 'Foundations', items: foundationsNav },
-  { title: 'Forms', items: [['button', 'Button'], ['input', 'Input'], ['textarea', 'Textarea'], ['dropdown', 'Dropdown'], ['checkbox', 'Checkbox'], ['radio-group', 'Radio group'], ['switch', 'Switch'], ['chat-input', 'ChatInput'], ['button-group', 'Button group'], ['button-icon', 'Button icon'], ['checkbox-button', 'Checkbox button'], ['radio-button-group', 'Radio button group'], ['combobox', 'Combobox'], ['slider', 'Slider'], ['form-element', 'Form element'], ['file-selector', 'File selector'], ['color-picker', 'Color picker'], ['dual-listbox', 'Dual listbox']] },
+  { title: 'Forms', items: [['button', 'Button'], ['input', 'Input'], ['textarea', 'Textarea'], ['dropdown', 'Dropdown'], ['checkbox', 'Checkbox'], ['radio-group', 'Radio group'], ['switch', 'Switch'], ['chat-input', 'ChatInput'], ['button-group', 'Button group'], ['button-icon', 'Button icon'], ['segmented-control', 'Segmented control'], ['slider', 'Slider'], ['form-element', 'Form element'], ['file-selector', 'File selector'], ['color-picker', 'Color picker'], ['dual-listbox', 'Dual listbox']] },
   { title: 'Date & time', items: [['calendar', 'Calendar'], ['datepicker', 'Datepicker'], ['timepicker', 'Timepicker'], ['datetime-picker', 'Datetime picker']] },
   { title: 'Overlays', items: [['modal', 'Modal'], ['popover', 'Popover'], ['menu', 'Menu'], ['tooltip', 'Tooltip'], ['toast', 'Toast'], ['prompt', 'Prompt']] },
   { title: 'Data display', items: [['card', 'Card'], ['table', 'Table'], ['badge', 'Badge'], ['avatar', 'Avatar'], ['tabs', 'Tabs'], ['kbd', 'Kbd'], ['separator', 'Separator'], ['pill', 'Pills'], ['tile', 'Tiles'], ['dynamic-icon', 'Dynamic icons'], ['accordion', 'Accordion'], ['tree', 'Tree'], ['carousel', 'Carousel']] },
@@ -80,9 +78,7 @@ const COMPONENT_PAGES: Record<string, ComponentType> = {
   'chat-input': ChatInputDocs,
   'button-group': ButtonGroupDocs,
   'button-icon': ButtonIconDocs,
-  'checkbox-button': CheckboxButtonDocs,
-  'radio-button-group': RadioButtonGroupDocs,
-  'combobox': ComboboxDocs,
+  'segmented-control': SegmentedControlDocs,
   'slider': SliderDocs,
   'form-element': FormElementDocs,
   'file-selector': FileSelectorDocs,

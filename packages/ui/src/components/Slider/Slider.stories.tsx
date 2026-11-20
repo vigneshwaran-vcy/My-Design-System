@@ -8,7 +8,7 @@ const meta = {
   tags: ['autodocs'],
   args: { label: 'Volume', defaultValue: 40, size: 'md', variant: 'accent', showValue: true },
   argTypes: {
-    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'inline-radio', options: ['sm', 'md'] },
     variant: { control: 'inline-radio', options: ['accent', 'neutral'] },
   },
   decorators: [(Story) => <div style={{ maxWidth: 'calc(var(--ds-space-16) * 5)' }}><Story /></div>],
@@ -51,7 +51,6 @@ export const Sizes: Story = {
     <div style={{ display: 'grid', gap: 'var(--ds-space-6)' }}>
       <Slider {...args} size="sm" label="Small" />
       <Slider {...args} size="md" label="Medium" />
-      <Slider {...args} size="lg" label="Large" />
     </div>
   ),
 };

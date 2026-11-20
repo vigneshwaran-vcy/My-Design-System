@@ -41,11 +41,11 @@ export const Vertical: Story = {
   args: { orientation: 'vertical', spacing: 'sm' },
   render: (args) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Button variant="ghost" size="sm">Edit</Button>
+      <Button variant="secondary" size="sm">Edit</Button>
       <Separator {...args} />
-      <Button variant="ghost" size="sm">Duplicate</Button>
+      <Button variant="secondary" size="sm">Duplicate</Button>
       <Separator {...args} />
-      <Button variant="ghost" size="sm">Archive</Button>
+      <Button variant="secondary" size="sm">Archive</Button>
     </div>
   ),
 };

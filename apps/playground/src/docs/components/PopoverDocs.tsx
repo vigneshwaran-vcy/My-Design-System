@@ -32,7 +32,7 @@ export function PopoverDocs() {
             <div style={{ display: 'grid', gap: 'var(--ds-space-3)' }}>
               <Input label="Title" size="sm" defaultValue="Roadmap 2025" />
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--ds-space-2)' }}>
-                <Button size="sm" variant="ghost">Cancel</Button>
+                <Button size="sm" variant="secondary">Cancel</Button>
                 <Button size="sm">Save</Button>
               </div>
             </div>

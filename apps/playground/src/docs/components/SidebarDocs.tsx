@@ -7,7 +7,7 @@ import {
   Kbd,
   Menu,
   Progress,
-  RadioButtonGroup,
+  SegmentedControl,
   Sidebar,
   SidebarUser,
   SidebarWorkspace,
@@ -193,7 +193,7 @@ function AppDemo() {
   return (
     <div className="demo">
       <div className="demo__controls">
-        <RadioButtonGroup
+        <SegmentedControl
           label="Variant"
           size="sm"
           options={[
@@ -203,7 +203,7 @@ function AppDemo() {
           value={variant}
           onChange={(v) => setVariant(v as SidebarVariant)}
         />
-        <RadioButtonGroup
+        <SegmentedControl
           label="Density"
           size="sm"
           options={[
@@ -411,7 +411,7 @@ export function SidebarDocs() {
             { name: 'collapsed', type: 'boolean', default: 'false', description: 'Icon rail: top-level items only, labels in tooltips, counts as dots.' },
             { name: 'defaultExpanded', type: 'string[]', description: 'Parent items that start open.' },
             { name: 'variant', type: "'default' | 'floating'", default: "'default'", description: 'Sidebar fill with an edge, or a raised card.' },
-            { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Rows 22 (compact) / 26.' },
+            { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Rows 26 (compact) / 32.' },
             { name: 'headingLevel', type: '2–6', default: '2', description: 'Heading element for section titles.' },
             { name: 'navLabel', type: 'string', default: "'Sidebar'", description: 'Label for the <nav> landmark.' },
           ]}

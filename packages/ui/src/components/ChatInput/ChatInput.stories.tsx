@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Icon } from '../Icon';
 import { useRef, useState } from 'react';
-import { Button } from '../Button';
-import { ChatInput } from './ChatInput';
+import { Menu } from '../Menu';
+import { ChatInput, ChatInputAction } from './ChatInput';
 
 const meta = {
   title: 'Components/ChatInput',
@@ -25,14 +24,44 @@ export const Playground: Story = {
 
 export const Generating: Story = { args: { generating: true, onStop: () => {}, defaultValue: 'Summarise this thread' } };
 
-export const WithActions: Story = {
+export const WithTools: Story = {
+  render: (args) => {
+    const [search, setSearch] = useState(true);
+    const [listening, setListening] = useState(false);
+    return (
+      <ChatInput
+        {...args}
+        onAttachFiles={() => {}}
+        onVoice={() => setListening(!listening)}
+        listening={listening}
+        actions={
+          <>
+            <ChatInputAction icon="global" label="Search" showLabel selected={search} onClick={() => setSearch(!search)} />
+            <ChatInputAction icon="lightbulb" label="Think" showLabel />
+            <Menu
+              trigger={<ChatInputAction icon="stars" label="Fable 5" showLabel menu />}
+              items={[
+                { id: 'fable', label: 'Fable 5' },
+                { id: 'opus', label: 'Opus 5.5' },
+              ]}
+            />
+          </>
+        }
+      />
+    );
+  },
+};
+
+export const WithAttachments: Story = {
   args: {
-    actions: (
-      <>
-        <Button variant="ghost" size="sm" leadingIcon={<Icon name="add" />}>Attach</Button>
-        <Button variant="ghost" size="sm">Tools</Button>
-      </>
-    ),
+    defaultValue: 'Summarise these for the team',
+    onAttachFiles: () => {},
+    onRemoveAttachment: () => {},
+    attachments: [
+      { id: '1', name: 'Q1 plan.pdf', meta: 'PDF · 2.4 MB' },
+      { id: '2', name: 'Research.zip', status: 'uploading' },
+      { id: '3', name: 'Huge video.mov', meta: 'Over the 50 MB limit', status: 'error' },
+    ],
   },
 };
 

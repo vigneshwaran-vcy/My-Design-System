@@ -5,6 +5,7 @@
   "dot-bg": "{color.text.onAccent}",
   "description-text": "{color.text.muted}",
   "label-input-circle-bg-hover": "{color.bg.neutral.hover}",
+  "label-input-circle-border-hover": "{color.border.controlHover}",
   "label-input-circle-bg-hover-checked": "{color.bg.accent.hover}",
   "label-input-circle-border-hover-checked": "{color.bg.accent.hover}",
   "input-circle-bg-checked": "{color.bg.accent.default}",

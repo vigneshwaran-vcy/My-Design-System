@@ -2,6 +2,7 @@
   position: relative;
   display: inline-flex;
   --menu-offset: var(--ds-space-2);
+  --menu-sub-gap: var(--ds-space-1);
 }
 
 /* The list matches .ds-dropdown__list: solid surface, ring edge in the shadow, space-2 padding. */
@@ -96,7 +97,6 @@
   background-color: var(--ds-menu-item-danger-active-bg);
 }
 .ds-menu__item--danger .ds-menu__shortcut {
-  color: inherit;
   opacity: var(--ds-opacity-80);
 }
 
@@ -122,19 +122,35 @@
   white-space: nowrap;
 }
 
+/* Shortcut: small Kbd keycaps (size sm, 20px) pushed to the end of the row. */
 .ds-menu__shortcut {
   flex-shrink: 0;
   margin-inline-start: var(--ds-space-4);
-  color: var(--ds-menu-shortcut-text);
-  font-family: var(--ds-font-family-mono);
-  font-size: var(--ds-font-size-xs);
-  letter-spacing: var(--ds-font-tracking-normal);
 }
 
+/* Submenu parent: a small chevron at the row end. */
+.ds-menu__chevron {
+  flex-shrink: 0;
+  width: var(--ds-size-icon-xs);
+  height: var(--ds-size-icon-xs);
+  margin-inline-start: var(--ds-space-4);
+  color: var(--ds-menu-shortcut-text);
+}
+
+/*
+ * Separator: the list already gaps rows by space-1, so the line only adds a hairline and pulls the
+ * gaps in by 2px on each side; it spans the panel edge to edge.
+ */
 .ds-menu__separator {
+  flex-shrink: 0;
   height: var(--ds-border-width-thin);
-  margin: var(--ds-space-1) calc(var(--ds-space-2) * -1);
+  margin: calc(var(--ds-border-width-thick) * -1) calc(var(--ds-space-1) * -1);
   background-color: var(--ds-menu-separator-bg);
+}
+
+/* Submenu panel: same surface as the menu, positioned beside its parent row by Menu.tsx. */
+.ds-menu > .ds-menu__list--sub {
+  min-width: var(--ds-size-panel-xs);
 }
 
 .ds-menu__label {
