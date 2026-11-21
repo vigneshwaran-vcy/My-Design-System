@@ -17,7 +17,7 @@
     "@storybook/addon-a11y": "8.6.19",
     "@storybook/addon-essentials": "8.6.19",
     "@storybook/blocks": "8.6.19",
-    "@storybook/react": "8.6.19",
+    "@storybook/react": "10.6.7",
     "@storybook/react-vite": "8.6.19",
     "@types/react": "18.3.12",
     "@vitejs/plugin-react": "4.7.0",
