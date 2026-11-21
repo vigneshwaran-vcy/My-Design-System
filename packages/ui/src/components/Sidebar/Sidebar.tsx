@@ -20,6 +20,7 @@ import { Avatar, getInitials, type AvatarStatus } from '../Avatar';
 import { Icon, type IconName } from '../Icon';
 import { Tooltip } from '../Tooltip';
 import './Sidebar.css';
+import { safeHref } from '../../utils/safeHref';
 
 export type SidebarVariant = 'default' | 'floating';
 export type SidebarSize = 'sm' | 'md';
@@ -445,7 +446,7 @@ function Row({ item }: { item: SidebarItem }) {
   const link =
     item.href !== undefined ? (
       <a
-        href={item.disabled ? undefined : item.href}
+        href={item.disabled ? undefined : safeHref(item.href)}
         aria-disabled={item.disabled || undefined}
         role={item.disabled ? 'link' : undefined}
         {...shared}

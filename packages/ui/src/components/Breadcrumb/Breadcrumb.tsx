@@ -10,6 +10,7 @@ import {
 import { cx } from '../../utils/cx';
 import { Icon } from '../Icon';
 import './Breadcrumb.css';
+import { safeHref } from '../../utils/safeHref';
 
 export interface BreadcrumbItem {
   label: ReactNode;
@@ -108,7 +109,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
           return (
             <li key={index} className="ds-breadcrumb__item" data-index={index}>
               {item.href && !current ? (
-                <a href={item.href} className="ds-breadcrumb__link" onClick={item.onClick}>
+                <a href={safeHref(item.href)} className="ds-breadcrumb__link" onClick={item.onClick}>
                   {content}
                 </a>
               ) : (

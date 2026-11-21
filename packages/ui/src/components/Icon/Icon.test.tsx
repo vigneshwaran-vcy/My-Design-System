@@ -39,6 +39,11 @@ describe('Icon', () => {
     expect(svg.getAttribute('class')).not.toMatch(/ds-icon--/);
   });
 
+  it('renders nothing for a name that is not a bundled icon, even an inherited object key', () => {
+    const { container } = render(<Icon name={'toString' as never} />);
+    expect(container.querySelector('svg')?.innerHTML).toBe('');
+  });
+
   it('every bundled icon has artwork', () => {
     expect(iconNames.length).toBeGreaterThan(20);
     for (const name of iconNames) {

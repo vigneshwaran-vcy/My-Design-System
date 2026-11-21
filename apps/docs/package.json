@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006 --host localhost",
     "build-storybook": "storybook build -o storybook-static",
     "build": "storybook build -o storybook-static --quiet"
   },
@@ -14,15 +14,15 @@
     "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "8.4.7",
-    "@storybook/addon-essentials": "8.4.7",
-    "@storybook/blocks": "8.4.7",
-    "@storybook/react": "8.4.7",
-    "@storybook/react-vite": "8.4.7",
+    "@storybook/addon-a11y": "8.6.19",
+    "@storybook/addon-essentials": "8.6.19",
+    "@storybook/blocks": "8.6.19",
+    "@storybook/react": "8.6.19",
+    "@storybook/react-vite": "8.6.19",
     "@types/react": "18.3.12",
-    "@vitejs/plugin-react": "4.3.4",
-    "storybook": "8.4.7",
+    "@vitejs/plugin-react": "4.7.0",
+    "storybook": "8.6.19",
     "typescript": "5.6.3",
-    "vite": "5.4.11"
+    "vite": "6.4.6"
   }
 }

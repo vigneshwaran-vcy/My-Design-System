@@ -74,7 +74,9 @@ describe('ColorPicker', () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
     const open = vi.fn().mockResolvedValue({ sRGBHex: '#ff8800' });
-    (window as unknown as { EyeDropper: unknown }).EyeDropper = vi.fn(() => ({ open }));
+    (window as unknown as { EyeDropper: unknown }).EyeDropper = vi.fn(function EyeDropper() {
+      return { open };
+    });
     try {
       render(<ColorPicker label="Brand" onChange={onChange} />);
       await user.click(screen.getByRole('button', { name: /Brand/ }));

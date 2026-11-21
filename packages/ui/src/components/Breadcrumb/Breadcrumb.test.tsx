@@ -102,4 +102,9 @@ describe('Breadcrumb', () => {
     expect(ref.current).toBe(screen.getByTestId('bc'));
     expect(ref.current).toHaveClass('ds-breadcrumb', 'custom');
   });
+
+  it('does not render script URLs as links', () => {
+    render(<Breadcrumb items={[{ label: 'Evil', href: 'javascript:alert(1)' }, { label: 'Here' }]} />);
+    expect(screen.getByText('Evil').closest('a')).not.toHaveAttribute('href');
+  });
 });

@@ -1,21 +1,51 @@
 {
   "name": "@my-ds/tokens",
   "version": "0.1.0",
-  "description": "Design tokens in three tiers (primitive, semantic, component) compiled to CSS variables and TS exports",
+  "description": "Design tokens (colour, spacing, size, shadow) for My Design System, as CSS variables and JS",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
     "./tokens.css": "./dist/tokens.css",
     "./tokens.json": "./tokens.json"
   },
-  "files": ["dist", "tokens.json", "components"],
-  "sideEffects": ["*.css"],
+  "files": [
+    "dist",
+    "tokens.json",
+    "components",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "prepare": "node scripts/build.mjs",
     "test": "node scripts/build.mjs --check",
     "typecheck": "node scripts/build.mjs --check"
+  },
+  "keywords": [
+    "design-tokens",
+    "design-system",
+    "css-variables"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vigneshwaran-vcy/My-Design-System.git",
+    "directory": "packages/tokens"
+  },
+  "license": "UNLICENSED",
+  "author": "Vigneshwaran",
+  "homepage": "https://vigneshwaran-vcy.github.io/My-Design-System/",
+  "bugs": {
+    "url": "https://github.com/vigneshwaran-vcy/My-Design-System/issues"
+  },
+  "publishConfig": {
+    "access": "restricted"
   }
 }

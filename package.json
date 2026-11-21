@@ -2,7 +2,9 @@
   "name": "my-design-system",
   "private": true,
   "packageManager": "pnpm@9.15.0",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build:tokens": "pnpm --filter @my-ds/tokens build",
     "build": "pnpm -r build",
@@ -10,9 +12,20 @@
     "storybook": "pnpm build:tokens && pnpm --filter docs storybook",
     "build-storybook": "pnpm build:tokens && pnpm --filter docs build-storybook",
     "test": "pnpm build:tokens && pnpm -r test",
-    "typecheck": "pnpm build:tokens && pnpm -r typecheck"
+    "typecheck": "pnpm build:tokens && pnpm -r typecheck",
+    "changeset": "changeset",
+    "version-packages": "changeset version"
   },
   "devDependencies": {
+    "@changesets/cli": "2.31.1",
     "typescript": "5.6.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "@storybook/core>esbuild": "^0.25.12",
+      "@storybook/addon-actions>uuid": "^11.1.1",
+      "@joshwooding/vite-plugin-react-docgen-typescript>glob": "^14.0.2",
+      "glob>minimatch": "^11.0.1"
+    }
   }
 }

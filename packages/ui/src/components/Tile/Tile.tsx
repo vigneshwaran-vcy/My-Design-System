@@ -1,6 +1,7 @@
 import { forwardRef, useId, type AnchorHTMLAttributes, type HTMLAttributes, type ReactNode } from 'react';
 import { cx } from '../../utils/cx';
 import './Tile.css';
+import { safeHref } from '../../utils/safeHref';
 
 export type TileVariant = 'plain' | 'card';
 export type TileSize = 'sm' | 'md';
@@ -67,7 +68,7 @@ export const Tile = forwardRef<HTMLElement, TileProps>(function Tile(
         <div className="ds-tile__header">
           <Title id={titleId} className="ds-tile__title">
             {href ? (
-              <a {...linkProps} href={href} className={cx('ds-tile__link', linkProps?.className)}>
+              <a {...linkProps} href={safeHref(href)} className={cx('ds-tile__link', linkProps?.className)}>
                 {title}
               </a>
             ) : (

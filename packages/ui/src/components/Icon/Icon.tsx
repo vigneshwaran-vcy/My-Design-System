@@ -29,7 +29,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(function Icon({ name, s
       data-icon={name}
       {...rest}
       // Bodies come from the generated Solar map, never from user input.
-      dangerouslySetInnerHTML={{ __html: icons[name] }}
+      dangerouslySetInnerHTML={{ __html: Object.prototype.hasOwnProperty.call(icons, name) ? icons[name] : '' }}
     />
   );
 });

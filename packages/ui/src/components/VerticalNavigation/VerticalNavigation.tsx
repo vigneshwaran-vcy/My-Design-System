@@ -17,6 +17,7 @@ import { useControllableState } from '../../utils/useControllableState';
 import { useCollapse } from '../Accordion/useCollapse';
 import { Icon, type IconName } from '../Icon';
 import './VerticalNavigation.css';
+import { safeHref } from '../../utils/safeHref';
 
 export type VerticalNavigationVariant = 'default' | 'framed';
 export type VerticalNavigationSize = 'sm' | 'md';
@@ -232,7 +233,7 @@ export const VerticalNavigationItem = forwardRef<HTMLElement, VerticalNavigation
       {href !== undefined ? (
         <a
           ref={ref as Ref<HTMLAnchorElement>}
-          href={disabled ? undefined : href}
+          href={disabled ? undefined : safeHref(href)}
           aria-disabled={disabled || undefined}
           role={disabled ? 'link' : undefined}
           {...rest}
